@@ -1,2 +1,2 @@
 
-ROOT_PATH='./template'
+ROOT_PATH='template/java'

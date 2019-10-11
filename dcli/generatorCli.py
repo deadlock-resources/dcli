@@ -1,5 +1,6 @@
 import fire
 from PyInquirer import prompt, print_json
+from .generator import java, common, file
 
 
 def askUsual():
@@ -44,13 +45,13 @@ class Generator(object):
             },
             {
                 'type': 'input',
-                'name': 'target',
+                'name': 'targetMethod',
                 'message': 'Main method for the user (String method(int a)):',
             },
         ]
         answers = askUsual()
         answers.update(prompt(javaQuestions))
-        print(answers)
+        print(common.template(answers, file.loadChallengeYaml('java')))
         return 'toast'
 
 

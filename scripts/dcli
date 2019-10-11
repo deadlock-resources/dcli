@@ -5,5 +5,4 @@ import fire
 import os
 from dcli import cli
 
-
 cli.main()
