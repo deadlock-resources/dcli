@@ -18,7 +18,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     include_package_data=True,
-    packages=['dcli'],
+    packages=setuptools.find_packages(),
     scripts=['scripts/dcli'],
     install_requires=[
         'PyInquirer',

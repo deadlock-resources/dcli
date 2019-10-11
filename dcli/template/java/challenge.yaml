@@ -10,5 +10,5 @@ xp:
 coding:
   templateDirectory: {{ templateDirectory }}
   successDirectory: {{ successDirectory }}
-  target: {{ target }}
+  target: {{ targetFile }}
   editorMode: java
