@@ -12,20 +12,9 @@ import template.{{ targetFile }};
 public class Solve {
 
     public static void main(String[] args) {
-
-        int min = 0;
-        int max = 20;
-
         try {
-            for (long n = min; n < max; n++) {
-                // catching userValue
-                long userValue = Fibonacci.fibonacci(n);
-                long expectedValue = success.Fibonacci.fibonacci(n);
-                if (expectedValue != userValue) {
-                    Logger.logNoMatch(n, expectedValue, userValue);
-                    System.exit(1);
-                }
-            }
+            // do some test with the user result
+            {{ targetFile }}.{{ targetMethod }};
             // all test passed successfully
             Logger.logSuccess();
         } catch (RuntimeException e) {

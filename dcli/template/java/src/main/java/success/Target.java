@@ -1,12 +1,10 @@
 package success;
 
-public class Fibonacci {
+public class {{ targetFile }} {
 
-    public static long fibonacci(long n) {
-        if (n == 1 || n == 0) {
-            return 1;
-        } else {
-            return fibonacci(n - 1) + fibonacci(n - 2);
-        }
+    public static {{ targetMethod }} {
+        // write your own solution
+        // this solution will be served given to the user
+        return 0;
     }
 }

@@ -6,6 +6,7 @@ import subprocess
 
 from string import Template
 from .generatorCli import Generator
+from .logger import info
 
 class Cli(object):
   """Deadlock CLI."""

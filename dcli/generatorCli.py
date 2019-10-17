@@ -1,8 +1,12 @@
 import fire
 import os
+import sys
 from PyInquirer import prompt, print_json
-from .logger import info
-from .generator import java, common, file
+from .questions.java import askJavaQuestions
+from .logger import info, error
+from .generator import common, file
+from .generator.languageGenerator import LanguageGenerator
+from .language.java import Java
 
 
 def askUsual():
@@ -10,17 +14,20 @@ def askUsual():
         {
             'type': 'input',
             'name': 'name',
-            'message': 'Name (code_your_challenge_name):',
+            'message': 'Name (e.g. code_your_challenge_name):',
+            'validate': lambda text: len(text) > 0 or 'Must not be empty'
         },
         {
             'type': 'input',
             'name': 'label',
-            'message': 'Label (Challenge name):',
+            'message': 'Label (e.g Challenge name):',
+            'validate': lambda text: len(text) > 0 or 'Must not be empty'
         },
         {
             'type': 'input',
             'name': 'description',
             'message': 'Description:',
+            'validate': lambda text: len(text) > 0 or 'Must not be empty'
         },
         {
             'type': 'list',
@@ -32,36 +39,22 @@ def askUsual():
         },
 
     ]
-    return prompt(questions)
+    answers = prompt(questions)
+    if len(answers) == 0:
+        error('Cancelled.')
+        sys.exit()
+    return answers
 
 
 class Generator(object):
     """Generate challenge from template."""
 
     def java(self):
-        javaQuestions = [
-            {
-                'type': 'input',
-                'name': 'targetFile',
-                'message': 'Main file for the user (Main.java):',
-            },
-            {
-                'type': 'input',
-                'name': 'targetMethod',
-                'message': 'Main method for the user (String method(int a)):',
-            },
-        ]
         answers = askUsual()
-        answers.update(prompt(javaQuestions))
+        answers.update(askJavaQuestions())
 
-        info('Create folder')
-        folderName = answers['name'].strip()
-        os.mkdir(folderName)
-        info('Create descriptor')
-        file.writeFile(folderName + '/challenge.yml', common.template(answers, file.loadChallengeYaml('java')))
+        javaGen = LanguageGenerator(Java(), answers)
+        javaGen.create()
 
         return ''
 
-
-def python(self):
-    print('Hello Python')
