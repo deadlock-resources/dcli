@@ -13,8 +13,11 @@ public class Solve {
 
     public static void main(String[] args) {
         try {
-            // do some test with the user result
-            {{ targetFile }}.{{ targetMethod }};
+            if ({{ targetFile }}.{{ targetMethod }} != success.{{ targetFile }}.{{ targetMethod }}) {
+                // user result is not the same as expected
+                // add more test to be sure user has well implementer the method.
+                System.exit(1);
+            }
             // all test passed successfully
             Logger.logSuccess();
         } catch (RuntimeException e) {
