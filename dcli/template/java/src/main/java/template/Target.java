@@ -2,9 +2,9 @@ package template;
 
 import java.util.*;
 
-public class Fibonacci {
+public class {{ targetFile }} {
 
-    public static long fibonacci(long n) {
+    public static {{ targetMethod }} {
         return 0;
     }
 }

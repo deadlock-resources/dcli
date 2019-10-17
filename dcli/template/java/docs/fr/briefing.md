@@ -1,3 +1,3 @@
-# Challenge name
+# {{ label }}
 
 Briefing français.

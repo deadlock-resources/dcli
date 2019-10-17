@@ -26,5 +26,5 @@ setuptools.setup(
         'Jinja2',
         'colored'
     ],
-    python_requires='>=3.6',
+    python_requires='>=3.2',
 )
