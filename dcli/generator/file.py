@@ -8,10 +8,13 @@ def loadChallengeYaml(type):
     """
     return loadFile(type, '/challenge.yaml')
 
+def getPathFromTemplateFile(type, path):
+    resource_path = '/'.join(('template', type + '/' + path))
+    return pkg_resources.resource_filename('dcli', resource_path)
+
 
 def loadFile(type, path):
-    resource_path = '/'.join(('template', type + '/' + path))
-    return open(pkg_resources.resource_filename('dcli', resource_path)).read()
+    return open(getPathFromTemplateFile(type, path)).read()
 
 def writeFile(path, content):
     newFile = open(path, "w+")
