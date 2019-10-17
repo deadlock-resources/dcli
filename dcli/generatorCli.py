@@ -1,5 +1,7 @@
 import fire
+import os
 from PyInquirer import prompt, print_json
+from .logger import info
 from .generator import java, common, file
 
 
@@ -51,8 +53,14 @@ class Generator(object):
         ]
         answers = askUsual()
         answers.update(prompt(javaQuestions))
-        print(common.template(answers, file.loadChallengeYaml('java')))
-        return 'toast'
+
+        info('Create folder')
+        folderName = answers['name'].strip()
+        os.mkdir(folderName)
+        info('Create descriptor')
+        file.writeFile(folderName + '/challenge.yml', common.template(answers, file.loadChallengeYaml('java')))
+
+        return ''
 
 
 def python(self):

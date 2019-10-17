@@ -1,0 +1,14 @@
+version: 1.0
+name: code_toast
+label: label
+description: descjription je suis
+level: ewok
+type: CODING
+xp:
+  java: 1
+  programming: 1
+coding:
+  templateDirectory: 
+  successDirectory: 
+  target: Main.toast
+  editorMode: java
