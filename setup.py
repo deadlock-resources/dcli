@@ -23,7 +23,8 @@ setuptools.setup(
     install_requires=[
         'PyInquirer',
         'fire',
-        'Jinja2'
+        'Jinja2',
+        'colored'
     ],
     python_requires='>=3.6',
 )
