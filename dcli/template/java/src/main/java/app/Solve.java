@@ -15,9 +15,9 @@ public class Solve {
         try {
             // user result
             {{ targetFile }}.{{ targetMethod }};
-            // you solution result
+            // your solution result
             success.{{ targetFile }}.{{ targetMethod }};
-            // do different tests to be sure user has the good solution.
+            // you have to do different tests to be sure user has the good solution.
 
 
             // if all test passed successfully
