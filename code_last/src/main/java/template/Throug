@@ -1,0 +1,10 @@
+package template;
+
+import java.util.*;
+
+public class Throug {
+
+    public static void main(String[] args) {
+        return null;
+    }
+}
