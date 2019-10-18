@@ -7,7 +7,7 @@ APP_PATH = '/src/main/python/app'
 SOLVE_PATH = '/src/main/python/Solve.py'
 TEST_PATH = '/src/main/python/Test.py'
 
-TARGET_FILE = '__init__.py'
+TARGET_FILE = '__init__'
 
 class Python(Language):
     def __init__(self):

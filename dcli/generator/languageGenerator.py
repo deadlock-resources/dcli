@@ -70,7 +70,7 @@ class LanguageGenerator():
         writeFile(fileName, template(self._answers, loadFile(self._language.type, 'docs/fr/briefing.md')))
 
     def getTargetFilePath(self, path, file):
-        return self._root + path + '/' + file + '.' + self._language._extension
+        return self._root + path + '/' + file
 
     def getTargetFileName(self):
         if TARGET_FILE_FIELD in self._answers:

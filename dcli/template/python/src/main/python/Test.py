@@ -1,3 +1,3 @@
 if __name__ == "__main__":
-    from template import {{ targetMethod }}
-    {{ targetMethod }}
+    import template
+    template.{{ targetMethod }}

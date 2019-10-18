@@ -13,15 +13,18 @@ public class Solve {
 
     public static void main(String[] args) {
         try {
-            if ({{ targetFile }}.{{ targetMethod }} != success.{{ targetFile }}.{{ targetMethod }}) {
-                // user result is not the same as expected
-                // add more test to be sure user has well implementer the method.
-                System.exit(1);
-            }
-            // all test passed successfully
+            // user result
+            {{ targetFile }}.{{ targetMethod }};
+            // you solution result
+            success.{{ targetFile }}.{{ targetMethod }};
+            // do different tests to be sure user has the good solution.
+
+
+            // if all test passed successfully
             Logger.logSuccess();
         } catch (RuntimeException e) {
             Logger.logException(e);
+            // if something bad happened exit with error code
             System.exit(1);
         }
     }

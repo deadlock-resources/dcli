@@ -8,9 +8,12 @@ def jump():
 def paragraph(content):
     print(content)
 
+def prefix():
+    return attr('bold') + bg(208) + PREFIX + attr('reset') + ' ' + attr('bold')
+
 def error(msg):
-    print((PREFIX + '%s' + msg + '%s') % (fg(1), attr(0)))
+    print((prefix() + '%s' + msg + '%s') % (fg(1), attr(0)))
 
 def info(msg):
-    print(attr('bold') + bg(208) + PREFIX + attr('reset') + ' ' + attr('bold') + msg + attr('reset'))
+    print(prefix() + msg + attr('reset'))
 
