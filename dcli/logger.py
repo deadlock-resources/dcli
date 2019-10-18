@@ -6,7 +6,7 @@ def jump():
     print()
 
 def paragraph(content):
-    print(content)
+    print('\t' + content)
 
 def prefix():
     return attr('bold') + bg(208) + PREFIX + attr('reset') + ' ' + attr('bold')

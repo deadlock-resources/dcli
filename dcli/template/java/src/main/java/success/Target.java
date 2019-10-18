@@ -2,8 +2,8 @@ package success;
 
 public class {{ targetFile }} {
 
-    public static {{ targetMethod }} {
+    public static {{ targetMethodReturn }} {{ targetMethod }}({{ targetMethodArgs }}) {
         // write your own solution
-        return 0;
+        return null;
     }
 }

@@ -4,7 +4,7 @@ import fire
 import inquirer
 import subprocess
 
-from string import Template
+from .runner import Runner
 from .generatorCli import Generator
 from .logger import info
 
@@ -17,6 +17,7 @@ class Cli(object):
 
 def main():
   fire.Fire(Cli)
+  # fire.Fire(Runner)
 
 if __name__ == '__main__':
   main()

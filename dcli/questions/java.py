@@ -3,7 +3,7 @@ import os
 import sys
 from PyInquirer import prompt
 from ..logger import error
-from ..const import TARGET_FILE_FIELD, TARGET_METHOD_FIELD
+from ..const import TARGET_FILE_FIELD, TARGET_METHOD_FIELD, TARGET_METHOD_ARGS_FIELD, TARGET_METHOD_RETURN_FIELD
 
 def askJavaQuestions():
     javaQuestions = [
@@ -15,8 +15,18 @@ def askJavaQuestions():
         {
             'type': 'input',
             'name': TARGET_METHOD_FIELD,
-            'message': 'Main method for the user (e.g. String method(int a)):',
+            'message': 'Method for the user (e.g. methodName):',
         },
+        {
+            'type': 'input',
+            'name': TARGET_METHOD_ARGS_FIELD,
+            'message': 'Args list for the previous method, what the user will receive (e.g. int amount, double quantity):',
+        },
+        {
+            'type': 'input',
+            'name': TARGET_METHOD_RETURN_FIELD,
+            'message': 'Return type of the previous method, what the user will have to return (e.g. String):',
+        }
     ]
     answers = prompt(javaQuestions)
     if len(answers) == 0:

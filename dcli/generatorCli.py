@@ -6,7 +6,7 @@ from PyInquirer import prompt, print_json
 from .questions.java import askJavaQuestions
 from .questions.python import askPythonQuestions
 
-from .logger import info, error
+from .logger import info, error, paragraph
 
 from .generator import common, file
 from .generator.languageGenerator import LanguageGenerator
@@ -52,6 +52,13 @@ def askUsual():
     return answers
 
 
+def commonEndingMessage(answers):
+    info('You now have to complete many //TODO within the generated mission.')
+    info('Then you will be able to test your mission with:')
+    paragraph('dcli run ./' + answers['name'])
+    paragraph('dcli solve ./' + answers['name'])
+
+
 class Generator(object):
     """Generate challenge from template."""
 
@@ -63,6 +70,8 @@ class Generator(object):
         javaGen = LanguageGenerator(Java(), answers)
         javaGen.create()
 
+        commonEndingMessage(answers)
+
         return ''
 
     def python(self):
@@ -72,6 +81,8 @@ class Generator(object):
 
         gen = LanguageGenerator(Python(), answers)
         gen.create()
+
+        commonEndingMessage(answers)
 
         return ''
 
