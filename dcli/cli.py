@@ -7,6 +7,9 @@ import subprocess
 from .generatorCli import Generator
 from .logger import info
 from .runner import run, solve
+from .spinCursor import SpinCursor
+import time
+
 
 def main():
   fire.Fire({
@@ -14,6 +17,7 @@ def main():
     'solve': solve,
     'run': run
   })
+
 
 if __name__ == '__main__':
   main()

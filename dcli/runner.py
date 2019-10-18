@@ -1,5 +1,13 @@
-from .logger import info
 import os
+from .spinCursor import SpinCursor
+from .logger import info
+
+def build(path):
+    spin = SpinCursor('', speed=5, maxspin=50)
+    info('Building mission..')
+    spin.start()
+    os.system('docker build ' + path + ' -q -t c')
+    spin.stop()
 
 def run(path='.'):
     '''
@@ -8,10 +16,9 @@ def run(path='.'):
 
     :param path: path of your mission. Default is .
     '''
-    info('Building mission..')
-    os.system('docker build ' + path + ' -q -t c')
+    build(path) 
     info('Running mission..')
-    os.system('docker run c run')
+    os.system('docker run c Test')
     return ''
 
 
@@ -22,8 +29,7 @@ def solve(path='.'):
 
     :param path: path of your mission. Default is .
     '''
-    info('Building mission..')
-    os.system('docker build ' + path + ' -q -t c')
-    info('Running mission..')
+    build(path)
+    info('Solving mission..')
     os.system('docker run c Solve')
     return ''

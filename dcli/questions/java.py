@@ -10,12 +10,12 @@ def askJavaQuestions():
         {
             'type': 'input',
             'name': TARGET_FILE_FIELD,
-            'message': 'Main file for the user (e.g. Main):',
+            'message': 'Main file for the user, entry file for the user (e.g. Main) without extension:',
         },
         {
             'type': 'input',
             'name': TARGET_METHOD_FIELD,
-            'message': 'Method for the user (e.g. methodName):',
+            'message': 'Method for the user, entry point for the user (e.g. methodName):',
         },
         {
             'type': 'input',
