@@ -42,7 +42,7 @@ class Language():
 
     @property
     def targetFile(self):
-        return self._targetDefaultFile
+        return self._targetDefaultFile + '.' + self.extension
 
     def getPathToTemplateTargetFile(self):
         return self.templateDirPath + '/' + self.targetFile
