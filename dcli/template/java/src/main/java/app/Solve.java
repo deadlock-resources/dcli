@@ -14,10 +14,11 @@ public class Solve {
     public static void main(String[] args) {
         try {
             // user result
-            {{ targetFile }}.{{ targetMethod }};
+            {{ targetMethodReturn }} userResult = {{ targetFile }}.{{ targetMethod }}(/* //TODO fill it with your own args */);
             // your solution result
-            success.{{ targetFile }}.{{ targetMethod }};
-            // you have to do different tests to be sure user has the good solution.
+            {{ targetMethodReturn }} expectedResult = success.{{ targetFile }}.{{ targetMethod }}(/* //TODO fill it with your own args */);
+            //TODO you have to do different tests to be sure user has the good solution.
+            // comparing userResult and expectedResult
 
 
             // if all test passed successfully

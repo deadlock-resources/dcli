@@ -1,5 +1,9 @@
 package app;
 
+/**
+ * Simple logger class
+ * You can use it to log useful information for the user.
+ */
 public class Logger {
 
     public static void log(String message) {
@@ -12,14 +16,6 @@ public class Logger {
         System.out.println("----------------------------------------------------");
         System.out.println("Everything went well!");
         System.out.println("----------------------------------------------------");
-    }
-
-    public static void logNoMatch(Long... args) {
-        System.err.println("----------------------------------------------------");
-        System.err.println("The result does not match the expected value for n = " + args[0]);
-        System.err.println("expected: " + args[1]);
-        System.err.println("your result: " + args[2]);
-        System.err.println("----------------------------------------------------");
     }
 
     public static void logException(Exception e) {

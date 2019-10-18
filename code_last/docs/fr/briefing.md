@@ -1,3 +1,0 @@
-# of us
-
-Briefing français.

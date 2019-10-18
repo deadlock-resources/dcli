@@ -4,7 +4,7 @@ import java.util.*;
 
 public class {{ targetFile }} {
 
-    public static {{ targetMethod }} {
-        return 0;
+    public static {{ targetMethodReturn }} {{ targetMethod }}({{ targetMethodArgs }}) {
+        return null;
     }
 }
