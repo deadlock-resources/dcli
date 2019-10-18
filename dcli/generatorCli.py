@@ -26,7 +26,7 @@ def askUsual():
         {
             'type': 'input',
             'name': 'label',
-            'message': 'Label (e.g Challenge name):',
+            'message': 'Label, short description (e.g. Challenge to learn building rockets):',
             'validate': lambda text: len(text) > 0 or 'Must not be empty.'
         },
         {
