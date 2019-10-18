@@ -1,7 +1,12 @@
-### Generate Java mission
+## Generate mission
 ```bash
-dcli gen java
+dcli gen (java|python)
 ```
+
+## Todo
+* Add Kotlin generator language
+* Add Cpp generator language
+* Add Haskell generator language
 
 ## Install from sources
 ```bash
@@ -12,3 +17,4 @@ pip3 install .
 ```bash
 python setup.py sdist
 ```
+
