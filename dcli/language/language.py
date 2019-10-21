@@ -1,7 +1,16 @@
 
 class Language():
 
-    def __init__(self, type, templateDirPath, successDirPath, appDirPath, solvePath, testPath, targetDefaultFile, extension):
+    def __init__(self,
+                type,
+                templateDirPath,
+                successDirPath,
+                appDirPath,
+                solvePath,
+                testPath,
+                targetDefaultFile,
+                extension,
+                assets = []):
         """ Default value for Language class """
         self._type = type
         self._templateDirPath = templateDirPath
@@ -11,6 +20,11 @@ class Language():
         self._testPath = testPath
         self._targetDefaultFile = targetDefaultFile
         self._extension = extension
+        self._assets = assets
+
+    @property
+    def assets(self):
+        return self._assets
 
     @property
     def extension(self):

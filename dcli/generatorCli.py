@@ -71,8 +71,7 @@ class Generator(object):
         javaGen.create()
 
         commonEndingMessage(answers)
-
-        return ''
+        pass
 
     def python(self):
         """ Generates a basic Python challenge """
@@ -83,6 +82,5 @@ class Generator(object):
         gen.create()
 
         commonEndingMessage(answers)
-
-        return ''
+        pass
 

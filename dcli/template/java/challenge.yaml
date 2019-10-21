@@ -8,7 +8,7 @@ xp:
   java: 1
   programming: 1
 coding:
-  templateDirectory: {{ templateDirectory }}
-  successDirectory: {{ successDirectory }}
-  target: {{ targetFile }}
+  templateDirectory: src/main/java/template
+  successDirectory: src/main/java/success
+  target: {{ targetFile }}.java
   editorMode: java
