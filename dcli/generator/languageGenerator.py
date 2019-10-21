@@ -1,6 +1,6 @@
 import os
 from .common import template
-from .file import loadFile, writeFile, getPathFromTemplateFile
+from .file import loadFile, writeFile, getPathFromTemplateDir
 from ..const import TARGET_FILE_FIELD, TARGET_METHOD_FIELD
 from ..logger import info, error, jump
 from colored import fg, attr
@@ -18,23 +18,34 @@ class LanguageGenerator():
         info('Creating ' + self._language.type + ' challenge in ' + fg(208) + './' + self._root + '.')
         jump()
         self.createFolders()
+        self.generateChallengeYaml()
         self.generateTemplateFile()
         self.generateSuccessFile()
         self.generateSolveFile()
         self.generateTestFile()
         self.generateDocs()
         self.copyCommonFiles()
+        self.copyAssets()
 
         info('Challenge ' + self._root + ' created with success!')
+    
+    def copyAssets(self):
+        for asset in self._language.assets:
+            self.templateAndCopyFile(asset)
 
+    def generateChallengeYaml(self):
+        self.templateAndCopyFile('/challenge.yaml')
 
     def copyCommonFiles(self):
-        self.copyCommonFile('Dockerfile')
-        self.copyCommonFile('run.sh')
-        self.copyCommonFile('thumbnail.png')
+        self.copyFile('Dockerfile')
+        self.copyFile('run.sh')
+        self.copyFile('thumbnail.png')
 
-    def copyCommonFile(self, file):
-        copyfile(getPathFromTemplateFile(self._language.type, file), self._root + '/' + file)
+    def templateAndCopyFile(self, file):
+        writeFile(self._root + '/' + file, template(self._answers, loadFile(self._language.type, file)))
+
+    def copyFile(self, file):
+        copyfile(getPathFromTemplateDir(self._language.type, file), self._root + '/' + file)
 
 
     def createFolders(self):
@@ -63,11 +74,8 @@ class LanguageGenerator():
         writeFile(fileName, template(self._answers, loadFile(self._language.type, self._language.testPath)))
 
     def generateDocs(self):
-        fileName = self._root + '/docs/briefing.md'
-        writeFile(fileName, template(self._answers, loadFile(self._language.type, 'docs/briefing.md')))
-
-        fileName = self._root + '/docs/fr/briefing.md'
-        writeFile(fileName, template(self._answers, loadFile(self._language.type, 'docs/fr/briefing.md')))
+        self.templateAndCopyFile('/docs/briefing.md')
+        self.templateAndCopyFile('/docs/fr/briefing.md')
 
     def getTargetFilePath(self, path, file):
         return self._root + path + '/' + file + '.' + self._language.extension

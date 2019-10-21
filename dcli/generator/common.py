@@ -1,9 +1,5 @@
 from jinja2 import Template
-from .file import writeFile, loadChallengeYaml
-
-
-def generateTemplate(type, root, answers):
-    writeFile(root + '/challenge.yml', template(answers, loadChallengeYaml(type)))
+from .file import writeFile
 
 
 def template(context, template):

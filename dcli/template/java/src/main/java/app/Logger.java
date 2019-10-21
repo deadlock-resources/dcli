@@ -1,10 +1,28 @@
 package app;
 
+import java.util.Arrays;
+
 /**
  * Simple logger class
  * You can use it to log useful information for the user.
  */
 public class Logger {
+
+    public static void logFail({{ targetMethodReturn }} expected, {{ targetMethodReturn }} received) {
+        System.out.println("----------------------------------------------------");
+        System.err.println("> {{ targetMethod }}() = " + received);
+        System.err.println("> Expected = " + expected);
+        System.err.println("Received value is not correct.");
+        System.err.println("Try again.");
+    }
+
+    public static void logFail({{ targetMethodReturn }} expected, {{ targetMethodReturn }} received, Object... input) {
+        System.out.println("----------------------------------------------------");
+        System.err.println("> {{ targetMethod }}(" + Arrays.toString(input) + ") = " + received);
+        System.err.println("> Expected = " + expected);
+        System.err.println("Received value is not correct.");
+        System.err.println("Try again.");
+    }
 
     public static void log(String message) {
         System.out.println("----------------------------------------------------");
