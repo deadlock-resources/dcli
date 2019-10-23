@@ -21,6 +21,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     scripts=['scripts/dcli'],
     install_requires=[
+        'inquirer',
         'PyInquirer',
         'fire',
         'Jinja2',
