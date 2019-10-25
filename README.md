@@ -5,6 +5,8 @@ dcli --help
 
 ## Install from sources
 ```bash
+git clone https://github.com/deadlock-resources/dcli.git
+cd dcli/
 pip3 install .
 ```
 
