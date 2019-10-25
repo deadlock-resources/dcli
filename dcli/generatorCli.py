@@ -40,7 +40,7 @@ def askUsual():
             'name': 'level',
             'message': 'Level (easiest to hardest):',
             'choices': [
-                'jajarbinks', 'ewok', 'padawan', 'jedi', 'master'
+                'jarjarbinks', 'ewok', 'padawan', 'jedi', 'master'
             ],
         },
 
