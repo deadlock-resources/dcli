@@ -1,0 +1,14 @@
+version: 1.0
+name: {{ name }}
+label: {{ label }}
+description: {{ description }}
+level: {{ level }}
+type: CODING
+xp:
+  cpp: 1
+  programming: 1
+coding:
+  templateDirectory: src/template
+  successDirectory: src/success
+  target: Target.cpp
+  editorMode: c_cpp

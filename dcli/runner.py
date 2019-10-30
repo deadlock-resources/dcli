@@ -1,9 +1,13 @@
 import os
+import sys
 from .spinCursor import SpinCursor
-from .logger import info
+from .logger import info, error
 
 def build(path):
     spin = SpinCursor('', speed=5, maxspin=50)
+    if (os.path.exists(path) == False):
+        error('Directory does not exist ' + path)
+        sys.exit()
     info('Building mission..')
     spin.start()
     os.system('docker build ' + path + ' -q -t c')

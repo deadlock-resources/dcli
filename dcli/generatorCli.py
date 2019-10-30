@@ -4,6 +4,7 @@ import sys
 from PyInquirer import prompt, print_json
 
 from .questions.java import askJavaQuestions
+from .questions.cpp import askCppQuestions 
 from .questions.python import askPythonQuestions
 
 from .logger import info, error, paragraph
@@ -13,6 +14,7 @@ from .generator.languageGenerator import LanguageGenerator
 
 from .language.java import Java
 from .language.python import Python
+from .language.cpp import Cpp 
 
 
 def askUsual():
@@ -61,6 +63,17 @@ def commonEndingMessage(answers):
 
 class Generator(object):
     """Generate challenge from template."""
+
+    def cpp(self):
+        """ Generates a basic Java challenge """
+        answers = askUsual()
+        answers.update(askCppQuestions())
+
+        cppGen = LanguageGenerator(Cpp(), answers)
+        cppGen.create()
+
+        commonEndingMessage(answers)
+        pass
 
     def java(self):
         """ Generates a basic Java challenge """
