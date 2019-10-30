@@ -12,7 +12,7 @@ pip3 install .
 
 ## Generate mission
 ```bash
-dcli gen (java|python)
+dcli gen (java|python|cpp)
 ```
 ## Execute mission
 ```bash
@@ -22,7 +22,6 @@ dcli run ./mission_path
 
 ## Todo
 * Add Kotlin generator language
-* Add Cpp generator language
 * Add Haskell generator language
 
 
