@@ -22,7 +22,7 @@ class LanguageGenerator():
         self.generateTemplateFile()
         self.generateSuccessFile()
         self.generateSolveFile()
-        self.generateTestFile()
+        self.generateRunFile()
         self.generateDocs()
         self.copyCommonFiles()
         self.copyAssets()
@@ -69,9 +69,9 @@ class LanguageGenerator():
         writeFile(fileName, template(self._answers, loadFile(self._language.type, self._language.solvePath)))
 
 
-    def generateTestFile(self):
-        fileName = self._root + self._language.testPath
-        writeFile(fileName, template(self._answers, loadFile(self._language.type, self._language.testPath)))
+    def generateRunFile(self):
+        fileName = self._root + self._language.runPath
+        writeFile(fileName, template(self._answers, loadFile(self._language.type, self._language.runPath)))
 
     def generateDocs(self):
         self.templateAndCopyFile('/docs/briefing.md')

@@ -5,7 +5,7 @@ SUCCESS_PATH = '/src/main/java/success'
 APP_PATH = '/src/main/java/app'
 
 SOLVE_PATH = '/src/main/java/app/Solve.java'
-TEST_PATH = '/src/main/java/app/Test.java'
+RUN_PATH = '/src/main/java/app/Run.java'
 
 ASSETS = ['/src/main/java/app/Logger.java']
 
@@ -19,7 +19,7 @@ class Java(Language):
             SUCCESS_PATH,
             APP_PATH,
             SOLVE_PATH,
-            TEST_PATH,
+            RUN_PATH,
             TARGET_FILE,
             'java',
             ASSETS

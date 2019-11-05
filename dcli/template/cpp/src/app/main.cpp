@@ -20,6 +20,7 @@ int main(int argc, char *argv[]) {
         {{ targetMethodReturn }} result = target.{{ targetMethod }}({% if targetMethodArgs != "" %}/* //TODO fill it with your own args */{% endif %});
 
         if (strcmp(argv[1], "Solve") == 0) {
+            // User clicked on `Submit` button, we must verify it code.
             {{ targetMethodReturn }} expected = success_{{ targetMethod }}({% if targetMethodArgs != "" %}/* //TODO fill it with your own args */{% endif %});
             Logger::log(result, expected);
             if (expected == result) {

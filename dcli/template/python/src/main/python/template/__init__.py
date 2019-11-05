@@ -1,2 +1,2 @@
 def {{ targetMethod }}:
-    return n
+    pass

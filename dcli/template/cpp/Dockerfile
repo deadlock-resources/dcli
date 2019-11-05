@@ -1,4 +1,5 @@
-FROM gcc:latest
+# gcc version, may be change
+FROM gcc:9.2.0
 WORKDIR /usr/src/app
 COPY src/* ./
 COPY run.sh ./

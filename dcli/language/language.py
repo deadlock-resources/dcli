@@ -7,7 +7,7 @@ class Language():
                 successDirPath,
                 appDirPath,
                 solvePath,
-                testPath,
+                runPath,
                 targetDefaultFile,
                 extension,
                 assets = []):
@@ -17,7 +17,7 @@ class Language():
         self._successDirPath = successDirPath
         self._appDirPath = appDirPath
         self._solvePath = solvePath
-        self._testPath = testPath
+        self._runPath = runPath
         self._targetDefaultFile = targetDefaultFile
         self._extension = extension
         self._assets = assets
@@ -51,8 +51,8 @@ class Language():
         return self._solvePath
 
     @property
-    def testPath(self):
-        return self._testPath
+    def runPath(self):
+        return self._runPath
 
     @property
     def targetFile(self):

@@ -5,7 +5,7 @@ SUCCESS_PATH = '/src/main/python/success'
 APP_PATH = '/src/main/python/app'
 
 SOLVE_PATH = '/src/main/python/Solve.py'
-TEST_PATH = '/src/main/python/Test.py'
+RUN_PATH = '/src/main/python/Run.py'
 
 TARGET_FILE = '__init__'
 
@@ -17,7 +17,7 @@ class Python(Language):
             SUCCESS_PATH,
             APP_PATH,
             SOLVE_PATH,
-            TEST_PATH,
+            RUN_PATH,
             TARGET_FILE,
             'py'
         )
