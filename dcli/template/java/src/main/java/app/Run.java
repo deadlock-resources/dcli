@@ -2,7 +2,7 @@ package app;
 
 import template.{{ targetFile }};
 
-public class Test {
+public class Run {
 
     public static void main(String[] args) {
         try {

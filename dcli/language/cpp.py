@@ -5,7 +5,7 @@ SUCCESS_PATH = '/src/success'
 APP_PATH = '/src/app'
 
 SOLVE_PATH = '/src/app/main.cpp'
-TEST_PATH = '/src/app/main.cpp'
+RUN_PATH = '/src/app/main.cpp'
 
 ASSETS = ['src/Makefile', 'src/template/Target.h', 'src/app/Logger.cpp', 'src/app/Logger.h']
 
@@ -19,7 +19,7 @@ class Cpp(Language):
             SUCCESS_PATH,
             APP_PATH,
             SOLVE_PATH,
-            TEST_PATH,
+            RUN_PATH,
             TARGET_FILE,
             'cpp',
             ASSETS

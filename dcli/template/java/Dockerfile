@@ -1,3 +1,4 @@
+# java version, may be change
 FROM openjdk:8-jdk-slim
 WORKDIR /
 COPY src src

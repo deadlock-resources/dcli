@@ -22,7 +22,7 @@ def run(path='.'):
     '''
     build(path) 
     info('Running mission..')
-    os.system('docker run c Test')
+    os.system('docker run c Run')
     return ''
 
 

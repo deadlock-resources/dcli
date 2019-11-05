@@ -5,6 +5,6 @@ import java.util.*;
 public class {{ targetFile }} {
 
     public static {{ targetMethodReturn }} {{ targetMethod }}({{ targetMethodArgs }}) {
-        return 0;
+        return null;
     }
 }
