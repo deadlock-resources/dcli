@@ -28,13 +28,13 @@ def askUsual():
         {
             'type': 'input',
             'name': 'label',
-            'message': 'Label, short description (e.g. Challenge to learn building rockets):',
+            'message': 'Title (e.g. Building rockets)',
             'validate': lambda text: len(text) > 0 or 'Must not be empty.'
         },
         {
             'type': 'input',
             'name': 'description',
-            'message': 'Description:',
+            'message': 'Description (e.g. Challenge to learn building rockets and save the world!):',
             'validate': lambda text: len(text) > 0 or 'Must not be empty.'
         },
         {

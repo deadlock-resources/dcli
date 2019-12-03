@@ -8,6 +8,15 @@ import java.util.Arrays;
  */
 public class Logger {
 
+    {%if targetMethodReturn == "" %}
+    public static void logFail() {
+        System.out.println("----------------------------------------------------");
+        System.err.println("> {{ targetMethod }}() went wrong.");
+        System.err.println("Try again.");
+    }
+
+
+    {% else %}
     public static void logFail({{ targetMethodReturn }} expected, {{ targetMethodReturn }} received) {
         System.out.println("----------------------------------------------------");
         System.err.println("> {{ targetMethod }}() = " + received);
@@ -23,6 +32,7 @@ public class Logger {
         System.err.println("Received value is not correct.");
         System.err.println("Try again.");
     }
+    {% endif %}
 
     public static void log(String message) {
         System.out.println("----------------------------------------------------");
