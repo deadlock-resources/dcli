@@ -1,9 +1,15 @@
 package success;
 
+import java.util.*;
+
 public class {{ targetFile }} {
 
-    public static {{ targetMethodReturn }} {{ targetMethod }}({{ targetMethodArgs }}) {
+    public static void main() {
+
+    }
+
+    public static {% if targetMethodReturn == "" %}void{% else %}{{ targetMethodReturn }}{% endif %} {{ targetMethod }}({{ targetMethodArgs }}) {
         //TODO write your own solution
-        return null;
+        {% if targetMethodReturn != "" %}return null;{% endif %}
     }
 }

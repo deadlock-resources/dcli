@@ -13,6 +13,13 @@ public class Solve {
 
     public static void main(String[] args) {
         try {
+            {%if targetMethodReturn == "" %}
+            // call both method, user and success, do your own test to compare user code to the success one
+            {{ targetFile }}.{{ targetMethod }}({% if targetMethodArgs != "" %}/* //TODO fill it with your own args */{% endif %});
+            success.{{ targetFile }}.{{ targetMethod }}({% if targetMethodArgs != "" %}/* //TODO fill it with your own args */{% endif %});
+            //TODO call Logger.logSuccess(); if everything is fine
+            //TODO call System.exit() is something went wrong and log it with Logger.logFail().
+            {% else %}
             // user result
             {{ targetMethodReturn }} userResult = {{ targetFile }}.{{ targetMethod }}({% if targetMethodArgs != "" %}/* //TODO fill it with your own args */{% endif %});
             // your solution result
@@ -27,6 +34,7 @@ public class Solve {
                 Logger.logFail(expectedResult, userResult{% if targetMethodArgs != "" %}, /* //TODO fill it with your own args */{% endif %});
                 System.exit(1);
             }
+            {% endif %}
         } catch (RuntimeException e) {
             Logger.logException(e);
             // if something bad happened exit with error code
