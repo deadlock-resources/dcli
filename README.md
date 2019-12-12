@@ -9,11 +9,16 @@ git clone https://github.com/deadlock-resources/dcli.git
 cd dcli/
 pip3 install .
 ```
+## Get dcli version
+```bash
+dcli version
+```
 
 ## Generate mission
 ```bash
-dcli gen (java|python|cpp)
+dcli gen (java|python|cpp|c)
 ```
+
 ## Execute mission
 ```bash
 dcli solve ./mission_path
