@@ -14,7 +14,7 @@ setuptools.setup(
     url="https://github.com/Deadlock/cli-tools",
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
     ],
     include_package_data=True,
