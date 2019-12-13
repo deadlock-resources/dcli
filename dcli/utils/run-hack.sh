@@ -23,7 +23,9 @@ if (($COUNT > 0)); then
     docker rm $CONTAINER_NAME -f
 fi
 
+echo "> building challenge.."
 docker build $(pwd) -q -t hack
+echo "> starting challenge.."
 docker run -v $DEADLOCK_TOKEN_TMP:$challenge_hacking_token_path -d -p $PORT:80 --name $CONTAINER_NAME hack 
 echo "-------------------------------------------------------------------------------------------------------------------------"
 echo "> hack challenge is ready under http://localhost:$PORT$challenge_hacking_index"

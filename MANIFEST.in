@@ -1,1 +1,2 @@
 recursive-include dcli/template *
+recursive-include dcli/utils *
