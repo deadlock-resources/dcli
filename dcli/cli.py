@@ -11,7 +11,7 @@ from .spinCursor import SpinCursor
 import time
 
 def version():
-  return pkg_resources.require("deadlockcli")[0].version
+  return pkg_resources.require("deadlock-cli")[0].version
 
 def main():
   fire.Fire({

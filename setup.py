@@ -4,14 +4,14 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="deadlockcli",
-    version="0.0.8",
+    name="deadlock-cli",
+    version="0.0.81",
     author="Deadlock",
     author_email="apuret@takima.fr",
     description="CLI tools for Deadlock challenges.",
-    long_description="Tools to create, run your Deadlock challenges",
+    long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/Deadlock/cli-tools",
+    url="https://github.com/deadlock-resources/dcli",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
