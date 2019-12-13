@@ -25,7 +25,10 @@ setuptools.setup(
         'PyInquirer',
         'fire',
         'Jinja2',
-        'colored'
+        'colored',
+        'Flask',
+        'request',
+        'jsonify'
     ],
     python_requires='>=3.2',
 )

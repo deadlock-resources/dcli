@@ -1,7 +1,10 @@
 import pkg_resources
 import yaml
 import io
+import tempfile
 
+def createTmpFolder():
+    return tempfile.mkdtemp()
 
 def getPathFromRoot(path):
     return pkg_resources.resource_filename('dcli', '/' + path)
