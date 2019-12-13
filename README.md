@@ -1,3 +1,5 @@
+Tools to create, run your Deadlock challenges
+
 ## Help
 ```bash
 dcli --help
