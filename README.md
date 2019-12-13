@@ -1,9 +1,12 @@
-Tools to create, run your Deadlock challenges
+Tools to create, run your Deadlock challenges.
 
 ## Help
 ```bash
 dcli --help
 ```
+
+[Documentation about challenges.](https://deadlock-resources.github.io/challenge-documentation)
+
 
 ## Install from sources
 ```bash
