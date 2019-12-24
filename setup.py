@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="deadlock-cli",
-    version="0.0.9",
+    version="0.0.95",
     author="Slayug",
     author_email="apuret@takima.fr",
     description="CLI tools for Deadlock challenges.",
