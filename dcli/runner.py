@@ -6,7 +6,7 @@ from multiprocessing import Process
 from .model.missionUserScore import MissionUserScore
 from .generator.file import getPathFromRoot, loadYaml, createTmpFolder, writeFile
 from .spinCursor import SpinCursor
-from .logger import info, error
+from .logger import info, error, jump
 from .const import CHALLENGE_YAML, API_PORT, MISSION_USER_SCORE_ENDPOINT, MISSION_USER_SCORE_FILENAME, API_ADRESS
 from .scoreController import startScoreResource
 
@@ -14,10 +14,14 @@ def build(path):
     spin = SpinCursor('', speed=5, maxspin=50)
     if (os.path.exists(path) == False):
         error('Directory does not exist ' + path)
-        sys.exit()
+        sys.exit(1)
     info('Building mission..')
     spin.start()
-    os.system('docker build ' + path + ' -q -t c')
+    if (os.system('docker build ' + path + ' -q -t c') != 0):
+        spin.stop()
+        jump()
+        error('Cannot build Docker image..')
+        sys.exit(1)
     spin.stop()
 
 def run(path='.'):
@@ -25,7 +29,7 @@ def run(path='.'):
     Run the mission under given path.
     As if user clicked on Run button.
 
-    :param path: path of your mission. Default is .
+    :param path: path of your mission. Default: .
     '''
     yaml = loadYaml(path + '/' + CHALLENGE_YAML)
     if 'coding' in yaml:
@@ -81,7 +85,7 @@ def solve(path='.'):
     Run Solve step for the mission under given path.
     As if user clicked on Submit button.
 
-    :param path: path of your mission. Default is .
+    :param path: path of your mission. Default: .
     '''
     build(path)
     yaml = loadYaml(path + '/' + CHALLENGE_YAML)
