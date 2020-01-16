@@ -7,13 +7,15 @@ import unicodedata
 class SpinCursor(threading.Thread):
     """ A console spin cursor class """
     
-    def __init__(self, msg='', maxspin=0, minspin=10, speed=5):
+    def __init__(self, msg='', maxspin=0, minspin=10, speed=5, longTimeAfter=5):
         # Count of a spin
         self.count = 0
         self.out = sys.stdout
         self.flag = False
         self.max = maxspin
         self.min = minspin
+        self.since = 0
+        self.longTimeAfter = longTimeAfter
         # Any message to print first ?
         self.msg = msg
         # Complete printed string
@@ -34,11 +36,19 @@ class SpinCursor(threading.Thread):
 
         for x in self.spinchars:
             self.string = self.msg + "...\t" + x + "\r"
+            if (time.time() - self.since > self.longTimeAfter):
+                if (time.time() - self.since > self.longTimeAfter * 6):
+                    self.string = '🐌🐌 Internet seems to be very slow..' + self.string
+                elif (time.time() - self.since > self.longTimeAfter * 4):
+                    self.string = '🐌 Internet seems to be slow..' + self.string
+                else:
+                    self.string = 'First time may take time.' + self.string
             self.out.write(self.string)
             self.out.flush()
             time.sleep(self.waittime)
 
     def run(self):
+        self.since = time.time()
         while (not self.flag) and ((self.count<self.min) or (self.count<self.max)):
             self.spin()
             self.count += 1
