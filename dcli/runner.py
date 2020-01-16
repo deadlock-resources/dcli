@@ -10,17 +10,21 @@ from .logger import info, error, jump
 from .const import CHALLENGE_YAML, API_PORT, MISSION_USER_SCORE_ENDPOINT, MISSION_USER_SCORE_FILENAME, API_ADRESS
 from .scoreController import startScoreResource
 
-def build(path):
-    spin = SpinCursor('', speed=5, maxspin=50)
+def build(tag, path):
+    spin = SpinCursor('', speed=5, maxspin=100000)
     if (os.path.exists(path) == False):
         error('Directory does not exist ' + path)
         sys.exit(1)
-    info('Building mission..')
+    info('🔨 Building mission..')
     spin.start()
-    if (os.system('docker build ' + path + ' -q -t c') != 0):
+    exitCode = os.system(f'docker build {path} -q -t {tag}');
+    if (exitCode != 0):
         spin.stop()
         jump()
-        error('Cannot build Docker image..')
+        if (exitCode == 2):
+            error('cancel')
+        else:
+            error('Cannot build Docker image..')
         sys.exit(1)
     spin.stop()
 
@@ -40,17 +44,17 @@ def run(path='.'):
         error('Challenge type not supported, verify your challenge.yaml')
 
 def runCode(path='.'):
-    build(path) 
-    info('Running mission..')
-    os.system('docker run c Run')
+    tag = uuid.uuid4()
+    build(tag, path) 
+    info('🚀 Running mission..')
+    os.system(f'docker run {tag} Run')
     pass
 
 def runHack(path='.'):
-    runHackScriptPath = getPathFromRoot('utils/run-hack.sh')
-    os.system(runHackScriptPath)
+    os.system(getPathFromRoot('utils/run-hack.sh'))
 
 
-def solveScore(path='.'):
+def solveScore(tag, path='.'):
     '''
     Run Solve step for the mission under given path.
     As if user clicked on Submit button.
@@ -71,13 +75,13 @@ def solveScore(path='.'):
     writeFile(tmpPathFile, missionUserScoreJson)
 
     info('Starting mission score..')
-    os.system(f'docker run --network="host" -v {tmpPathFile}:/tmp/{MISSION_USER_SCORE_FILENAME} c Solve')
+    os.system(f'docker run --network="host" -v {tmpPathFile}:/tmp/{MISSION_USER_SCORE_FILENAME} {tag} Solve')
     httpServerProcess.terminate()
 
 
-def solveCode(path='.'):
-    info('Solving mission..')
-    os.system('docker run c Solve')
+def solveCode(tag, path='.', ):
+    info('🚀 Solving mission..')
+    os.system(f'docker run {tag} Solve')
     pass
 
 def solve(path='.'):
@@ -87,13 +91,14 @@ def solve(path='.'):
 
     :param path: path of your mission. Default: .
     '''
-    build(path)
+    tag = uuid.uuid4()
+    build(tag, path)
     yaml = loadYaml(path + '/' + CHALLENGE_YAML)
     if 'coding' in yaml:
         if 'score' in yaml['coding']:
-            solveScore(path)
+            solveScore(tag, path)
         else:
-            solveCode(path)
+            solveCode(tag, path)
     else:
         error('Challenge type not supported for solve method.')
 
