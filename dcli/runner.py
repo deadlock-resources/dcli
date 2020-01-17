@@ -17,16 +17,24 @@ def build(tag, path):
         sys.exit(1)
     info('🔨 Building mission..')
     spin.start()
-    exitCode = os.system(f'docker build {path} -q -t {tag}');
+    exitCode = 0
+    if (os.path.exists(f'{path}/build.sh')):
+        exitCode = os.system(f'{path}/build.sh')
+        exitIfError(exitCode, 'Cannot exec build.sh file')
+    info('🐳 Building Docker image')
+    exitCode += os.system(f'docker build {path} -q -t {tag}');
+    exitIfError(exitCode, 'Cannot build Docker image..')
+    spin.stop()
+
+def exitIfError(exitCode, message):
     if (exitCode != 0):
         spin.stop()
         jump()
         if (exitCode == 2):
             error('cancel')
         else:
-            error('Cannot build Docker image..')
+            error(message)
         sys.exit(1)
-    spin.stop()
 
 def run(path='.'):
     '''
