@@ -11,6 +11,7 @@ def askJavaQuestions():
             'type': 'input',
             'name': TARGET_FILE_FIELD,
             'message': 'Main file for the user, (e.g. MainFile) without extension:',
+            'validate': lambda text: len(text) > 0 or 'Must not be empty.'
         },
         {
             'type': 'input',

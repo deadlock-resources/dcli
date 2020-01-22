@@ -57,7 +57,7 @@ def askUsual():
 
 
 def commonEndingMessage(answers):
-    info('You now have to complete many //TODO within the generated mission.')
+    info('You have to complete many //TODO within the generated mission.')
     info('Then you will be able to test your mission with:')
     paragraph('dcli run ./' + answers['name'])
     paragraph('dcli solve ./' + answers['name'])
@@ -82,11 +82,24 @@ class Generator(object):
         answers = askUsual()
         answers.update(askJavaQuestions())
 
-        javaGen = LanguageGenerator(Java(), answers)
+        language = Java()
+        self.addTypeIfNecessary(self.parseTargetMethodArgs(answers['targetMethodArgs']), language)
+        
+        javaGen = LanguageGenerator(language, answers)
         javaGen.create()
 
         commonEndingMessage(answers)
         pass
+
+    def addTypeIfNecessary(self, argTypes, language):
+        commonTypes = ['int', 'double', 'float', 'String', 'long']
+        for argType in argTypes:
+            if argType not in commonTypes:
+                language.addType(argType)
+
+    def parseTargetMethodArgs(self, args):
+        return list(map(lambda s: s.strip().split(' ')[0], args.split(',')))
+
 
     def c(self):
         """ Generates a basic Java challenge """

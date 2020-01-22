@@ -7,7 +7,7 @@ APP_PATH = '/src/app'
 SOLVE_PATH = '/src/app/main.c'
 RUN_PATH = '/src/app/main.c'
 
-ASSETS = ['src/Makefile', 'src/template/Target.h', 'src/app/Logger.c', 'src/app/Logger.h']
+ASSET_PATHS = ['src/Makefile', 'src/template/Target.h', 'src/app/Logger.c', 'src/app/Logger.h']
 
 TARGET_FILE = 'Target'
 
@@ -22,5 +22,5 @@ class C(Language):
             RUN_PATH,
             TARGET_FILE,
             'c',
-            ASSETS
+            ASSET_PATHS
         )

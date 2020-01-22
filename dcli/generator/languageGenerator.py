@@ -30,8 +30,10 @@ class LanguageGenerator():
         info('Challenge ' + self._root + ' created with success!')
     
     def copyAssets(self):
-        for asset in self._language.assets:
-            self.templateAndCopyFile(asset)
+        for path in self._language.assetPaths:
+            self.templateAndCopyFile(path)
+        for asset in self._language.newAssets:
+            writeFile(f'{self._root}/{asset.path}/{asset.fileName}.{self._language.extension}', asset.content)
 
     def generateChallengeYaml(self):
         self.templateAndCopyFile('/challenge.yaml')

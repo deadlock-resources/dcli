@@ -7,7 +7,7 @@ APP_PATH = '/src/main/java/app'
 SOLVE_PATH = '/src/main/java/app/Solve.java'
 RUN_PATH = '/src/main/java/app/Run.java'
 
-ASSETS = ['/src/main/java/app/Logger.java']
+ASSET_PATHS = ['/src/main/java/app/Logger.java']
 
 TARGET_FILE = 'Target'
 
@@ -22,5 +22,11 @@ class Java(Language):
             RUN_PATH,
             TARGET_FILE,
             'java',
-            ASSETS
+            ASSET_PATHS
         )
+
+    
+    def addType(self, name):
+        self.addNewAsset(self.templateDirPath, name, f'package template;\n\nclass {name} {{}}')
+        self.addNewAsset(self.successDirPath, name, f'package success;\n\nclass {name} {{}}')
+
