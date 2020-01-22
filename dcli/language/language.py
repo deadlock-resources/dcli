@@ -1,4 +1,6 @@
 
+
+from .asset import Asset
 class Language():
 
     def __init__(self,
@@ -10,7 +12,7 @@ class Language():
                 runPath,
                 targetDefaultFile,
                 extension,
-                assets = []):
+                assetsPaths = []):
         """ Default value for Language class """
         self._type = type
         self._templateDirPath = templateDirPath
@@ -20,11 +22,16 @@ class Language():
         self._runPath = runPath
         self._targetDefaultFile = targetDefaultFile
         self._extension = extension
-        self._assets = assets
+        self._assetPaths = assetsPaths
+        self._newAssets = []
 
     @property
-    def assets(self):
-        return self._assets
+    def assetPaths(self):
+        return self._assetPaths
+
+    @property
+    def newAssets(self):
+        return self._newAssets
 
     @property
     def extension(self):
@@ -63,4 +70,6 @@ class Language():
     
     def getPathToSuccessTargetFile(self):
         return self.successDirPath + '/' + self.targetFile + '.' + self.extension
-    
+
+    def addNewAsset(self, assetPath, assetFileName, assetContent):
+        self._newAssets.append(Asset(assetPath, assetFileName, assetContent))

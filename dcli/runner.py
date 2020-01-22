@@ -31,7 +31,7 @@ def exitIfError(exitCode, message):
         spin.stop()
         jump()
         if (exitCode == 2):
-            error('cancel')
+            error('Cancelled.')
         else:
             error(message)
         sys.exit(1)
