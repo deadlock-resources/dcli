@@ -1,0 +1,6 @@
+[ {
+  "name" : "List",
+  "requireImport" : true,
+  "className" : "java.util.List",
+  "primitive" : false
+} ]

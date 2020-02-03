@@ -11,6 +11,7 @@ def getPathFromRoot(path):
 
 def getPathFromTemplateDir(type, path):
     resource_path = '/'.join(('template', type + '/' + path))
+    print(resource_path)
     return pkg_resources.resource_filename('dcli', resource_path)
 
 def loadYaml(path):
@@ -20,6 +21,9 @@ def loadYaml(path):
 
 def loadFile(type, path):
     return open(getPathFromTemplateDir(type, path)).read()
+
+def openFile(type, path):
+    return open(getPathFromTemplateDir(type, path))
 
 def writeFile(path, content):
     newFile = open(path, "w+")

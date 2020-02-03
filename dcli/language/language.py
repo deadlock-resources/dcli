@@ -73,3 +73,6 @@ class Language():
 
     def addNewAsset(self, assetPath, assetFileName, assetContent):
         self._newAssets.append(Asset(assetPath, assetFileName, assetContent))
+
+
+

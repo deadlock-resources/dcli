@@ -1,0 +1,86 @@
+[ {
+  "name" : "Byte",
+  "requireImport" : false,
+  "className" : "java.lang.Byte",
+  "primitive" : false
+}, {
+  "name" : "byte",
+  "requireImport" : false,
+  "className" : "byte",
+  "primitive" : true
+}, {
+  "name" : "Short",
+  "requireImport" : false,
+  "className" : "java.lang.Short",
+  "primitive" : false
+}, {
+  "name" : "short",
+  "requireImport" : false,
+  "className" : "short",
+  "primitive" : true
+}, {
+  "name" : "Integer",
+  "requireImport" : false,
+  "className" : "java.lang.Integer",
+  "primitive" : false
+}, {
+  "name" : "int",
+  "requireImport" : false,
+  "className" : "int",
+  "primitive" : true
+}, {
+  "name" : "Long",
+  "requireImport" : false,
+  "className" : "java.lang.Long",
+  "primitive" : false
+}, {
+  "name" : "long",
+  "requireImport" : false,
+  "className" : "long",
+  "primitive" : true
+}, {
+  "name" : "Float",
+  "requireImport" : false,
+  "className" : "java.lang.Float",
+  "primitive" : false
+}, {
+  "name" : "float",
+  "requireImport" : false,
+  "className" : "float",
+  "primitive" : true
+}, {
+  "name" : "Double",
+  "requireImport" : false,
+  "className" : "java.lang.Double",
+  "primitive" : false
+}, {
+  "name" : "double",
+  "requireImport" : false,
+  "className" : "double",
+  "primitive" : true
+}, {
+  "name" : "Character",
+  "requireImport" : false,
+  "className" : "java.lang.Character",
+  "primitive" : false
+}, {
+  "name" : "char",
+  "requireImport" : false,
+  "className" : "char",
+  "primitive" : true
+}, {
+  "name" : "String",
+  "requireImport" : false,
+  "className" : "java.lang.String",
+  "primitive" : false
+}, {
+  "name" : "Boolean",
+  "requireImport" : false,
+  "className" : "java.lang.Boolean",
+  "primitive" : false
+}, {
+  "name" : "boolean",
+  "requireImport" : false,
+  "className" : "boolean",
+  "primitive" : true
+} ]

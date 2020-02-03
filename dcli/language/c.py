@@ -24,3 +24,4 @@ class C(Language):
             'c',
             ASSET_PATHS
         )
+

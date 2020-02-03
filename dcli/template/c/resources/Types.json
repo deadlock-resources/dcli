@@ -1,0 +1,131 @@
+[ {
+  "name" : "bool",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "char",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "signed char",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "unsigned char",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "short",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "signed short",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "signed short int",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "unsigned short",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "unsigned short int",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "int",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "signed int",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "unsigned int",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "long",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "signed long",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "signed long int",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "unsigned long",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "unsigned long int",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "long long",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "long long int",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "signed long long",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "signed long long int",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "unsigned long long",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "unsigned long long int",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "float",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "double",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+}, {
+  "name" : "long double",
+  "requireImport" : false,
+  "className" : "",
+  "primitive" : true
+} ]

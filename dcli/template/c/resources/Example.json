@@ -1,0 +1,6 @@
+[{
+  "name" : "list",
+  "requireImport" : true,
+  "className" : "std::list",
+  "primitive" : false
+}]

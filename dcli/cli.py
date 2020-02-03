@@ -16,7 +16,7 @@ def version():
 def main():
   fire.Fire({
     'version': version,
-    'gen': Generator(),
+    'gen': Generator().generate(),
     'solve': solve,
     'run': run,
   })
