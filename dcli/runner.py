@@ -2,6 +2,9 @@ import os
 import sys
 import json
 import uuid
+import requests
+import hashlib
+import shutil
 from multiprocessing import Process
 from .model.missionUserScore import MissionUserScore
 from .generator.file import getPathFromRoot, loadYaml, createTmpFolder, writeFile
@@ -36,7 +39,7 @@ def exitIfError(exitCode, message):
             error(message)
         sys.exit(1)
 
-def run(path='.'):
+def run(path='.', language='empty'):
     '''
     Run the mission under given path.
     As if user clicked on Run button.
@@ -45,11 +48,69 @@ def run(path='.'):
     '''
     yaml = loadYaml(path + '/' + CHALLENGE_YAML)
     if 'coding' in yaml:
-        runCode(path)
+        if os.path.exists('entry.rs') == True:
+            runMetamorphCode(path, language)
+        else:
+            runCode(path)
     elif 'hacking' in yaml:
         runHack(path)
     else:
         error('Challenge type not supported, verify your challenge.yaml')
+
+def runMetamorphCode(path, language):
+    downloadIfNecessary(path)
+
+    os.system('./runner run ' + language)
+
+def solveMetamorphCode(path, language):
+    downloadIfNecessary(path)
+    os.system('./runner solve ' + language)
+
+
+def downloadIfNecessary(path):
+    should_download = True
+    if os.path.exists(path + '/runner'):
+        if os.path.exists(path + '/.hash'):
+            entry_hash = open(path + '/.hash', 'r').read()
+            if entry_hash == hashlib.md5(open('entry.rs', 'rb').read()).hexdigest():
+                should_download = False
+
+    if should_download == True:
+        downloadRunner(path)
+    
+def downloadRunner(path):
+    url = "https://builder.staging.deadlock.io/build"
+    
+    info('🛰️  Download runner based on your entry.rs file.')
+    info('Operation will be long the first time, no worries.')
+
+    spin = SpinCursor('', speed=5, maxspin=100000)
+    spin.start()
+    runner_bin = 'runner'
+    files = {'file': open('entry.rs', 'rb')}
+    try:
+        response = requests.post(url, files=files, stream=True)
+        with open(runner_bin, 'wb') as f:
+            shutil.copyfileobj(response.raw, f)
+    except requests.exceptions.HTTPError as e:
+        print (e.response.text)
+        pass
+
+    spin.stop()
+    if response.status_code != 200:
+        error('Cannot build your entry.rs, check its correct.')
+        exit(1)
+
+    os.system('chmod u+x runner')
+
+    # write runner hash
+    with open(path + '/.hash', 'w+') as f:
+        with open('entry.rs', 'rb') as entry:
+            h = hashlib.md5(entry.read()).hexdigest()
+            f.write(h)
+
+    info('🛰️  Download completed')
+
 
 def runCode(path='.'):
     tag = uuid.uuid4()
@@ -92,20 +153,24 @@ def solveCode(tag, path='.', ):
     os.system(f'docker run {tag} Solve')
     pass
 
-def solve(path='.'):
+def solve(path='.', language='empty'):
     '''
     Run Solve step for the mission under given path.
     As if user clicked on Submit button.
 
     :param path: path of your mission. Default: .
     '''
-    tag = uuid.uuid4()
-    build(tag, path)
     yaml = loadYaml(path + '/' + CHALLENGE_YAML)
     if 'coding' in yaml:
-        if 'score' in yaml['coding']:
+        if os.path.exists(path + '/entry.rs') == True:
+            solveMetamorphCode(path, language)
+        elif 'score' in yaml['coding']:
+            tag = uuid.uuid4()
+            build(tag, path)
             solveScore(tag, path)
         else:
+            tag = uuid.uuid4()
+            build(tag, path)
             solveCode(tag, path)
     else:
         error('Challenge type not supported for solve method.')

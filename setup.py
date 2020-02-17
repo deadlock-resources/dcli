@@ -28,7 +28,8 @@ setuptools.setup(
         'colored',
         'Flask',
         'request',
-        'jsonify'
+        'jsonify',
+        'requests'
     ],
     python_requires='>=3.2',
 )
