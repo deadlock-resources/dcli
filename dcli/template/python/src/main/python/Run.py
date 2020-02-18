@@ -2,4 +2,6 @@
 # Must not run any test, just run the user
 if __name__ == "__main__":
     import template
-    template.{{ targetMethod }}
+
+    template.
+    {{targetMethod}}()  # TODO put your own args

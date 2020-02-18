@@ -4,15 +4,16 @@ from .asset import Asset
 class Language():
 
     def __init__(self,
-                type,
-                templateDirPath,
-                successDirPath,
-                appDirPath,
-                solvePath,
-                runPath,
-                targetDefaultFile,
-                extension,
-                assetsPaths = []):
+                 type,
+                 templateDirPath,
+                 successDirPath,
+                 appDirPath,
+                 solvePath,
+                 runPath,
+                 targetDefaultFile,
+                 extension,
+                 assetsPaths=[],
+                 allow_strong_typing=True):
         """ Default value for Language class """
         self._type = type
         self._templateDirPath = templateDirPath
@@ -24,6 +25,7 @@ class Language():
         self._extension = extension
         self._assetPaths = assetsPaths
         self._newAssets = []
+        self._allow_strong_typing = allow_strong_typing
 
     @property
     def assetPaths(self):
@@ -32,6 +34,10 @@ class Language():
     @property
     def newAssets(self):
         return self._newAssets
+
+    @property
+    def allow_strong_typing(self):
+        return self._allow_strong_typing
 
     @property
     def extension(self):

@@ -2,13 +2,14 @@ import sys
 
 from PyInquirer import prompt
 
-from .const import TARGET_METHOD_FIELD, TARGET_METHOD_RETURN_FIELD, TARGET_METHOD_ARGS_FIELD, TARGET_FILE_FIELD
+from .const import TARGET_METHOD_FIELD, TARGET_METHOD_RETURN_FIELD, TARGET_METHOD_ARGS_FIELD, TARGET_FILE_FIELD, \
+    TARGET_DEFAULT_RETURN_FIELD, TARGET_GENERICS_FIELD
 from .generator.languageGenerator import LanguageGenerator
 from .language.c import C
 from .language.cpp import Cpp
 from .language.java import Java
 from .language.python import Python
-from .language.types_helper import get_datatype_from_user
+from .language.types_helper import FormAnswersCollector
 from .logger import info, error, paragraph
 
 LANGUAGES = dict({
@@ -47,17 +48,25 @@ def askUsual():
                 'jarjarbinks', 'ewok', 'padawan', 'jedi', 'master'
             ],
         },
-        {
-            'type': 'list',
-            'name': 'language',
-            'message': 'Choose your language',
-            'choices':
-                LANGUAGES.keys()
-            ,
-        }
-
     ]
     answers = prompt(questions)
+    if len(answers) == 0:
+        error('Cancelled.')
+        sys.exit()
+    return answers
+
+
+def askLanguage():
+    question = {
+        'type': 'list',
+        'name': 'language',
+        'message': 'Choose your language',
+        'choices':
+            LANGUAGES.keys()
+        ,
+    }
+
+    answers = prompt(question)
     if len(answers) == 0:
         error('Cancelled.')
         sys.exit()
@@ -74,85 +83,31 @@ def \
 
 class Generator():
 
+    # def cpp(self):
+
     def generate(self):
+        langId = askLanguage()['language']
+        self.handle_gen_for_language(langId)
+
+    def handle_gen_for_language(self, langId):
         answers = askUsual()
-        langId = answers['language']
         language = LANGUAGES[langId]
-        datatype_from_user = get_datatype_from_user(language_id=langId, filename='Types.json')
-        args = ''
+        datatype_from_user = FormAnswersCollector(language_id=langId, filename='Types.json',
+                                                  allow_typing=language.allow_strong_typing).structure_holder
+        print(TARGET_DEFAULT_RETURN_FIELD + ':' + str(datatype_from_user.methods[0].return_type.default_value))
+        # for now only handle one single method
         templates_dict = dict({
+            TARGET_GENERICS_FIELD: ','.join(
+                map(lambda current: language.format_generic_declaration(str(current)),
+                    datatype_from_user.methods[0].get_generics_types())),
             TARGET_FILE_FIELD: datatype_from_user.file_names[0],
             TARGET_METHOD_RETURN_FIELD: language.format_data(datatype_from_user.methods[0].return_type),
+            TARGET_DEFAULT_RETURN_FIELD: datatype_from_user.methods[0].return_type.default_value,
             TARGET_METHOD_FIELD: datatype_from_user.methods[0].method_name,
-            TARGET_METHOD_ARGS_FIELD: args.join(map(lambda current: language.format_data(current), datatype_from_user.methods[0].method_parameters))
+            TARGET_METHOD_ARGS_FIELD: ','.join(
+                map(lambda current: language.format_data(current), datatype_from_user.methods[0].method_parameters))
         })
         answers.update(templates_dict)
         langGen = LanguageGenerator(language, answers)
         langGen.create()
         commonEndingMessage(answers)
-
-    # """Generate challenge from template."""
-    #
-    # def cpp(self):
-    #     """ Generates a basic Cpp challenge """
-    #     answers = askUsual()
-    #     answers.update(askCppQuestions())
-    #
-    #     cppGen = LanguageGenerator(Cpp(), answers)
-    #     cppGen.create()
-    #
-    #     commonEndingMessage(answers)
-    #     pass
-    #
-    # def java(self):
-    #     self.handle_langage_choice();
-    #     """ Generates a basic C challenge """
-    #     answers = askUsual()
-    #     answers.update(askJavaQuestions())
-    #
-    #     language = Java()
-    #     self.addTypeIfNecessary(self.parseTargetMethodArgs(answers['targetMethodArgs']), language)
-    #
-    #     javaGen = LanguageGenerator(language, answers)
-    #     javaGen.create()
-    #
-    #     commonEndingMessage(answers)
-    #     pass
-    #
-    # def addTypeIfNecessary(self, argTypes, language):
-    #     commonTypes = ['byte', 'Byte', 'short', 'Short', 'int', 'Integer', 'float', 'Float', 'double', 'Double',
-    #                    'String', 'long', 'Long', 'char', 'Character']
-    #     for argType in argTypes:
-    #         if argType not in commonTypes:
-    #             language.addType(argType)
-    #
-    # def readTypes(self, fileName):
-    #     loadedTypes = json.load(fileName)
-    #     for currentType in loadedTypes:
-    #         print(currentType)
-    #
-    # def parseTargetMethodArgs(self, args):
-    #     return list(map(lambda s: s.strip().split(' ')[0], args.split(',')))
-    #
-    # def c(self):
-    #     """ Generates a basic Java challenge """
-    #     self.handle_langage_choice()
-    #     pass
-    #
-    # def handle_langage_choice(self):
-    #     answers = askUsual()
-    #     answers.update(askCQuestions())
-    #     cGen = LanguageGenerator(C(), answers)
-    #     cGen.create()
-    #     commonEndingMessage(answers)
-    #
-    # def python(self):
-    #     """ Generates a basic Python challenge """
-    #     answers = askUsual()
-    #     answers.update(askPythonQuestions())
-    #
-    #     gen = LanguageGenerator(Python(), answers)
-    #     gen.create()
-    #
-    #     commonEndingMessage(answers)
-    #     pass

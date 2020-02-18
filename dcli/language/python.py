@@ -9,17 +9,19 @@ RUN_PATH = '/src/main/python/Run.py'
 
 TARGET_FILE = '__init__'
 
+
 class Python(Language):
     def __init__(self):
         Language.__init__(self,
-            'python',
-            TEMPLATE_PATH,
-            SUCCESS_PATH,
-            APP_PATH,
-            SOLVE_PATH,
-            RUN_PATH,
-            TARGET_FILE,
-            'py'
-        )
+                          'python',
+                          TEMPLATE_PATH,
+                          SUCCESS_PATH,
+                          APP_PATH,
+                          SOLVE_PATH,
+                          RUN_PATH,
+                          TARGET_FILE,
+                          'py', allow_strong_typing=False
+                          )
 
-
+    def format_data(self, datatype_holder):
+        return datatype_holder.arg_name

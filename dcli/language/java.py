@@ -42,17 +42,17 @@ class Java(Language):
     def format_data(self, datatype_holder):
         ret = ''
         if datatype_holder.is_array:
-            ret += datatype_holder.array_type
-            for i in range(0, datatype_holder.arrayDim):
+            ret += datatype_holder.array_type.type_name
+            for i in range(0, datatype_holder.array_dim):
                 ret += ARRAY_REPRESENTATION
         elif len(datatype_holder.parameters_types) > 0:
-            ret += datatype_holder.parametrized_root_type + OPEN_TEMPLATE
-            param_length = len(datatype_holder.parameter_types)
+            ret += datatype_holder.parametrized_root_type.type_name + OPEN_TEMPLATE
+            param_length = len(datatype_holder.parameters_types)
             for i in range(0, param_length):
                 if param_length > 1 and i > 0:
-                    ret += TEMPLATE_SEPARATOR + datatype_holder.parameter_types[i]
+                    ret += TEMPLATE_SEPARATOR + datatype_holder.parameters_types[i].type_name
                 else:
-                    ret += datatype_holder.parameter_types[i]
+                    ret += datatype_holder.parameters_types[i].type_name
             ret += CLOSE_TEMPLATE
         else:
             ret += datatype_holder.type_name
@@ -60,3 +60,6 @@ class Java(Language):
             ret += BLANK + datatype_holder.arg_name
         print(ret)
         return ret
+
+    def format_generic_declaration(self, type_name):
+        return type_name

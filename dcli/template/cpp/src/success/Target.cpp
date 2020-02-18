@@ -1,4 +1,4 @@
 
 {{ targetMethodReturn }} {{ targetMethod }}({{ targetMethodArgs }}) {
-    return 0;
+    return {% if targetDefaultReturn == None %} NULL {% elif targetDefaultReturn is sameas false %} false {% else %}{{ targetDefaultReturn }}{% endif %};
 }

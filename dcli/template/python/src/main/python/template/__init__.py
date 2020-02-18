@@ -1,2 +1,4 @@
-def {{ targetMethod }}:
-    pass
+def {{targetMethod}
+
+}({{targetMethodArgs}}):
+pass

@@ -1,5 +1,6 @@
 #include "Target.h"
 
+{% if targetGenerics != "" %} template<{{ targetGenerics }}>{% endif %}
 {{ targetMethodReturn }} Target::{{ targetMethod }}({{ targetMethodArgs }}) {
-    return 0;
+    return {% if targetDefaultReturn == None %} NULL {% elif targetDefaultReturn is sameas false %} false {% else %}{{ targetDefaultReturn }}{% endif %};
 }

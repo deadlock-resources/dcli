@@ -11,17 +11,17 @@ ASSET_PATHS = ['src/Makefile', 'src/template/Target.h', 'src/app/Logger.c', 'src
 
 TARGET_FILE = 'Target'
 
+
 class C(Language):
     def __init__(self):
         Language.__init__(self,
-            'c',
-            TEMPLATE_PATH,
-            SUCCESS_PATH,
-            APP_PATH,
-            SOLVE_PATH,
-            RUN_PATH,
-            TARGET_FILE,
-            'c',
-            ASSET_PATHS
-        )
-
+                          'c',
+                          TEMPLATE_PATH,
+                          SUCCESS_PATH,
+                          APP_PATH,
+                          SOLVE_PATH,
+                          RUN_PATH,
+                          TARGET_FILE,
+                          'c',
+                          ASSET_PATHS
+                          )

@@ -1,5 +1,5 @@
 package app;
-
+import java.util.*;
 import template.{{ targetFile }};
 
 /**
@@ -27,11 +27,11 @@ public class Solve {
             //TODO you have to do different tests to be sure user has the good solution.
             // comparing userResult and expectedResult
 
-            if (expectedResult.equals(userResult)) {
+            if (Objects.equals(expectedResult, userResult)) {
                 // if all test passed successfully
                 Logger.logSuccess();
             } else {
-                Logger.logFail(expectedResult, userResult{% if targetMethodArgs != "" %}, /* //TODO fill it with your own args */{% endif %});
+                Logger.logFail(expectedResult, userResult{% if targetMethodArgs != "" %} /* //TODO fill it with your own args */{% endif %});
                 System.exit(1);
             }
             {% endif %}
