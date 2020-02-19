@@ -1,6 +1,6 @@
-
-
 from .asset import Asset
+
+
 class Language():
 
     def __init__(self,
@@ -73,12 +73,12 @@ class Language():
 
     def getPathToTemplateTargetFile(self):
         return self.templateDirPath + '/' + self.targetFile + '.' + self.extension
-    
+
     def getPathToSuccessTargetFile(self):
         return self.successDirPath + '/' + self.targetFile + '.' + self.extension
 
     def addNewAsset(self, assetPath, assetFileName, assetContent):
         self._newAssets.append(Asset(assetPath, assetFileName, assetContent))
 
-
-
+    def format_generic_declaration(self, type_name):
+        return type_name

@@ -41,6 +41,8 @@ class Java(Language):
 
     def format_data(self, datatype_holder):
         ret = ''
+        if datatype_holder.need_creation:
+            self.addType(datatype_holder.type_name)
         if datatype_holder.is_array:
             ret += datatype_holder.array_type.type_name
             for i in range(0, datatype_holder.array_dim):
