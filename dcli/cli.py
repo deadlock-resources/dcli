@@ -18,7 +18,6 @@ def gen_with_type(l=''):
     if l == '':
         gen_without_type()
     else:
-        print('type is ' + l)
         Generator().handle_gen_for_language(l)
 
 

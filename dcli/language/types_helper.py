@@ -132,7 +132,6 @@ class FormAnswersCollector:
                               methods=[MethodHolder(method_name=method_name,
                                                     return_type=method_return_type[0],
                                                     method_parameters=parameters)])
-        print(str(ret.methods[0].get_generics_types()))
         return ret;
 
     def read_and_store_types_from_file(self, allow_lib, allow_type_creation, have_generics, have_parametrized):
@@ -168,7 +167,6 @@ class FormAnswersCollector:
         return ret
 
     def handle_method_param(self, is_arg, current_dict, previous_arg=[]):
-        print("current args : " + str(previous_arg))
         previous_arg.append(
             self.get_user_type(is_it_param=is_arg, types_dict=current_dict,
                                current_type_kind='method parameter',
@@ -247,6 +245,7 @@ class FormAnswersCollector:
                                                         is_sub_type=True,
                                                         sub_types_dic=reduced_type_list,
                                                         current_type_kind='to parametrize')
+            type_ = parametrized_root_type.type_name
             parametrized_types.append(
                 self.get_user_type(is_it_param=is_it_param, types_dict=types_dict, is_sub_type=True,
                                    sub_types_dic=reduced_type_list,
@@ -258,12 +257,10 @@ class FormAnswersCollector:
                                        current_type_kind='parametrized'))
         if self.allow_typing:
             default_value = self.types_to_choose_dict.get(type_)
-            print('default value is :' + str(default_value))
         if is_it_param and not is_sub_type:
             param_name = get_param_name()
         elif is_sub_type:
             param_name = parent_name
-        print('type is :' + type_)
 
         ret = DataTypeHolder(type_name=type_,
                              need_import=type_need_import,
@@ -347,7 +344,6 @@ class MethodHolder:
 
     def get_generics_types(self):
         all_types = self.method_parameters + [self.return_type]
-        print(str(all_types))
         my_array = []
         for my_type in all_types:
             get_gens_from(my_type, my_array)
@@ -356,10 +352,7 @@ class MethodHolder:
 
 
 def get_gens_from(current_type, ret=[]):
-    print('try to add ' + current_type.type_name + 'in return generics array, is_generic = ' + str(
-        current_type.is_generic))
     if current_type.is_generic:
-        print('adding ' + current_type.type_name + 'in return generics array')
         ret.append(current_type.type_name)
     elif current_type.is_array:
         get_gens_from(current_type.array_type, ret)

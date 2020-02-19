@@ -11,7 +11,6 @@ def getPathFromRoot(path):
 
 def getPathFromTemplateDir(type, path):
     resource_path = '/'.join(('template', type + '/' + path))
-    print(resource_path)
     return pkg_resources.resource_filename('dcli', resource_path)
 
 def loadYaml(path):

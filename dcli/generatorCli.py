@@ -94,7 +94,6 @@ class Generator():
         language = LANGUAGES[langId]
         datatype_from_user = FormAnswersCollector(language_id=langId, filename='Types.json',
                                                   allow_typing=language.allow_strong_typing).structure_holder
-        print(TARGET_DEFAULT_RETURN_FIELD + ':' + str(datatype_from_user.methods[0].return_type.default_value))
         # for now only handle one single method
         templates_dict = dict({
             TARGET_GENERICS_FIELD: ','.join(

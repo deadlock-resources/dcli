@@ -58,7 +58,6 @@ class Java(Language):
             ret += datatype_holder.type_name
         if datatype_holder.is_arg:
             ret += BLANK + datatype_holder.arg_name
-        print(ret)
         return ret
 
     def format_generic_declaration(self, type_name):
