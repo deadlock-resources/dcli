@@ -29,6 +29,17 @@ dcli gen (java|python|cpp|c)
 dcli solve ./mission_path
 dcli run ./mission_path
 ```
+## Execute metamorph mission
+To execute your multi language mission:
+```bash
+# running the Java code
+dcli solve . java
+dcli run . java
+
+# running the Python code
+dcli solve . python
+dcli run . python
+```
 
 ## Todo
 * Add Kotlin generator language
