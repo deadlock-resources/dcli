@@ -13,8 +13,10 @@ class Language():
                  targetDefaultFile,
                  extension,
                  assetsPaths=[],
-                 allow_strong_typing=True):
+                 allow_strong_typing=True,
+                 allow_type_creation=False):
         """ Default value for Language class """
+        self.allow_type_creation = allow_type_creation
         self._type = type
         self._templateDirPath = templateDirPath
         self._successDirPath = successDirPath

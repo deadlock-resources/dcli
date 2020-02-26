@@ -93,10 +93,11 @@ class Generator():
         answers = askUsual()
         language = LANGUAGES[langId]
         datatype_from_user = FormAnswersCollector(language_id=langId, filename='Types.json',
+                                                  allow_type_creation=language.allow_type_creation,
                                                   allow_typing=language.allow_strong_typing).structure_holder
         # for now only handle one single method
         templates_dict = dict({
-            TARGET_GENERICS_FIELD: ','.join(
+            TARGET_GENERICS_FIELD: ', '.join(
                 map(lambda current: language.format_generic_declaration(str(current)),
                     datatype_from_user.methods[0].get_generics_types())),
             TARGET_FILE_FIELD: datatype_from_user.file_names[0],

@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
         printf("Running tests..\n");
         // Simple tests to verify user entry.
 
-        {{ targetMethod }}(/* //TODO args to supply to test user code */)
+        {{ targetMethod }}(/* //TODO args to supply to test user code */);
 
         //TODO then if everything went well you can log it
         log_success();

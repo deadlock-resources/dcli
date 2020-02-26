@@ -32,35 +32,35 @@ class Java(Language):
                           RUN_PATH,
                           TARGET_FILE,
                           'java',
-                          ASSET_PATHS
-                          )
+                          ASSET_PATHS,
+                          allow_type_creation=True)
 
     def addType(self, name):
         self.addNewAsset(self.templateDirPath, name, f'package template;\n\nclass {name} {{}}')
         self.addNewAsset(self.successDirPath, name, f'package success;\n\nclass {name} {{}}')
 
     def format_data(self, datatype_holder):
-        ret = ''
+        data_formatted = ''
         if datatype_holder.need_creation:
             self.addType(datatype_holder.type_name)
         if datatype_holder.is_array:
-            ret += datatype_holder.array_type.type_name
+            data_formatted += datatype_holder.array_type.type_name
             for i in range(0, datatype_holder.array_dim):
-                ret += ARRAY_REPRESENTATION
+                data_formatted += ARRAY_REPRESENTATION
         elif len(datatype_holder.parameters_types) > 0:
-            ret += datatype_holder.parametrized_root_type.type_name + OPEN_TEMPLATE
+            data_formatted += datatype_holder.parametrized_root_type.type_name + OPEN_TEMPLATE
             param_length = len(datatype_holder.parameters_types)
             for i in range(0, param_length):
                 if param_length > 1 and i > 0:
-                    ret += TEMPLATE_SEPARATOR + datatype_holder.parameters_types[i].type_name
+                    data_formatted += TEMPLATE_SEPARATOR + datatype_holder.parameters_types[i].type_name
                 else:
-                    ret += datatype_holder.parameters_types[i].type_name
-            ret += CLOSE_TEMPLATE
+                    data_formatted += datatype_holder.parameters_types[i].type_name
+            data_formatted += CLOSE_TEMPLATE
         else:
-            ret += datatype_holder.type_name
+            data_formatted += datatype_holder.type_name
         if datatype_holder.is_arg:
-            ret += BLANK + datatype_holder.arg_name
-        return ret
+            data_formatted += BLANK + datatype_holder.arg_name
+        return data_formatted
 
     def format_generic_declaration(self, type_name):
         return type_name

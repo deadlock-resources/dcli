@@ -1,4 +1,6 @@
 def {{targetMethod}
 
+}
+
 }({{targetMethodArgs}}):
 pass
