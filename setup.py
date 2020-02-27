@@ -29,7 +29,8 @@ setuptools.setup(
         'Flask',
         'request',
         'jsonify',
-        'requests'
+        'requests',
+        'pyyaml'
     ],
     python_requires='>=3.2',
 )
