@@ -1,6 +1,9 @@
 
 ## UNRELEASED
 
+## 0.0.98 (27/02/2020)
+* fix missing pyyaml dependency
+
 ## 0.0.97 (26/02/2020)
 * auto generating class when unknow type are given for `dcli gen java`
 * support to run|solve metamorph challenge (Linux support)
