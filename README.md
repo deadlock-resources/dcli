@@ -7,6 +7,10 @@ dcli --help
 
 [Documentation about challenges.](https://deadlock-resources.github.io/challenge-documentation)
 
+## Install from pip
+```bash
+pip install dcli --user
+```
 
 ## Install from sources
 ```bash
