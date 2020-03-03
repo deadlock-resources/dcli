@@ -1,0 +1,18 @@
+FROM registry.e-biz.fr/apuret/deadlock-public/runner:1.0-SNAPSHOT
+
+COPY runner .
+
+# secure challenge files
+RUN chmod og-rwx ./*
+RUN chmod u+rwx ./*
+
+COPY . .
+
+COPY template/c .
+COPY template/cpp .
+COPY template/go .
+COPY template/java .
+COPY template/javascript .
+COPY template/python .
+COPY template/rust .
+COPY template/ruby .
