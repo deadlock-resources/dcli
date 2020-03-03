@@ -5,6 +5,7 @@ import uuid
 import requests
 import hashlib
 import shutil
+import tempfile
 from multiprocessing import Process
 from .model.missionUserScore import MissionUserScore
 from .generator.file import getPathFromRoot, loadYaml, createTmpFolder, writeFile
@@ -57,14 +58,33 @@ def run(path='.', language='empty'):
     else:
         error('Challenge type not supported, verify your challenge.yaml')
 
+def prepareMetamorphCode(path):
+    info('🔨 Building mission..')
+    spin = SpinCursor('', speed=5, maxspin=100000)
+    spin.start()
+
+    tmpDir = tempfile.TemporaryDirectory()
+
+    shutil.copy('./runner', tmpDir.name + '/runner')
+    shutil.copy(getPathFromRoot('utils/Dockerfile-runner'), tmpDir.name + '/Dockerfile')
+    shutil.copytree('./template', tmpDir.name + '/template')
+
+    os.system('docker build ' + tmpDir.name + ' -q -t meta')
+    spin.stop()
+
 def runMetamorphCode(path, language):
     downloadIfNecessary(path)
 
-    os.system('./runner run ' + language)
+    prepareMetamorphCode(path)
+
+    os.system('docker run meta run ' + language)
 
 def solveMetamorphCode(path, language):
     downloadIfNecessary(path)
-    os.system('./runner solve ' + language)
+
+    prepareMetamorphCode(path)
+
+    os.system('docker run meta solve ' + language)
 
 
 def downloadIfNecessary(path):

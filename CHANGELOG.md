@@ -1,5 +1,7 @@
 
 ## UNRELEASED
+* fix sping error when build fail
+* create docker env to run|solve metamorph challenge instead of using host binary
 
 ## 0.0.98 (27/02/2020)
 * fix missing pyyaml dependency
