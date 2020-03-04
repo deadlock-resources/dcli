@@ -32,7 +32,7 @@ KNOWN_LANGUAGE_TYPE_QUESTION = {
 PARAM_NAME_QUESTION = {
     'type': 'input',
     'name': PARAM_NAME,
-    'message': 'What is the parameter name' + SEMI_COLUMN,
+    'message': 'Select the parameter name' + SEMI_COLUMN,
     'validate': lambda text: True if len(text) > 0 else 'Parameter name must not be empty.'
 }
 
@@ -71,7 +71,7 @@ NO = 'No'
 ARRAY_QUESTION = {
     'type': 'list',
     'name': ARRAY_DIMENSION,
-    'message': 'What is the number of dimension of your array' + SEMI_COLUMN,
+    'message': 'Select the number of dimension of your array' + SEMI_COLUMN,
     'choices': ['1', '2', '3', '4', '5'],
 }
 
@@ -212,7 +212,7 @@ class FormAnswersCollector:
                                                             suffix_text=' (e.g. String)')
         current_choice = str(current_method)
 
-        if not does_user_continue('Are you sure of your choice  \"' + current_choice + '\" '):
+        if not does_user_continue('Are you sure of your choice \"' + current_choice + '\"'):
             print('Restart choice')
             current_method.clear_parameters()
             current_method.method_name = prompt(METHOD_NAME_QUESTION)[METHOD_NAME]
@@ -226,8 +226,8 @@ class FormAnswersCollector:
         method_holder.add_parameter(
             self.get_user_type(is_it_param=is_arg, types_dict=current_dict,
                                current_type_kind='method parameter nb ' + str(len(method_holder.method_parameters) + 1),
-                               suffix_text='(e.g int, String etc.)'))
-        if does_user_continue("Do you need an other parameter "):
+                               suffix_text=' (e.g int, String etc.)'))
+        if does_user_continue("Do you need an other parameter"):
             self.fill_method_parameters_info(is_arg, current_dict, method_holder)
 
     def get_user_type(self, is_it_param, types_dict, is_sub_type=False, sub_types_dic=None, parent_name='',
@@ -235,7 +235,7 @@ class FormAnswersCollector:
         types_to_display = sub_types_dic if is_sub_type is True or sub_types_dic else types_dict
         if self.allow_typing:
             answers = select_type_from_dict(
-                question_msg='What is the ' + current_type_kind + ' type' + ' ' + suffix_text + ' ',
+                question_msg='Select the ' + current_type_kind + ' type' + suffix_text,
                 types_dict=types_to_display)
             the_type = answers[TYPE]
         else:
@@ -330,7 +330,7 @@ class FormAnswersCollector:
         user_type = self.get_user_type(is_it_param=is_it_param, types_dict=types_dict,
                                        is_sub_type=True,
                                        sub_types_dic=reduced_type_list,
-                                       current_type_kind=' to select').type_name
+                                       current_type_kind='primitive').type_name
         return user_type
 
     def collect_know_language_type_info(self):
