@@ -13,7 +13,7 @@ public class Solve {
 
     public static void main(String[] args) {
         try {
-            {%if targetMethodReturn == "" %}
+            {%if targetMethodReturn == "void" %}
             // call both method, user and success, do your own test to compare user code to the success one
             {{ targetFile }}.{{ targetMethod }}({% if targetMethodArgs != "" %}/* //TODO fill it with your own args */{% endif %});
             success.{{ targetFile }}.{{ targetMethod }}({% if targetMethodArgs != "" %}/* //TODO fill it with your own args */{% endif %});
@@ -31,7 +31,7 @@ public class Solve {
                 // if all test passed successfully
                 Logger.logSuccess();
             } else {
-                Logger.logFail(expectedResult, userResult{% if targetMethodArgs != "" %} /* //TODO fill it with your own args */{% endif %});
+                Logger.logFail(expectedResult, userResult{% if targetMethodArgs != "" %}, /* //TODO fill it with your own args */{% endif %});
                 System.exit(1);
             }
             {% endif %}

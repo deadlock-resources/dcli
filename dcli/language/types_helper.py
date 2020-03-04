@@ -3,16 +3,30 @@ import json
 from PyInquirer import prompt
 
 from dcli.generator import file
+from dcli.logger import info
 
 SEMI_COLUMN = ':'
 
 TYPE = 'type'
 PARAM_NAME = 'paramName'
 
+NUMBERS_TO_STR = {
+    1: '1st',
+    2: '2nd',
+    3: '3rd',
+    4: '4th',
+    5: '5th',
+    6: '6th',
+    7: '7th',
+    8: '8th',
+    9: '9th',
+    10: '10th',
+}
+
 GENERIC_QUESTION = {
     'type': 'input',
     'name': TYPE,
-    'message': 'Type the generic type name' + SEMI_COLUMN,
+    'message': 'Type the generic type name (eg. T, S, TYPE etc.)' + SEMI_COLUMN,
     'validate': lambda text: True if len(text) > 0 else 'Generic type name must not be empty.'
 }
 
@@ -32,7 +46,7 @@ KNOWN_LANGUAGE_TYPE_QUESTION = {
 PARAM_NAME_QUESTION = {
     'type': 'input',
     'name': PARAM_NAME,
-    'message': 'Select the parameter name' + SEMI_COLUMN,
+    'message': 'Enter the parameter name' + SEMI_COLUMN,
     'validate': lambda text: True if len(text) > 0 else 'Parameter name must not be empty.'
 }
 
@@ -46,13 +60,13 @@ METHOD_NAME_QUESTION = {
         text) == 0 else 'main is a reserved method.'
 }
 
-PRIMITIVE_TYPE = 'Primitive type (eg int, character)'
+PRIMITIVE_TYPE = 'Primitive type (e.g. int, character)'
 
 DEFAULT_VALUE = 'defaultValue'
 
 FILE_NAME = 'FILE_NAME'
 
-GENERIC = 'Generic (eg T, R)'
+GENERIC = 'Generic (e.g. T, R)'
 
 ARRAY_DIMENSION = 'number'
 
@@ -71,13 +85,13 @@ NO = 'No'
 ARRAY_QUESTION = {
     'type': 'list',
     'name': ARRAY_DIMENSION,
-    'message': 'Select the number of dimension of your array' + SEMI_COLUMN,
+    'message': 'How many dimension for your array' + SEMI_COLUMN,
     'choices': ['1', '2', '3', '4', '5'],
 }
 
 PARAMETRIZED_TYPE = 'Type to parametrize (e.g. a List)'
 
-KNOWN_LIB_LANGUAGE_TYPE = 'Existing type from language lib (e.g. InputStream in java)' + SEMI_COLUMN
+KNOWN_LIB_LANGUAGE_TYPE = 'Existing type from language lib (e.g. InputStream in Java)' + SEMI_COLUMN
 OWN_TYPE = 'Your own type (will be created at generation)'
 
 
@@ -99,7 +113,7 @@ def select_type_from_dict(question_msg='What type do you need ', types_dict=[]):
         {
             'type': 'list',
             'name': TYPE,
-            'message': question_msg + SEMI_COLUMN,
+            'message': 'Select ' + question_msg + SEMI_COLUMN,
             'choices': types_dict,
         }
     ]
@@ -207,25 +221,27 @@ class FormAnswersCollector:
         if is_arg:
             self.fill_method_parameters_info(is_arg, types_dict, current_method)
         else:
-            current_method.return_type = self.get_user_type(is_it_param=is_arg, types_dict=types_dict,
+            dict_copy = types_dict.copy()
+            dict_copy.append('void')
+            current_method.return_type = self.get_user_type(is_it_param=is_arg, types_dict=dict_copy,
                                                             current_type_kind='method return',
                                                             suffix_text=' (e.g. String)')
         current_choice = str(current_method)
 
         if not does_user_continue('Are you sure of your choice \"' + current_choice + '\"'):
-            print('Restart choice')
+            info('Restart choice')
             current_method.clear_parameters()
             current_method.method_name = prompt(METHOD_NAME_QUESTION)[METHOD_NAME]
             ret = self.fill_method_holder(is_arg, types_dict, current_method)
         else:
-            print(current_choice)
+            info(current_choice)
         return ret
 
     def fill_method_parameters_info(self, is_arg, current_dict, method_holder):
-        print(method_holder)
         method_holder.add_parameter(
             self.get_user_type(is_it_param=is_arg, types_dict=current_dict,
-                               current_type_kind='method parameter nb ' + str(len(method_holder.method_parameters) + 1),
+                               current_type_kind=NUMBERS_TO_STR.get(len(method_holder.method_parameters) + 1)
+                                                 + ' method parameter',
                                suffix_text=' (e.g int, String etc.)'))
         if does_user_continue("Do you need an other parameter"):
             self.fill_method_parameters_info(is_arg, current_dict, method_holder)
@@ -235,7 +251,7 @@ class FormAnswersCollector:
         types_to_display = sub_types_dic if is_sub_type is True or sub_types_dic else types_dict
         if self.allow_typing:
             answers = select_type_from_dict(
-                question_msg='Select the ' + current_type_kind + ' type' + suffix_text,
+                question_msg=current_type_kind + ' type' + suffix_text,
                 types_dict=types_to_display)
             the_type = answers[TYPE]
         else:
@@ -423,7 +439,7 @@ class MethodHolder:
 
     def __str__(self):
         if self.return_type is not None and self.return_type.type_name is not None:
-            representation = self.return_type.type_name + ' '
+            representation = str(self.return_type) + ' '
         else:
             representation = ''
         representation += self.method_name
