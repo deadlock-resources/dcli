@@ -1,4 +1,5 @@
 #include "Target.h"
+#include <stdbool.h>
 
 void main() {
 }

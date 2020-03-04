@@ -1,7 +1,5 @@
 def {{targetMethod}
 
-}
-
 }({{targetMethodArgs}}):
-# implement your own solution
 pass
+# implement your own solution

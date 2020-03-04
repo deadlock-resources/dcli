@@ -16,7 +16,7 @@ void log_test(int user, int n) {
     printf("{{ targetMethod }}(%d): %d\n", n, user);
 }
 
-void log_no_match(int expected) {
+    void log_no_match(int expected) {
     printf("==> Expected: %d\n", expected);
     printf("It does not match, not expected result.\n");
     printf("----------------------------------------------------\n");

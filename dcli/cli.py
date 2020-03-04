@@ -2,7 +2,7 @@
 import fire
 import pkg_resources  # part of setuptools
 
-from .generatorCli import Generator
+from .generatorCli import Generator, generate_for_language
 from .runner import run, solve
 
 
@@ -18,7 +18,7 @@ def gen_with_type(l=''):
     if l == '':
         gen_without_type()
     else:
-        Generator().handle_gen_for_language(l)
+        generate_for_language(l)
 
 
 def main():

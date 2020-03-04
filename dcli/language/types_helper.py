@@ -1,14 +1,54 @@
 import json
 
-import inquirer
+from PyInquirer import prompt
 
 from dcli.generator import file
+
+SEMI_COLUMN = ':'
+
+TYPE = 'type'
+PARAM_NAME = 'paramName'
+
+GENERIC_QUESTION = {
+    'type': 'input',
+    'name': TYPE,
+    'message': 'Type the generic type name' + SEMI_COLUMN,
+    'validate': lambda text: True if len(text) > 0 else 'Generic type name must not be empty.'
+}
+
+OWN_TYPE_QUESTION = {
+    'type': 'input',
+    'name': TYPE,
+    'message': 'Type your new full type name' + SEMI_COLUMN,
+    'validate': lambda text: True if len(text) > 0 else 'You own type name must not be empty.'
+}
+
+KNOWN_LANGUAGE_TYPE_QUESTION = {
+    'type': 'input',
+    'name': TYPE,
+    'message': 'Type the lib language full type name' + SEMI_COLUMN,
+    'validate': lambda text: True if len(text) > 0 else 'Lib language type name must not be empty.'
+}
+PARAM_NAME_QUESTION = {
+    'type': 'input',
+    'name': PARAM_NAME,
+    'message': 'What is the parameter name' + SEMI_COLUMN,
+    'validate': lambda text: True if len(text) > 0 else 'Parameter name must not be empty.'
+}
+
+METHOD_NAME = 'METHOD_NAME'
+
+METHOD_NAME_QUESTION = {
+    'type': 'input',
+    'name': METHOD_NAME,
+    'message': 'Type the method name, Main method for the user, entry point of the program (e.g. mainMethod)' + SEMI_COLUMN,
+    'validate': lambda text: True if len(text) > 0 and 'main' != text else 'Must not be empty.' if len(
+        text) == 0 else 'main is a reserved method.'
+}
 
 PRIMITIVE_TYPE = 'Primitive type (eg int, character)'
 
 DEFAULT_VALUE = 'defaultValue'
-
-METHOD_NAME = 'METHOD_NAME'
 
 FILE_NAME = 'FILE_NAME'
 
@@ -28,43 +68,50 @@ YES = 'Yes'
 
 NO = 'No'
 
-PARAM_NAME = 'paramName'
-
-TYPE = 'type'
+ARRAY_QUESTION = {
+    'type': 'list',
+    'name': ARRAY_DIMENSION,
+    'message': 'What is the number of dimension of your array' + SEMI_COLUMN,
+    'choices': ['1', '2', '3', '4', '5'],
+}
 
 PARAMETRIZED_TYPE = 'Type to parametrize (e.g. a List)'
 
-KNOWN_LIB_LANGUAGE_TYPE = 'Existing type from language lib (e.g. InputStream in java)'
+KNOWN_LIB_LANGUAGE_TYPE = 'Existing type from language lib (e.g. InputStream in java)' + SEMI_COLUMN
 OWN_TYPE = 'Your own type (will be created at generation)'
 
 
-def does_user_continue(parameter_="Do you want to continue"):
+def does_user_continue(sentence="Do you want to continue"):
     continue_questions = [
-        inquirer.List(CONTINUE,
-                      message=parameter_,
-                      choices=[YES, NO],
-                      ),
+        {
+            'type': 'confirm',
+            'message': sentence + SEMI_COLUMN,
+            'name': CONTINUE,
+            'default': True,
+        }
     ]
-    answer = inquirer.prompt(continue_questions)
-    return answer[CONTINUE] == YES
+    answer = prompt(continue_questions)
+    return answer[CONTINUE]
 
 
 def select_type_from_dict(question_msg='What type do you need ', types_dict=[]):
     questions = [
-        inquirer.List(TYPE,
-                      message=question_msg,
-                      choices=types_dict,
-                      ),
+        {
+            'type': 'list',
+            'name': TYPE,
+            'message': question_msg + SEMI_COLUMN,
+            'choices': types_dict,
+        }
     ]
-    answers = inquirer.prompt(questions)
+    answers = prompt(questions)
     return answers
 
 
 def get_param_name():
     arg_questions = [
-        inquirer.Text(PARAM_NAME, message="What is the parameter name ", validate=lambda _, x: len(x) > 0)
+        PARAM_NAME_QUESTION
     ]
-    return inquirer.prompt(arg_questions)[PARAM_NAME]
+    return prompt(arg_questions)[PARAM_NAME]
 
 
 def add_other_types_choices(allow_lib, allow_type_creation, have_generics, have_parametrized):
@@ -85,9 +132,9 @@ def read_json_types(json_file):
     loaded_types = json.load(json_file)
     types_to_choose = {}
     for current_type in loaded_types:
-        name_ = current_type[TYPE_NAME]
+        the_name = current_type[TYPE_NAME]
         default_value = current_type[DEFAULT_VALUE]
-        current_struct_desc = StructDescription(type_name=name_, default_value=default_value)
+        current_struct_desc = StructDescription(type_name=the_name, default_value=default_value)
 
         types_to_choose.update({current_struct_desc.type_name: current_struct_desc.default_value})
     return types_to_choose
@@ -132,31 +179,33 @@ class FormAnswersCollector:
                                                   have_parametrized)
         file_question = []
         if allow_type_creation:
-            file_question.append(inquirer.Text(FILE_NAME,
-                                               message='Type the Main file name for the user, (e.g. MainFile) without extension',
-                                               validate=lambda _, x: len(x) > 0))
-        file_question.append(inquirer.Text(METHOD_NAME,
-                                           message='Type the method name, Main method for the user, entry point of the program (e.g. mainMethod)',
-                                           validate=lambda _, x: len(x) > 0 and x != 'main'))
+            file_question.append({
+                'type': 'input',
+                'name': FILE_NAME,
+                'message': 'Type the Main file name for the user, (e.g. MainFile) without extension' + SEMI_COLUMN,
+                'validate': lambda text: len(text) > 0 or 'Must not be empty.'
+            })
 
-        answers = inquirer.prompt(file_question)
+        file_question.append(METHOD_NAME_QUESTION)
+
+        answers = prompt(file_question)
         if allow_type_creation:
             file_name = answers[FILE_NAME]
         else:
             file_name = ''
         method_name = answers[METHOD_NAME]
         method_holder_tmp = MethodHolder(method_name=method_name, return_type=None, method_parameters=[])
-        self.handle_param_or_return(False, types_to_choose, method_holder_tmp)
-        self.handle_param_or_return(True, types_to_choose, method_holder_tmp)
+        self.fill_method_holder(False, types_to_choose, method_holder_tmp)
+        self.fill_method_holder(True, types_to_choose, method_holder_tmp)
         structure = StructureHolder(structure_name=file_name,
                                     file_names=[file_name],
                                     methods=[method_holder_tmp])
         return structure
 
-    def handle_param_or_return(self, is_arg, types_dict, current_method):
+    def fill_method_holder(self, is_arg, types_dict, current_method):
         ret = []
         if is_arg:
-            self.handle_method_param(is_arg, types_dict, current_method)
+            self.fill_method_parameters_info(is_arg, types_dict, current_method)
         else:
             current_method.return_type = self.get_user_type(is_it_param=is_arg, types_dict=types_dict,
                                                             current_type_kind='method return',
@@ -166,19 +215,20 @@ class FormAnswersCollector:
         if not does_user_continue('Are you sure of your choice  \"' + current_choice + '\" '):
             print('Restart choice')
             current_method.clear_parameters()
-            ret = self.handle_param_or_return(is_arg, types_dict, current_method)
+            current_method.method_name = prompt(METHOD_NAME_QUESTION)[METHOD_NAME]
+            ret = self.fill_method_holder(is_arg, types_dict, current_method)
         else:
             print(current_choice)
         return ret
 
-    def handle_method_param(self, is_arg, current_dict, method_holder):
+    def fill_method_parameters_info(self, is_arg, current_dict, method_holder):
         print(method_holder)
         method_holder.add_parameter(
             self.get_user_type(is_it_param=is_arg, types_dict=current_dict,
                                current_type_kind='method parameter nb ' + str(len(method_holder.method_parameters) + 1),
                                suffix_text='(e.g int, String etc.)'))
         if does_user_continue("Do you need an other parameter "):
-            self.handle_method_param(is_arg, current_dict, method_holder)
+            self.fill_method_parameters_info(is_arg, current_dict, method_holder)
 
     def get_user_type(self, is_it_param, types_dict, is_sub_type=False, sub_types_dic=None, parent_name='',
                       current_type_kind='required', suffix_text=''):
@@ -187,41 +237,42 @@ class FormAnswersCollector:
             answers = select_type_from_dict(
                 question_msg='What is the ' + current_type_kind + ' type' + ' ' + suffix_text + ' ',
                 types_dict=types_to_display)
-            type_ = answers[TYPE]
+            the_type = answers[TYPE]
         else:
-            type_ = None
+            the_type = None
         type_need_creation, type_need_import, is_array, is_generic = False, False, False, False
 
         array_dim = 0
         parametrized_root_type, default_value, array_type = None, None, None
         parametrized_types = []
         param_name = ''
-        if type_ == OWN_TYPE:
-            type_, type_need_creation, type_need_import = self.handle_own_type()
+        if the_type == OWN_TYPE:
+            the_type, type_need_creation, type_need_import = self.collect_own_type_info()
 
-        elif type_ == KNOWN_LIB_LANGUAGE_TYPE:
-            type_, type_need_creation, type_need_import = self.handle_know_language_type()
+        elif the_type == KNOWN_LIB_LANGUAGE_TYPE:
+            the_type, type_need_creation, type_need_import = self.collect_know_language_type_info()
 
-        elif type_ == PRIMITIVE_TYPE:
-            type_ = self.handle_primitive_type(is_it_param, types_dict)
+        elif the_type == PRIMITIVE_TYPE:
+            the_type = self.collect_primitive_type_info(is_it_param, types_dict)
 
-        elif type_ == GENERIC:
-            is_generic, type_ = self.handle_generic_type()
+        elif the_type == GENERIC:
+            is_generic, the_type = self.collect_generic_type_info()
 
-        elif type_ == ARRAY:
-            array_dim, array_type, is_array = self.handle_array_type(is_it_param, types_dict)
+        elif the_type == ARRAY:
+            array_dim, array_type, is_array = self.collect_array_type_info(is_it_param, types_dict)
 
-        elif type_ == PARAMETRIZED_TYPE:
-            parametrized_root_type, type_ = self.handle_parametrized_type(is_it_param, parametrized_types, types_dict)
+        elif the_type == PARAMETRIZED_TYPE:
+            parametrized_root_type, the_type = self.collect_parametrized_type_info(is_it_param, parametrized_types,
+                                                                                   types_dict)
 
         if self.allow_typing:
-            default_value = self.types_to_choose_dict.get(type_)
+            default_value = self.types_to_choose_dict.get(the_type)
         if is_it_param and not is_sub_type:
             param_name = get_param_name()
         elif is_sub_type:
             param_name = parent_name
 
-        ret = DataTypeHolder(type_name=type_,
+        ret = DataTypeHolder(type_name=the_type,
                              need_import=type_need_import,
                              need_creation=type_need_creation,
                              is_arg=is_it_param,
@@ -236,7 +287,7 @@ class FormAnswersCollector:
 
         return ret
 
-    def handle_parametrized_type(self, is_it_param, parametrized_types, types_dict):
+    def collect_parametrized_type_info(self, is_it_param, parametrized_types, types_dict):
         reduced_type_list = types_dict.copy()
         reduced_type_list.remove(ARRAY)
         reduced_type_list.remove(PARAMETRIZED_TYPE)
@@ -256,28 +307,25 @@ class FormAnswersCollector:
                                    current_type_kind='parametrized'))
         return parametrized_root_type, user_type
 
-    def handle_array_type(self, is_it_param, types_dict):
+    def collect_array_type_info(self, is_it_param, types_dict):
         reduced_type_list = types_dict.copy()
         reduced_type_list.remove(ARRAY)
-        array_question = [inquirer.List(ARRAY_DIMENSION,
-                                        message="What is the number of dimension of your array ",
-                                        choices=[1, 2, 3, 4, 5],
-                                        )]
-        array_dim = inquirer.prompt(array_question)[ARRAY_DIMENSION]
+        array_question = [ARRAY_QUESTION]
+        array_dim = int(prompt(array_question)[ARRAY_DIMENSION])
         array_type = self.get_user_type(is_it_param=is_it_param, types_dict=types_dict, is_sub_type=True,
                                         sub_types_dic=reduced_type_list, current_type_kind='array')
         is_array = True
         return array_dim, array_type, is_array
 
-    def handle_generic_type(self):
+    def collect_generic_type_info(self):
         new_questions = [
-            inquirer.Text(TYPE, message='Type the generic type name', validate=lambda _, x: len(x) > 0)
+            GENERIC_QUESTION
         ]
         is_generic = True
-        user_type = inquirer.prompt(new_questions)[TYPE]
+        user_type = prompt(new_questions)[TYPE]
         return is_generic, user_type
 
-    def handle_primitive_type(self, is_it_param, types_dict):
+    def collect_primitive_type_info(self, is_it_param, types_dict):
         reduced_type_list = self.types_to_choose_dict.copy()
         user_type = self.get_user_type(is_it_param=is_it_param, types_dict=types_dict,
                                        is_sub_type=True,
@@ -285,20 +333,20 @@ class FormAnswersCollector:
                                        current_type_kind=' to select').type_name
         return user_type
 
-    def handle_know_language_type(self):
+    def collect_know_language_type_info(self):
         new_questions = [
-            inquirer.Text(TYPE, message='Type the lib language full type name', validate=lambda _, x: len(x) > 0)
+            KNOWN_LANGUAGE_TYPE_QUESTION
         ]
-        user_type = inquirer.prompt(new_questions)[TYPE]
+        user_type = prompt(new_questions)[TYPE]
         type_need_creation = False
         type_need_import = True
         return user_type, type_need_creation, type_need_import
 
-    def handle_own_type(self):
+    def collect_own_type_info(self):
         new_questions = [
-            inquirer.Text(TYPE, message='Type your new full type name', validate=lambda _, x: len(x) > 0)
+            OWN_TYPE_QUESTION
         ]
-        user_type = inquirer.prompt(new_questions)[TYPE]
+        user_type = prompt(new_questions)[TYPE]
         type_need_creation = True
         type_need_import = True
         return user_type, type_need_creation, type_need_import
@@ -368,10 +416,10 @@ class MethodHolder:
 
     def get_generics_types(self):
         all_types = self.method_parameters + [self.return_type]
-        my_array = []
-        for my_type in all_types:
-            get_gens_from(my_type, my_array)
-        return my_array
+        found_generics = []
+        for current_type in all_types:
+            get_gens_from(current_type, found_generics)
+        return found_generics
 
     def __str__(self):
         if self.return_type is not None and self.return_type.type_name is not None:

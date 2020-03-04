@@ -83,6 +83,6 @@ class LanguageGenerator():
         return self._root + path + '/' + file + '.' + self._language.extension
 
     def getTargetFileName(self):
-        if TARGET_FILE_FIELD in self._answers:
+        if TARGET_FILE_FIELD in self._answers and len(self._answers[TARGET_FILE_FIELD]) > 0:
             return self._answers[TARGET_FILE_FIELD]
         return self._language.targetFile
