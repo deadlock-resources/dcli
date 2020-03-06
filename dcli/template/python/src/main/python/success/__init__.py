@@ -1,5 +1,3 @@
-def {{targetMethod}
-
-}({{targetMethodArgs}}):
-pass
+def {{targetMethod}}({{targetMethodArgs}}):
+    pass
 # implement your own solution

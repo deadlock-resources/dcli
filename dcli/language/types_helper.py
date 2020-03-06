@@ -233,8 +233,6 @@ class FormAnswersCollector:
             current_method.clear_parameters()
             current_method.method_name = prompt(METHOD_NAME_QUESTION)[METHOD_NAME]
             ret = self.fill_method_holder(is_arg, types_dict, current_method)
-        else:
-            info(current_choice)
         return ret
 
     def fill_method_parameters_info(self, is_arg, current_dict, method_holder):
