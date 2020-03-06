@@ -3,5 +3,4 @@
 if __name__ == "__main__":
     import template
 
-    template.
-    {{targetMethod}}()  # TODO put your own args
+    template.{{targetMethod}}()  # TODO put your own args

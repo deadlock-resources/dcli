@@ -12,10 +12,8 @@ if __name__ == "__main__":
 
     # Complete code with more test
     # Only one is not enough
-    userValue = template.
-    {{targetMethod}}()  # TODO fill your own args
-    expectedValue = success.
-    {{targetMethod}}()  # TODO fill your own args
+    userValue = template.{{targetMethod}}()  # TODO fill your own args
+    expectedValue = success.{{targetMethod}}()  # TODO fill your own args
     if userValue != expectedValue:
         print("Wrong value")
         print("> expected: " + str(expectedValue))
