@@ -14,6 +14,8 @@ from .logger import info, error, jump
 from .const import CHALLENGE_YAML, API_PORT, MISSION_USER_SCORE_ENDPOINT, MISSION_USER_SCORE_FILENAME, API_ADRESS
 from .scoreController import startScoreResource
 
+from distutils.dir_util import copy_tree
+
 def build(tag, path):
     spin = SpinCursor('', speed=5, maxspin=100000)
     if (os.path.exists(path) == False):
@@ -65,12 +67,15 @@ def prepareMetamorphCode(path):
 
     tmpDir = tempfile.TemporaryDirectory()
 
-    shutil.copy('./runner', tmpDir.name + '/runner')
-    shutil.copy(getPathFromRoot('utils/Dockerfile-runner'), tmpDir.name + '/Dockerfile')
-    shutil.copytree('./template', tmpDir.name + '/template')
+    try:
+        # shutil.copy('./runner', tmpDir.name + '/runner')
+        # shutil.copytree('./template', tmpDir.name + '/template')
+        copy_tree(os.getcwd(), tmpDir.name)
+        shutil.copy(getPathFromRoot('utils/Dockerfile-runner'), tmpDir.name + '/Dockerfile')
 
-    os.system('docker build ' + tmpDir.name + ' -q -t meta')
-    spin.stop()
+        os.system('docker build ' + tmpDir.name + ' -q -t meta')
+    finally:
+        spin.stop()
 
 def runMetamorphCode(path, language):
     downloadIfNecessary(path)
@@ -108,18 +113,17 @@ def downloadRunner(path):
     spin.start()
     runner_bin = 'runner'
     files = {'file': open('entry.rs', 'rb')}
-    try:
-        response = requests.post(url, files=files, stream=True)
-        with open(runner_bin, 'wb') as f:
-            shutil.copyfileobj(response.raw, f)
-    except requests.exceptions.HTTPError as e:
-        print (e.response.text)
-        pass
-
+    response = requests.post(url, files=files, stream=True)
     spin.stop()
+
     if response.status_code != 200:
+        print(response.text)
+        print(response.content)
         error('Cannot build your entry.rs, check its correct.')
         exit(1)
+
+    with open(runner_bin, 'wb') as f:
+        shutil.copyfileobj(response.raw, f)
 
     os.system('chmod u+x runner')
 
