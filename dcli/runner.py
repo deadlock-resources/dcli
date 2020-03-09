@@ -68,8 +68,6 @@ def prepareMetamorphCode(path):
     tmpDir = tempfile.TemporaryDirectory()
 
     try:
-        # shutil.copy('./runner', tmpDir.name + '/runner')
-        # shutil.copytree('./template', tmpDir.name + '/template')
         copy_tree(os.getcwd(), tmpDir.name)
         shutil.copy(getPathFromRoot('utils/Dockerfile-runner'), tmpDir.name + '/Dockerfile')
 
