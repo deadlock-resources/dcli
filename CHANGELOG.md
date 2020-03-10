@@ -1,6 +1,10 @@
 
 ## UNRELEASED
 
+## 1.0.0 (10/03/2020)
+* finally first release
+* improve running metamorph mission with docker volume, to avoid building image everytime, and improve performance
+
 ## 0.0.99 (09/03/2020)
 * fix sping error when build fail
 * create docker env to run|solve metamorph challenge instead of using host binary

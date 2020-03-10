@@ -1,3 +1,4 @@
+import time
 import os
 import sys
 import json
@@ -60,16 +61,21 @@ def run(path='.', language='empty'):
     else:
         error('Challenge type not supported, verify your challenge.yaml')
 
-def prepareMetamorphCode(path):
+def prepareMetamorphCode(path, tmpDir):
     info('🔨 Building mission..')
     spin = SpinCursor('', speed=5, maxspin=100000)
     spin.start()
 
-    tmpDir = tempfile.TemporaryDirectory()
-
     try:
-        copy_tree(os.getcwd(), tmpDir.name)
+        copy_tree(path, tmpDir.name)
         shutil.copy(getPathFromRoot('utils/Dockerfile-runner'), tmpDir.name + '/Dockerfile')
+        shutil.copy(getPathFromRoot('utils/run.sh'), tmpDir.name + '/run.sh')
+
+        # copy each template files
+        for subdir, dirs, files in os.walk(path + '/template'):
+            for file in files:
+                shutil.copy(os.path.join(subdir, file), tmpDir.name)
+
 
         os.system('docker build ' + tmpDir.name + ' -q -t meta')
     finally:
@@ -78,16 +84,22 @@ def prepareMetamorphCode(path):
 def runMetamorphCode(path, language):
     downloadIfNecessary(path)
 
-    prepareMetamorphCode(path)
+    # copy everything to tmp to avoid any conflict with user directory files
+    tmpDir = tempfile.TemporaryDirectory()
+    prepareMetamorphCode(path, tmpDir)
 
-    os.system('docker run meta run ' + language)
+    # volume to the tmp dir
+    os.system(f"docker run -v {tmpDir.name}:/tmp/runner meta run {language}")
 
 def solveMetamorphCode(path, language):
     downloadIfNecessary(path)
 
-    prepareMetamorphCode(path)
+    # copy everything to tmp to avoid any conflict with user directory files
+    tmpDir = tempfile.TemporaryDirectory()
+    prepareMetamorphCode(path, tmpDir)
 
-    os.system('docker run meta solve ' + language)
+    # volume to the tmp dir
+    os.system(f"docker run -v {tmpDir.name}:/tmp/runner meta solve {language}")
 
 
 def downloadIfNecessary(path):
