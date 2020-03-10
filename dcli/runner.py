@@ -43,7 +43,7 @@ def exitIfError(exitCode, message, spin):
             error(message)
         sys.exit(1)
 
-def run(path='.', language='empty'):
+def run(path=os.getcwd(), language='empty'):
     '''
     Run the mission under given path.
     As if user clicked on Run button.
@@ -52,7 +52,7 @@ def run(path='.', language='empty'):
     '''
     yaml = loadYaml(path + '/' + CHALLENGE_YAML)
     if 'coding' in yaml:
-        if os.path.exists('entry.rs') == True:
+        if os.path.exists(f'{path}/entry.rs') == True:
             runMetamorphCode(path, language)
         else:
             runCode(path)
@@ -67,39 +67,44 @@ def prepareMetamorphCode(path, tmpDir):
     spin.start()
 
     try:
-        copy_tree(path, tmpDir.name)
-        shutil.copy(getPathFromRoot('utils/Dockerfile-runner'), tmpDir.name + '/Dockerfile')
-        shutil.copy(getPathFromRoot('utils/run.sh'), tmpDir.name + '/run.sh')
+        copy_tree(path, tmpDir)
+        shutil.copy(getPathFromRoot('utils/Dockerfile-runner'), tmpDir + '/Dockerfile')
+        shutil.copy(getPathFromRoot('utils/run.sh'), tmpDir + '/run.sh')
 
         # copy each template files
         for subdir, dirs, files in os.walk(path + '/template'):
             for file in files:
-                shutil.copy(os.path.join(subdir, file), tmpDir.name)
+                shutil.copy(os.path.join(subdir, file), tmpDir)
 
 
-        os.system('docker build ' + tmpDir.name + ' -q -t meta')
+        os.system('docker build ' + tmpDir + ' -q -t meta')
     finally:
         spin.stop()
 
 def runMetamorphCode(path, language):
-    downloadIfNecessary(path)
-
-    # copy everything to tmp to avoid any conflict with user directory files
-    tmpDir = tempfile.TemporaryDirectory()
-    prepareMetamorphCode(path, tmpDir)
-
-    # volume to the tmp dir
-    os.system(f"docker run -v {tmpDir.name}:/tmp/runner meta run {language}")
+   execMetamorphCode(path, language, 'run') 
 
 def solveMetamorphCode(path, language):
+   execMetamorphCode(path, language, 'solve') 
+    
+
+def execMetamorphCode(path, language, way):
+    if path == '.':
+        path = os.getcwd()
+    elif path[0] != '/':
+        error('Path given must be absolute')
+        exit(1)
+        
     downloadIfNecessary(path)
 
     # copy everything to tmp to avoid any conflict with user directory files
-    tmpDir = tempfile.TemporaryDirectory()
+    # cannot use the default /tmp dir, because it generate problem with Docker volume
+    tmpDir = f'{path}/build'
     prepareMetamorphCode(path, tmpDir)
 
     # volume to the tmp dir
-    os.system(f"docker run -v {tmpDir.name}:/tmp/runner meta solve {language}")
+    os.system(f"docker run -v {tmpDir}:/tmp/runner meta {way} {language}")
+    shutil.rmtree(tmpDir, ignore_errors=True)
 
 
 def downloadIfNecessary(path):
@@ -146,18 +151,18 @@ def downloadRunner(path):
     info('🛰️  Download completed')
 
 
-def runCode(path='.'):
+def runCode(path=os.getcwd()):
     tag = uuid.uuid4()
     build(tag, path) 
     info('🚀 Running mission..')
     os.system(f'docker run {tag} Run')
     pass
 
-def runHack(path='.'):
+def runHack(path=os.getcwd()):
     os.system(getPathFromRoot('utils/run-hack.sh'))
 
 
-def solveScore(tag, path='.'):
+def solveScore(tag, path=os.getcwd()):
     '''
     Run Solve step for the mission under given path.
     As if user clicked on Submit button.
@@ -182,12 +187,12 @@ def solveScore(tag, path='.'):
     httpServerProcess.terminate()
 
 
-def solveCode(tag, path='.', ):
+def solveCode(tag, path=os.getcwd()):
     info('🚀 Solving mission..')
     os.system(f'docker run {tag} Solve')
     pass
 
-def solve(path='.', language='empty'):
+def solve(path=os.getcwd(), language='empty'):
     '''
     Run Solve step for the mission under given path.
     As if user clicked on Submit button.
