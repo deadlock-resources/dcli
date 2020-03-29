@@ -1,8 +1,13 @@
 
 ## UNRELEASED
 
+## 1.1.0 (29/03/2020)
+* improve run|solve logs
+* fix spinner broken pipe
+* add support for multi service challenge
+
 ## 1.0.01 (10/03/2020)
-* fix: use custom tmp dir to execute metamorph mission
+* fix use custom tmp dir to execute metamorph mission
 
 ## 1.0.0 (10/03/2020)
 * finally first release

@@ -54,7 +54,8 @@ class SpinCursor(threading.Thread):
             self.count += 1
 
         # Clean up display...
-        self.out.write(" "*(len(self.string) + 1))
+        self.out.write(" "*(len(self.string) + 10))
+        print('')
         
     def stop(self):
         self.flag = True
