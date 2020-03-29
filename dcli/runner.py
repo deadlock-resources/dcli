@@ -14,8 +14,12 @@ from .spinCursor import SpinCursor
 from .logger import info, error, jump
 from .const import CHALLENGE_YAML, API_PORT, MISSION_USER_SCORE_ENDPOINT, MISSION_USER_SCORE_FILENAME, API_ADRESS
 from .scoreController import startScoreResource
+from .cmd import execute
 
 from distutils.dir_util import copy_tree
+
+DOCKER_NETWORK = 'deadlock-challenge'
+PREFIX_SERVICE_NAME='deadlock-service'
 
 def build(tag, path):
     spin = SpinCursor('', speed=5, maxspin=100000)
@@ -24,14 +28,46 @@ def build(tag, path):
         sys.exit(1)
     info('🔨 Building mission..')
     spin.start()
-    exitCode = 0
+
     if (os.path.exists(f'{path}/build.sh')):
-        exitCode = os.system(f'{path}/build.sh')
-        exitIfError(exitCode, 'Cannot exec build.sh file', spin)
+        execute(f'{path}/build.sh', {
+            'exitOnError': True,
+            'messageOnError': 'Cannot execute build.sh file',
+            'spin': spin})
     info('🐳 Building Docker image')
-    exitCode += os.system(f'docker build {path} -q -t {tag}')
-    exitIfError(exitCode, 'Cannot build Docker image..', spin)
+    execute(f'docker build {path} -q -t {tag}', {
+            'quiet': True,
+            'exitOnError': True,
+            'spin': spin})
+
+    execute(f'docker network create {DOCKER_NETWORK}', {'quiet': True})
+
+    # also build services if exist
+    if os.path.exists(f'{path}/services') == True:
+        dirs = os.listdir(f'{path}/services')
+        for service in dirs:
+            buildAndRunService(f'{path}/services', service)
+            
     spin.stop()
+
+def buildAndRunService(path, service):
+    info(f'📂 {service} service found')
+    info(f'>  🐳 Building {service}')
+    execute(f'docker build -q -f {path}/{service}/Dockerfile -t {getDockerServiceName(service)} {path}/{service}', {"quiet": False})
+    info(f'>  🚀 Running {service}')
+    execute(f'docker run -d --rm --net={DOCKER_NETWORK} --name {service} {getDockerServiceName(service)}', {"quiet": False})
+
+
+def getDockerServiceName(serviceName):
+    return f'{PREFIX_SERVICE_NAME}-{serviceName}'
+
+def clean():
+    print('')
+    time.sleep(1)
+    info('Cleaning resources')
+    execute(f'docker ps --filter network={DOCKER_NETWORK} -aq | xargs docker stop &>/dev/null | xargs docker rm', {"quiet": True})
+    execute(f'docker network rm {DOCKER_NETWORK}', {"quiet": True})
+    info('Done')
 
 def exitIfError(exitCode, message, spin):
     if (exitCode != 0):
@@ -60,6 +96,7 @@ def run(path=os.getcwd(), language='empty'):
         runHack(path)
     else:
         error('Challenge type not supported, verify your challenge.yaml')
+    clean()
 
 def prepareMetamorphCode(path, tmpDir):
     info('🔨 Building mission..')
@@ -155,7 +192,7 @@ def runCode(path=os.getcwd()):
     tag = uuid.uuid4()
     build(tag, path) 
     info('🚀 Running mission..')
-    os.system(f'docker run {tag} Run')
+    execute(f'docker run --net={DOCKER_NETWORK} {tag} Run')
     pass
 
 def runHack(path=os.getcwd()):
@@ -189,7 +226,7 @@ def solveScore(tag, path=os.getcwd()):
 
 def solveCode(tag, path=os.getcwd()):
     info('🚀 Solving mission..')
-    os.system(f'docker run {tag} Solve')
+    os.system(f'docker run --net={DOCKER_NETWORK} {tag} Solve')
     pass
 
 def solve(path=os.getcwd(), language='empty'):
@@ -213,4 +250,5 @@ def solve(path=os.getcwd(), language='empty'):
             solveCode(tag, path)
     else:
         error('Challenge type not supported for solve method.')
+    clean()
 
