@@ -1,0 +1,56 @@
+{
+  "Byte": {
+    "requireImport": false,
+    "className": "kotlin.Byte",
+    "defaultValue": 0,
+    "primitive": false
+  },
+  "Short": {
+    "requireImport": false,
+    "className": "kotlin.Short",
+    "defaultValue": 0,
+    "primitive": false
+  },
+  "Int": {
+    "requireImport": false,
+    "className": "kotlin.Int",
+    "defaultValue": 0,
+    "primitive": false
+  },
+  "Long": {
+    "requireImport": false,
+    "className": "kotlin.Long",
+    "defaultValue": 0,
+    "primitive": false
+  },
+  "Float": {
+    "requireImport": false,
+    "className": "kotlin.Float",
+    "defaultValue": 0.0,
+    "primitive": false
+  },
+  "Double": {
+    "requireImport": false,
+    "className": "kotlin.Double",
+    "defaultValue": 0.0,
+    "primitive": false
+  },
+  "Char": {
+    "requireImport": false,
+    "className": "kotlin.Char",
+    "defaultValue": "\\O",
+    "primitive": false
+  },
+  "String": {
+    "requireImport": false,
+    "className": "kotlin.String",
+    "defaultValue": "\"\"",
+    "primitive": false
+  },
+  "Boolean": {
+    "requireImport": false,
+    "className": "kotlin.Boolean",
+    "defaultValue": false,
+    "primitive": false
+  }
+}
