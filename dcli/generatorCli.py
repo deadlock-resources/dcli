@@ -7,6 +7,7 @@ from .language.java.question import askJavaQuestions
 from .language.c.question import askCQuestions
 from .language.cpp.question import askCppQuestions 
 from .language.python.question import askPythonQuestions
+from .language.kotlin.question import askKotlinQuestions
 
 from .logger import info, error, paragraph
 
@@ -17,6 +18,7 @@ from .language.java import Java
 from .language.python import Python
 from .language.c import C 
 from .language.cpp import Cpp 
+from .language.kotlin import Kotlin
 
 from .const import TARGET_METHOD_RETURN_VALUE
 
@@ -80,7 +82,7 @@ class Generator(object):
         pass
 
     def java(self):
-        """ Generates a basic C challenge """
+        """ Generates a basic Java challenge """
         answers = ask_usual()
         answers.update(askJavaQuestions())
 
@@ -107,7 +109,7 @@ class Generator(object):
 
 
     def c(self):
-        """ Generates a basic Java challenge """
+        """ Generates a basic C challenge """
         answers = ask_usual()
         answers.update(askCQuestions())
 
@@ -128,3 +130,23 @@ class Generator(object):
         common_end_message(answers)
         pass
 
+    def kotlin(self):
+        """ Generates a basic Kotlin challenge """
+        answers = ask_usual()
+        answers.update(askKotlinQuestions())
+
+        language = Kotlin()
+        self.add_type_if_necessary(self.parse_kotlin_target_method_args(answers['targetMethodArgs']), language)
+        self.add_type_if_necessary(self.parse_target_method_args(answers['targetMethodReturn']), language)
+
+        # append default value
+        answers[TARGET_METHOD_RETURN_VALUE] = language.get_default_value(answers['targetMethodReturn'])
+
+        kotlinGen = LanguageGenerator(language, answers)
+        kotlinGen.create()
+
+        common_end_message(answers)
+        pass
+
+    def parse_kotlin_target_method_args(self, args):
+        return list(map(lambda s: s.strip().split(":")[1].strip() if s else "", args.split(',')))

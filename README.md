@@ -27,7 +27,7 @@ dcli version
 
 ## Generate mission
 ```bash
-dcli gen (java|python|cpp|c)
+dcli gen (java|python|cpp|c|kotlin)
 ```
 
 ## Execute mission
@@ -48,7 +48,6 @@ dcli run . python
 ```
 
 ## Todo
-* Add Kotlin generator language
 * Add Haskell generator language
 
 

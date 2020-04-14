@@ -1,0 +1,14 @@
+version: 1.0
+name: {{ name }}
+label: {{ label }}
+description: {{ description }}
+level: {{ level }}
+type: CODING
+xp:
+  kotlin: 1
+  programming: 1
+coding:
+  templateDirectory: src/main/kotlin/template
+  successDirectory: src/main/kotlin/success
+  target: {{ targetFile }}.kt
+  editorMode: kotlin
