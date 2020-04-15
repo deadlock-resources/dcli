@@ -1,5 +1,7 @@
 
 ## UNRELEASED
+* fix(c) missing ; and bool include
+* fix(java) list default types
 
 ## 1.1.1 (15/04/2020)
 * fix way to quiet command line, improve os compatibility
