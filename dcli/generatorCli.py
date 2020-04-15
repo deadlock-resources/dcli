@@ -84,6 +84,7 @@ class Generator(object):
 
         language = Java()
         self.addTypeIfNecessary(self.parseTargetMethodArgs(answers['targetMethodArgs']), language)
+        self.addTypeIfNecessary(self.parseTargetMethodArgs(answers['targetMethodReturn']), language)
         
         javaGen = LanguageGenerator(language, answers)
         javaGen.create()
@@ -92,7 +93,7 @@ class Generator(object):
         pass
 
     def addTypeIfNecessary(self, argTypes, language):
-        commonTypes = ['int', 'double', 'float', 'String', 'long']
+        commonTypes = ['int', 'double', 'float', 'String', 'long', 'Long', 'Integer', 'Double', 'Float', '']
         for argType in argTypes:
             if argType not in commonTypes:
                 language.addType(argType)
