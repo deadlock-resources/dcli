@@ -1,5 +1,6 @@
 #ifndef TARGET_H_
 #define TARGET_H_
+#include <stdbool.h>
 
 {{ targetMethodReturn }} {{ targetMethod }}({{ targetMethodArgs }});
 
