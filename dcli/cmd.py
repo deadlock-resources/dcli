@@ -1,5 +1,11 @@
 import os
 import sys
+import subprocess
+try:
+    from subprocess import DEVNULL
+except ImportError:
+    import os
+    DEVNULL = open(os.devnull, 'wb')
 from .logger import info, error, jump
 
 
@@ -17,18 +23,29 @@ def execute(cmd, args = {}):
     quiet = args.get("quiet", False)
     spin = args.get("spin", None)
 
-    if quiet == True:
-        cmd += ' &>/dev/null'
+    FNULL = open(os.devnull, 'w')
 
-    exitCode = os.system(cmd)
-    if exitOnError == True and exitCode != 0:
+
+    try:
+        exitCode = 0
+        if quiet == True:
+            exitCode = subprocess.call(cmd, shell=True, stdout=DEVNULL, stderr=DEVNULL)
+        else:
+            exitCode = subprocess.call(cmd, shell=True)
         if spin != None:
             spin.stop()
-            jump()
-        if exitCode == 2:
-            error('Cancelled.')
-        else:
+            spin = None
+        if exitOnError == True and exitCode != 0:
             error(messageOnError)
-        sys.exit(1)
+            sys.exit(1)
+    except KeyboardInterrupt:
+        error('Cancelled.')
+        sys.exit(2)
+    except OSError as e:
+        error('Something bad happened:')
+        error(messageOnError)
+    if spin != None:
+        spin.stop()
+        jump()
 
 
