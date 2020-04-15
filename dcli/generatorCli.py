@@ -3,10 +3,10 @@ import os
 import sys
 from PyInquirer import prompt, print_json
 
-from .questions.java import askJavaQuestions
-from .questions.c import askCQuestions
-from .questions.cpp import askCppQuestions 
-from .questions.python import askPythonQuestions
+from .language.java.question import askJavaQuestions
+from .language.c.question import askCQuestions
+from .language.cpp.question import askCppQuestions 
+from .language.python.question import askPythonQuestions
 
 from .logger import info, error, paragraph
 
@@ -17,6 +17,8 @@ from .language.java import Java
 from .language.python import Python
 from .language.c import C 
 from .language.cpp import Cpp 
+
+from .const import TARGET_METHOD_RETURN_VALUE
 
 
 def askUsual():
@@ -85,18 +87,20 @@ class Generator(object):
         language = Java()
         self.addTypeIfNecessary(self.parseTargetMethodArgs(answers['targetMethodArgs']), language)
         self.addTypeIfNecessary(self.parseTargetMethodArgs(answers['targetMethodReturn']), language)
-        
+
+        # append default value
+        answers[TARGET_METHOD_RETURN_VALUE] = language.get_default_value(answers['targetMethodReturn'])
+
         javaGen = LanguageGenerator(language, answers)
         javaGen.create()
 
         commonEndingMessage(answers)
         pass
 
-    def addTypeIfNecessary(self, argTypes, language):
-        commonTypes = ['int', 'double', 'float', 'String', 'long', 'Long', 'Integer', 'Double', 'Float', '']
-        for argType in argTypes:
-            if argType not in commonTypes:
-                language.addType(argType)
+    def addTypeIfNecessary(self, arg_types, language):
+        for arg_type in arg_types:
+            if not language.is_common_type(arg_type):
+                language.add_type(arg_type)
 
     def parseTargetMethodArgs(self, args):
         return list(map(lambda s: s.strip().split(' ')[0], args.split(',')))

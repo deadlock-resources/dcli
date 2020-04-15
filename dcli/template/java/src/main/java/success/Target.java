@@ -10,6 +10,6 @@ public class {{ targetFile }} {
 
     public static {% if targetMethodReturn == "" %}void{% else %}{{ targetMethodReturn }}{% endif %} {{ targetMethod }}({{ targetMethodArgs }}) {
         //TODO write your own solution
-        {% if targetMethodReturn != "" %}return null;{% endif %}
+        {% if targetMethodReturn != "" %}return {{ targetMethodReturnValue }};{% endif %}
     }
 }

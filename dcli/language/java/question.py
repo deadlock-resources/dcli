@@ -1,9 +1,8 @@
-
 import os
 import sys
 from PyInquirer import prompt
-from ..logger import error
-from ..const import TARGET_FILE_FIELD, TARGET_METHOD_FIELD, TARGET_METHOD_ARGS_FIELD, TARGET_METHOD_RETURN_FIELD
+from ...logger import error
+from ...const import TARGET_FILE_FIELD, TARGET_METHOD_FIELD, TARGET_METHOD_ARGS_FIELD, TARGET_METHOD_RETURN_FIELD
 
 def askJavaQuestions():
     javaQuestions = [

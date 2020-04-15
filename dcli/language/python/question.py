@@ -2,8 +2,8 @@
 import os
 import sys
 from PyInquirer import prompt
-from ..logger import error
-from ..const import TARGET_FILE_FIELD, TARGET_METHOD_FIELD
+from ...logger import error
+from ...const import TARGET_FILE_FIELD, TARGET_METHOD_FIELD
 
 def askPythonQuestions():
     pythonQuestions = [

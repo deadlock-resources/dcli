@@ -26,9 +26,10 @@ public class Solve {
             // your solution result
             {{ targetMethodReturn }} expectedResult = success.{{ targetFile }}.{{ targetMethod }}({% if targetMethodArgs != "" %}/* //TODO fill it with your own args */{% endif %});
             //TODO you have to do different tests to be sure user has the good solution.
-            // comparing userResult and expectedResult
 
-            if (expectedResult.equals(userResult)) {
+            // there is only one test as example!
+            // comparing userResult and expectedResult
+            if (Objects.equals(expectedResult, userResult)) {
                 // if all test passed successfully
                 Logger.logSuccess();
             } else {

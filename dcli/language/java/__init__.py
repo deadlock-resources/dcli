@@ -1,4 +1,4 @@
-from .language import Language
+from ..language import Language
 
 TEMPLATE_PATH = '/src/main/java/template'
 SUCCESS_PATH = '/src/main/java/success'
@@ -24,9 +24,7 @@ class Java(Language):
             'java',
             ASSET_PATHS
         )
-
     
-    def addType(self, name):
+    def add_type(self, name):
         self.addNewAsset(self.templateDirPath, name, f'package template;\n\nclass {name} {{}}')
         self.addNewAsset(self.successDirPath, name, f'package success;\n\nclass {name} {{}}')
-

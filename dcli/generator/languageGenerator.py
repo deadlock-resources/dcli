@@ -1,6 +1,6 @@
 import os
 from .common import template
-from .file import loadFile, writeFile, getPathFromTemplateDir
+from .file import openFileFromTemplateDir, writeFile, getPathFromTemplateDir
 from ..const import TARGET_FILE_FIELD, TARGET_METHOD_FIELD
 from ..logger import info, error, jump
 from colored import fg, attr
@@ -44,7 +44,7 @@ class LanguageGenerator():
         self.copyFile('thumbnail.png')
 
     def templateAndCopyFile(self, file):
-        writeFile(self._root + '/' + file, template(self._answers, loadFile(self._language.type, file)))
+        writeFile(self._root + '/' + file, template(self._answers, openFileFromTemplateDir(self._language.type, file)))
 
     def copyFile(self, file):
         copyfile(getPathFromTemplateDir(self._language.type, file), self._root + '/' + file)
@@ -58,22 +58,22 @@ class LanguageGenerator():
 
     def generateTemplateFile(self):
         fileName = self.getTargetFilePath(self._language.templateDirPath, self.getTargetFileName())
-        writeFile(fileName, template(self._answers, loadFile(self._language.type, self._language.getPathToTemplateTargetFile())))
+        writeFile(fileName, template(self._answers, openFileFromTemplateDir(self._language.type, self._language.getPathToTemplateTargetFile())))
 
 
     def generateSuccessFile(self):
         fileName = self.getTargetFilePath(self._language.successDirPath, self.getTargetFileName())
-        writeFile(fileName, template(self._answers, loadFile(self._language.type, self._language.getPathToSuccessTargetFile())))
+        writeFile(fileName, template(self._answers, openFileFromTemplateDir(self._language.type, self._language.getPathToSuccessTargetFile())))
 
 
     def generateSolveFile(self):
         fileName = self._root + self._language.solvePath
-        writeFile(fileName, template(self._answers, loadFile(self._language.type, self._language.solvePath)))
+        writeFile(fileName, template(self._answers, openFileFromTemplateDir(self._language.type, self._language.solvePath)))
 
 
     def generateRunFile(self):
         fileName = self._root + self._language.runPath
-        writeFile(fileName, template(self._answers, loadFile(self._language.type, self._language.runPath)))
+        writeFile(fileName, template(self._answers, openFileFromTemplateDir(self._language.type, self._language.runPath)))
 
     def generateDocs(self):
         self.templateAndCopyFile('/docs/briefing.md')

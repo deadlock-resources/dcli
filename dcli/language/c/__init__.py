@@ -1,4 +1,4 @@
-from .language import Language
+from ..language import Language
 
 TEMPLATE_PATH = '/src/template'
 SUCCESS_PATH = '/src/success'
