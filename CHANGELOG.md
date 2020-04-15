@@ -1,6 +1,9 @@
 
 ## UNRELEASED
 
+## 1.1.1 (15/04/2020)
+* fix way to quiet command line, improve os compatibility
+
 ## 1.1.0 (29/03/2020)
 * improve run|solve logs
 * fix spinner broken pipe
