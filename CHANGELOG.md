@@ -1,7 +1,7 @@
 
 ## UNRELEASED
 
-## 1.1.2 (15/04/2020)
+## 1.1.3 (15/04/2020)
 * fix(c) missing ; and bool include
 * fix(java) list default types
 * feat(cpp) support for empty return field
