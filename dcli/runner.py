@@ -9,7 +9,7 @@ import shutil
 import tempfile
 from multiprocessing import Process
 from .model.missionUserScore import MissionUserScore
-from .generator.file import getPathFromRoot, loadYaml, createTmpFolder, writeFile
+from .generator.file import get_path_from_root, load_yaml, create_tmp_folder, write_file
 from .spinCursor import SpinCursor
 from .logger import info, error, jump
 from .const import CHALLENGE_YAML, API_PORT, MISSION_USER_SCORE_ENDPOINT, MISSION_USER_SCORE_FILENAME, API_ADRESS
@@ -46,19 +46,19 @@ def build(tag, path):
     if os.path.exists(f'{path}/services') == True:
         dirs = os.listdir(f'{path}/services')
         for service in dirs:
-            buildAndRunService(f'{path}/services', service)
+            build_and_run_service(f'{path}/services', service)
             
     spin.stop()
 
-def buildAndRunService(path, service):
+def build_and_run_service(path, service):
     info(f'📂 {service} service found')
     info(f'>  🐳 Building {service}')
-    execute(f'docker build -q -f {path}/{service}/Dockerfile -t {getDockerServiceName(service)} {path}/{service}', {"quiet": False})
+    execute(f'docker build -q -f {path}/{service}/Dockerfile -t {get_docker_service_name(service)} {path}/{service}', {"quiet": False})
     info(f'>  🚀 Running {service}')
-    execute(f'docker run -d --rm --net={DOCKER_NETWORK} --name {service} {getDockerServiceName(service)}', {"quiet": False})
+    execute(f'docker run -d --rm --net={DOCKER_NETWORK} --name {service} {get_docker_service_name(service)}', {"quiet": False})
 
 
-def getDockerServiceName(serviceName):
+def get_docker_service_name(serviceName):
     return f'{PREFIX_SERVICE_NAME}-{serviceName}'
 
 def clean():
@@ -69,16 +69,6 @@ def clean():
     execute(f'docker network rm {DOCKER_NETWORK}', {"quiet": True})
     info('Done')
 
-def exitIfError(exitCode, message, spin):
-    if (exitCode != 0):
-        spin.stop()
-        jump()
-        if (exitCode == 2):
-            error('Cancelled.')
-        else:
-            error(message)
-        sys.exit(1)
-
 def run(path=os.getcwd(), language='empty'):
     '''
     Run the mission under given path.
@@ -86,27 +76,27 @@ def run(path=os.getcwd(), language='empty'):
 
     :param path: path of your mission. Default: .
     '''
-    yaml = loadYaml(path + '/' + CHALLENGE_YAML)
+    yaml = load_yaml(path + '/' + CHALLENGE_YAML)
     if 'coding' in yaml:
         if os.path.exists(f'{path}/entry.rs') == True:
-            runMetamorphCode(path, language)
+            run_metamorph_code(path, language)
         else:
-            runCode(path)
+            run_code(path)
     elif 'hacking' in yaml:
-        runHack(path)
+        run_hack(path)
     else:
         error('Challenge type not supported, verify your challenge.yaml')
     clean()
 
-def prepareMetamorphCode(path, tmpDir):
+def prepare_metamorph_code(path, tmpDir):
     info('🔨 Building mission..')
     spin = SpinCursor('', speed=5, maxspin=100000)
     spin.start()
 
     try:
         copy_tree(path, tmpDir)
-        shutil.copy(getPathFromRoot('utils/Dockerfile-runner'), tmpDir + '/Dockerfile')
-        shutil.copy(getPathFromRoot('utils/run.sh'), tmpDir + '/run.sh')
+        shutil.copy(get_path_from_root('utils/Dockerfile-runner'), tmpDir + '/Dockerfile')
+        shutil.copy(get_path_from_root('utils/run.sh'), tmpDir + '/run.sh')
 
         # copy each template files
         for subdir, dirs, files in os.walk(path + '/template'):
@@ -118,33 +108,33 @@ def prepareMetamorphCode(path, tmpDir):
     finally:
         spin.stop()
 
-def runMetamorphCode(path, language):
-   execMetamorphCode(path, language, 'run') 
+def run_metamorph_code(path, language):
+   exec_metamorph_code(path, language, 'run') 
 
-def solveMetamorphCode(path, language):
-   execMetamorphCode(path, language, 'solve') 
+def solve_metamorph_code(path, language):
+   exec_metamorph_code(path, language, 'solve') 
     
 
-def execMetamorphCode(path, language, way):
+def exec_metamorph_code(path, language, way):
     if path == '.':
         path = os.getcwd()
     elif path[0] != '/':
         error('Path given must be absolute')
         exit(1)
         
-    downloadIfNecessary(path)
+    download_if_necessary(path)
 
     # copy everything to tmp to avoid any conflict with user directory files
     # cannot use the default /tmp dir, because it generate problem with Docker volume
     tmpDir = f'{path}/build'
-    prepareMetamorphCode(path, tmpDir)
+    prepare_metamorph_code(path, tmpDir)
 
     # volume to the tmp dir
     os.system(f"docker run -v {tmpDir}:/tmp/runner meta {way} {language}")
     shutil.rmtree(tmpDir, ignore_errors=True)
 
 
-def downloadIfNecessary(path):
+def download_if_necessary(path):
     should_download = True
     if os.path.exists(path + '/runner'):
         if os.path.exists(path + '/.hash'):
@@ -153,9 +143,9 @@ def downloadIfNecessary(path):
                 should_download = False
 
     if should_download == True:
-        downloadRunner(path)
+        download_runner(path)
     
-def downloadRunner(path):
+def download_runner(path):
     url = "https://builder.staging.deadlock.io/build"
     
     info('🛰️  Download runner based on your entry.rs file.')
@@ -188,18 +178,18 @@ def downloadRunner(path):
     info('🛰️  Download completed')
 
 
-def runCode(path=os.getcwd()):
+def run_code(path=os.getcwd()):
     tag = uuid.uuid4()
     build(tag, path) 
     info('🚀 Running mission..')
     execute(f'docker run --net={DOCKER_NETWORK} {tag} Run')
     pass
 
-def runHack(path=os.getcwd()):
-    os.system(getPathFromRoot('utils/run-hack.sh'))
+def run_hack(path=os.getcwd()):
+    os.system(get_path_from_root('utils/run-hack.sh'))
 
 
-def solveScore(tag, path=os.getcwd()):
+def solve_score(tag, path=os.getcwd()):
     '''
     Run Solve step for the mission under given path.
     As if user clicked on Submit button.
@@ -214,17 +204,17 @@ def solveScore(tag, path=os.getcwd()):
     httpServerProcess.start()
 
     info('Writing file..')
-    tmpPathFile = createTmpFolder() + '/' + MISSION_USER_SCORE_FILENAME
+    tmpPathFile = create_tmp_folder() + '/' + MISSION_USER_SCORE_FILENAME
     missionUserScore = MissionUserScore(str(uuid.uuid4()), f'http://{API_ADRESS}:{str(API_PORT)}{MISSION_USER_SCORE_ENDPOINT}').__dict__
     missionUserScoreJson = json.dumps(missionUserScore)
-    writeFile(tmpPathFile, missionUserScoreJson)
+    write_file(tmpPathFile, missionUserScoreJson)
 
     info('Starting mission score..')
     os.system(f'docker run --network="host" -v {tmpPathFile}:/tmp/{MISSION_USER_SCORE_FILENAME} {tag} Solve')
     httpServerProcess.terminate()
 
 
-def solveCode(tag, path=os.getcwd()):
+def solve_code(tag, path=os.getcwd()):
     info('🚀 Solving mission..')
     os.system(f'docker run --net={DOCKER_NETWORK} {tag} Solve')
     pass
@@ -236,18 +226,18 @@ def solve(path=os.getcwd(), language='empty'):
 
     :param path: path of your mission. Default: .
     '''
-    yaml = loadYaml(path + '/' + CHALLENGE_YAML)
+    yaml = load_yaml(path + '/' + CHALLENGE_YAML)
     if 'coding' in yaml:
         if os.path.exists(path + '/entry.rs') == True:
-            solveMetamorphCode(path, language)
+            solve_metamorph_code(path, language)
         elif 'score' in yaml['coding']:
             tag = uuid.uuid4()
             build(tag, path)
-            solveScore(tag, path)
+            solve_score(tag, path)
         else:
             tag = uuid.uuid4()
             build(tag, path)
-            solveCode(tag, path)
+            solve_code(tag, path)
     else:
         error('Challenge type not supported for solve method.')
     clean()

@@ -1,5 +1,5 @@
 from jinja2 import Template
-from .file import writeFile
+from .file import write_file
 
 
 def template(context, template):
