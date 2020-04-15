@@ -1,4 +1,4 @@
-from .language import Language
+from ..language import Language
 
 TEMPLATE_PATH = '/src/main/python/template'
 SUCCESS_PATH = '/src/main/python/success'
@@ -21,4 +21,3 @@ class Python(Language):
             TARGET_FILE,
             'py'
         )
-

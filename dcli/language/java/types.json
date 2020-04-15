@@ -1,0 +1,106 @@
+{
+  "Byte": {
+    "requireImport": false,
+    "className": "java.lang.Byte",
+    "defaultValue": 0,
+    "primitive": false
+  },
+  "byte": {
+    "requireImport": false,
+    "className": "byte",
+    "defaultValue": 0,
+    "primitive": true
+  },
+  "Short": {
+    "requireImport": false,
+    "className": "java.lang.Short",
+    "defaultValue": 0,
+    "primitive": false
+  },
+  "short": {
+    "requireImport": false,
+    "className": "short",
+    "defaultValue": 0,
+    "primitive": true
+  },
+  "Interger": {
+    "name": "Integer",
+    "requireImport": false,
+    "className": "java.lang.Integer",
+    "defaultValue": 0,
+    "primitive": false
+  },
+  "int": {
+    "requireImport": false,
+    "className": "int",
+    "defaultValue": 0,
+    "primitive": true
+  },
+  "Long": {
+    "requireImport": false,
+    "className": "java.lang.Long",
+    "defaultValue": 0,
+    "primitive": false
+  },
+  "long": {
+    "requireImport": false,
+    "className": "long",
+    "defaultValue": 0,
+    "primitive": true
+  },
+  "Float": {
+    "requireImport": false,
+    "className": "java.lang.Float",
+    "defaultValue": 0.0,
+    "primitive": false
+  },
+  "float":
+  {
+    "requireImport": false,
+    "className": "float",
+    "defaultValue": 0.0,
+    "primitive": true
+  },
+  "Double": {
+    "requireImport": false,
+    "className": "java.lang.Double",
+    "defaultValue": 0.0,
+    "primitive": false
+  },
+  "double": {
+    "requireImport": false,
+    "className": "double",
+    "defaultValue": 0.0,
+    "primitive": true
+  },
+  "Character": {
+    "requireImport": false,
+    "className": "java.lang.Character",
+    "defaultValue": "\\O",
+    "primitive": false
+  },
+  "char": {
+    "requireImport": false,
+    "className": "char",
+    "defaultValue": "\\0",
+    "primitive": true
+  },
+  "String": {
+    "requireImport": false,
+    "className": "java.lang.String",
+    "defaultValue": "\"\"",
+    "primitive": false
+  },
+  "Boolean": {
+    "requireImport": false,
+    "className": "java.lang.Boolean",
+    "defaultValue": false,
+    "primitive": false
+  },
+  "boolean": {
+    "requireImport": false,
+    "className": "boolean",
+    "defaultValue": false,
+    "primitive": true
+  }
+}

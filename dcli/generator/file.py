@@ -17,8 +17,10 @@ def loadYaml(path):
     with open(path, 'r') as stream:
         return yaml.safe_load(stream)
 
+def openFileFromRoot(path):
+    return open(getPathFromRoot(path)).read()
 
-def loadFile(type, path):
+def openFileFromTemplateDir(type, path):
     return open(getPathFromTemplateDir(type, path)).read()
 
 def writeFile(path, content):

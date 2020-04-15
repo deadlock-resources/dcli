@@ -1,11 +1,11 @@
 import os
 import sys
 from PyInquirer import prompt
-from ..logger import error
-from ..const import TARGET_FILE_FIELD, TARGET_METHOD_FIELD, TARGET_METHOD_ARGS_FIELD, TARGET_METHOD_RETURN_FIELD
+from ...logger import error
+from ...const import TARGET_FILE_FIELD, TARGET_METHOD_FIELD, TARGET_METHOD_ARGS_FIELD, TARGET_METHOD_RETURN_FIELD
 
-def askCQuestions():
-    cQuestions = [
+def askCppQuestions():
+    cppQuestions = [
         {
             'type': 'input',
             'name': TARGET_METHOD_FIELD,
@@ -19,10 +19,10 @@ def askCQuestions():
         {
             'type': 'input',
             'name': TARGET_METHOD_RETURN_FIELD,
-            'message': 'Output type: return type of the previous method, what the user will have to return (e.g. int):',
+            'message': 'Output type: return type of the previous method, what the user will have to return (e.g. int), may be empty:',
         }
     ]
-    answers = prompt(cQuestions)
+    answers = prompt(cppQuestions)
     if len(answers) == 0:
         error('Cancelled.')
         sys.exit()
