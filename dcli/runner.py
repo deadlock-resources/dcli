@@ -65,7 +65,7 @@ def clean():
     print('')
     time.sleep(1)
     info('Cleaning resources')
-    execute(f'docker ps --filter network={DOCKER_NETWORK} -aq | xargs docker stop &>/dev/null | xargs docker rm', {"quiet": True})
+    execute(f'docker ps --filter network={DOCKER_NETWORK} -aq | xargs -r docker stop >/dev/null | xargs -r docker rm', {"quiet": True})
     execute(f'docker network rm {DOCKER_NETWORK}', {"quiet": True})
     info('Done')
 
