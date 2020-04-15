@@ -5,5 +5,5 @@ using namespace std;
 
 class Target {
 public:
-    {{ targetMethodReturn }} {{ targetMethod }}({{ targetMethodArgs }});
+    {% if targetMethodReturn == "" %}void{% else %}{{ targetMethodReturn }}{% endif %} {{ targetMethod }}({{ targetMethodArgs }});
 };

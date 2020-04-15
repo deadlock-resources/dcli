@@ -19,7 +19,7 @@ def askCppQuestions():
         {
             'type': 'input',
             'name': TARGET_METHOD_RETURN_FIELD,
-            'message': 'Output type: return type of the previous method, what the user will have to return (e.g. int):',
+            'message': 'Output type: return type of the previous method, what the user will have to return (e.g. int), may be empty:',
         }
     ]
     answers = prompt(cppQuestions)

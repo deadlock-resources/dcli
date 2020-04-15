@@ -21,12 +21,14 @@ void Logger::log_success() {
     cout << "----------------------------------------------------" << endl;
 }
 
+{%if targetMethodReturn != "" %}
 void Logger::log({{ targetMethodReturn }} user, {{ targetMethodReturn }} expected) {
     cout << "----------------------------------------------------" << endl;
     cout << "Your result: " << user << endl;
     cout << "Expected: " << expected << endl;
     cout << "----------------------------------------------------" << endl;
 }
+{% endif %}
 
 void Logger::log_no_match() {
     cerr << "----------------------------------------------------" << endl;
