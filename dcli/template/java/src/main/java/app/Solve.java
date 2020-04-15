@@ -14,7 +14,8 @@ public class Solve {
     public static void main(String[] args) {
         try {
             {%if targetMethodReturn == "" %}
-            // call both method, user and success, do your own test to compare user code to the success one
+            // call both method, user and success
+            //TODO do your own test to make sure user method is correct!
             {{ targetFile }}.{{ targetMethod }}({% if targetMethodArgs != "" %}/* //TODO fill it with your own args */{% endif %});
             success.{{ targetFile }}.{{ targetMethod }}({% if targetMethodArgs != "" %}/* //TODO fill it with your own args */{% endif %});
             //TODO call Logger.logSuccess(); if everything is fine

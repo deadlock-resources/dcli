@@ -1,5 +1,5 @@
 #include "Target.h"
 
-{{ targetMethodReturn }} Target::{{ targetMethod }}({{ targetMethodArgs }}) {
-    return 0;
+{% if targetMethodReturn == "" %}void{% else %}{{ targetMethodReturn }}{% endif %} Target::{{ targetMethod }}({{ targetMethodArgs }}) {
+    {% if targetMethodReturn != "" %}return 0;{% endif %}
 }
