@@ -26,5 +26,5 @@ class Java(Language):
         )
     
     def add_type(self, name):
-        self.addNewAsset(self.templateDirPath, name, f'package template;\n\nclass {name} {{}}')
-        self.addNewAsset(self.successDirPath, name, f'package success;\n\nclass {name} {{}}')
+        self.add_new_asset(self.templateDirPath, name, f'package template;\n\nclass {name} {{}}')
+        self.add_new_asset(self.successDirPath, name, f'package success;\n\nclass {name} {{}}')

@@ -21,7 +21,7 @@ from .language.cpp import Cpp
 from .const import TARGET_METHOD_RETURN_VALUE
 
 
-def askUsual():
+def ask_usual():
     questions = [
         {
             'type': 'input',
@@ -58,7 +58,7 @@ def askUsual():
     return answers
 
 
-def commonEndingMessage(answers):
+def common_end_message(answers):
     info('You have to complete many //TODO within the generated mission.')
     info('Then you will be able to test your mission with:')
     paragraph('dcli run ./' + answers['name'])
@@ -70,23 +70,23 @@ class Generator(object):
 
     def cpp(self):
         """ Generates a basic Cpp challenge """
-        answers = askUsual()
+        answers = ask_usual()
         answers.update(askCppQuestions())
 
         cppGen = LanguageGenerator(Cpp(), answers)
         cppGen.create()
 
-        commonEndingMessage(answers)
+        common_end_message(answers)
         pass
 
     def java(self):
         """ Generates a basic C challenge """
-        answers = askUsual()
+        answers = ask_usual()
         answers.update(askJavaQuestions())
 
         language = Java()
-        self.addTypeIfNecessary(self.parseTargetMethodArgs(answers['targetMethodArgs']), language)
-        self.addTypeIfNecessary(self.parseTargetMethodArgs(answers['targetMethodReturn']), language)
+        self.add_type_if_necessary(self.parse_target_method_args(answers['targetMethodArgs']), language)
+        self.add_type_if_necessary(self.parse_target_method_args(answers['targetMethodReturn']), language)
 
         # append default value
         answers[TARGET_METHOD_RETURN_VALUE] = language.get_default_value(answers['targetMethodReturn'])
@@ -94,37 +94,37 @@ class Generator(object):
         javaGen = LanguageGenerator(language, answers)
         javaGen.create()
 
-        commonEndingMessage(answers)
+        common_end_message(answers)
         pass
 
-    def addTypeIfNecessary(self, arg_types, language):
+    def add_type_if_necessary(self, arg_types, language):
         for arg_type in arg_types:
             if not language.is_common_type(arg_type):
                 language.add_type(arg_type)
 
-    def parseTargetMethodArgs(self, args):
+    def parse_target_method_args(self, args):
         return list(map(lambda s: s.strip().split(' ')[0], args.split(',')))
 
 
     def c(self):
         """ Generates a basic Java challenge """
-        answers = askUsual()
+        answers = ask_usual()
         answers.update(askCQuestions())
 
         cGen = LanguageGenerator(C(), answers)
         cGen.create()
 
-        commonEndingMessage(answers)
+        common_end_message(answers)
         pass
 
     def python(self):
         """ Generates a basic Python challenge """
-        answers = askUsual()
+        answers = ask_usual()
         answers.update(askPythonQuestions())
 
         gen = LanguageGenerator(Python(), answers)
         gen.create()
 
-        commonEndingMessage(answers)
+        common_end_message(answers)
         pass
 

@@ -1,6 +1,6 @@
 import json
 from .asset import Asset
-from ..generator.file import openFileFromRoot
+from ..generator.file import open_file_from_root
 
 DEFAULT_VALUE = 'defaultValue'
 TYPE_NAME = 'name'
@@ -80,7 +80,7 @@ class Language():
         return self._common_types
 
     def load_common_types(self):
-        json_content = openFileFromRoot(f'language/{self._type}/types.json')
+        json_content = open_file_from_root(f'language/{self._type}/types.json')
         return json.loads(json_content)
 
     def is_common_type(self, current_type):
@@ -93,14 +93,14 @@ class Language():
             return 'null'
 
     def add_type(self, name):
-        self.addNewAsset(self.templateDirPath, name, f'class {name} {{}}')
-        self.addNewAsset(self.successDirPath, name, f'class {name} {{}}')
+        self.add_new_asset(self.templateDirPath, name, f'class {name} {{}}')
+        self.add_new_asset(self.successDirPath, name, f'class {name} {{}}')
 
-    def getPathToTemplateTargetFile(self):
+    def get_path_to_template_target_file(self):
         return self.templateDirPath + '/' + self.targetFile + '.' + self.extension
     
-    def getPathToSuccessTargetFile(self):
+    def get_path_to_success_target_file(self):
         return self.successDirPath + '/' + self.targetFile + '.' + self.extension
 
-    def addNewAsset(self, assetPath, assetFileName, assetContent):
+    def add_new_asset(self, assetPath, assetFileName, assetContent):
         self._newAssets.append(Asset(assetPath, assetFileName, assetContent))
