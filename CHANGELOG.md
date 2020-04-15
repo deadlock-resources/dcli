@@ -1,7 +1,12 @@
 
 ## UNRELEASED
+
+## 1.1.2 (15/04/2020)
 * fix(c) missing ; and bool include
 * fix(java) list default types
+* feat(cpp) support for empty return field
+* feat(java) support for default return value
+* refactor function naming rules
 
 ## 1.1.1 (15/04/2020)
 * fix way to quiet command line, improve os compatibility
