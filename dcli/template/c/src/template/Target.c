@@ -1,4 +1,5 @@
 #include "Target.h"
+#include <stdbool.h>
 
 // Executed when you Run your code
 void run() {
