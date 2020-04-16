@@ -9,7 +9,7 @@ dcli --help
 
 ## Install from pip
 ```bash
-pip install dcli --user
+pip install deadlock-cli --user
 ```
 If it does not work make sure you have your PATH correctly set:  
 `export PATH=$PATH:/home/$USER/.local/bin`
