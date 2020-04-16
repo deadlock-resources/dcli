@@ -76,6 +76,7 @@ def run(path=os.getcwd(), language='empty'):
 
     :param path: path of your mission. Default: .
     '''
+    exit_if_no_challenge_file(path)
     yaml = load_yaml(path + '/' + CHALLENGE_YAML)
     if 'coding' in yaml:
         if os.path.exists(f'{path}/entry.rs') == True:
@@ -226,6 +227,7 @@ def solve(path=os.getcwd(), language='empty'):
 
     :param path: path of your mission. Default: .
     '''
+    exit_if_no_challenge_file(path)
     yaml = load_yaml(path + '/' + CHALLENGE_YAML)
     if 'coding' in yaml:
         if os.path.exists(path + '/entry.rs') == True:
@@ -242,3 +244,7 @@ def solve(path=os.getcwd(), language='empty'):
         error('Challenge type not supported for solve method.')
     clean()
 
+def exit_if_no_challenge_file(path):
+    if os.path.exists(path + '/' + CHALLENGE_YAML) == False:
+        error('You have to be within a challenge folder to execute your command.')
+        sys.exit(1)
