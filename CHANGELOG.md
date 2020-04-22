@@ -1,6 +1,9 @@
 
 ## UNRELEASED
 
+## 1.1.4 (22/04/2020)
+* fix(gen) broken when common types was missing
+
 ## 1.1.3 (15/04/2020)
 * fix(c) missing ; and bool include
 * fix(java) list default types
