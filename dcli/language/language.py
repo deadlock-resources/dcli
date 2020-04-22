@@ -1,3 +1,4 @@
+import os
 import json
 from .asset import Asset
 from ..generator.file import open_file_from_root
@@ -80,8 +81,12 @@ class Language():
         return self._common_types
 
     def load_common_types(self):
-        json_content = open_file_from_root(f'language/{self._type}/types.json')
-        return json.loads(json_content)
+        path = f'language/{self._type}/types.json'
+        if os.path.exists(path) == True:
+            json_content = open_file_from_root(path)
+            return json.loads(json_content)
+        else:
+            return {}
 
     def is_common_type(self, current_type):
         return (not current_type or current_type in self._common_types)
