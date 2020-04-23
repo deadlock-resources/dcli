@@ -1,7 +1,7 @@
 import os
 import json
 from .asset import Asset
-from ..generator.file import open_file_from_root
+from ..generator.file import open_file_from_root, get_path_from_root
 
 DEFAULT_VALUE = 'defaultValue'
 TYPE_NAME = 'name'
@@ -82,7 +82,7 @@ class Language():
 
     def load_common_types(self):
         path = f'language/{self._type}/types.json'
-        if os.path.exists(path) == True:
+        if os.path.exists(get_path_from_root(path)) == True:
             json_content = open_file_from_root(path)
             return json.loads(json_content)
         else:
