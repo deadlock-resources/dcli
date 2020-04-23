@@ -23,7 +23,7 @@
     "defaultValue": 0,
     "primitive": true
   },
-  "Interger": {
+  "Integer": {
     "name": "Integer",
     "requireImport": false,
     "className": "java.lang.Integer",
