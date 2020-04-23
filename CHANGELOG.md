@@ -1,6 +1,10 @@
 
 ## UNRELEASED
 
+## 1.1.5 (23/04/2020)
+* fix load common types when non present
+* check challenge yaml file before loading it
+
 ## 1.1.4 (22/04/2020)
 * fix(gen) broken when common types was missing
 
