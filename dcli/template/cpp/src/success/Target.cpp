@@ -1,4 +1,4 @@
 
 {% if targetMethodReturn == "" %}void{% else %}{{ targetMethodReturn }}{% endif %} {{ targetMethod }}({{ targetMethodArgs }}) {
-    return 0;
+    {% if targetMethodReturn != "" %}return {{ targetMethodReturnValue }};{% endif %}
 }

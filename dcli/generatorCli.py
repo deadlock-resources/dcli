@@ -21,6 +21,8 @@ from .language.cpp import Cpp
 from .language.kotlin import Kotlin
 
 from .const import TARGET_METHOD_RETURN_VALUE
+from .const import TARGET_METHOD_ARGS_HAS_COMMON_TYPE
+from .const import TARGET_METHOD_RETURN_HAS_COMMON_TYPE
 
 
 def ask_usual():
@@ -75,6 +77,10 @@ class Generator(object):
         answers = ask_usual()
         answers.update(askCppQuestions())
 
+        language = Cpp()
+        # append default value
+        answers[TARGET_METHOD_RETURN_VALUE] = language.get_default_value(answers['targetMethodReturn'])
+
         cppGen = LanguageGenerator(Cpp(), answers)
         cppGen.create()
 
@@ -92,6 +98,8 @@ class Generator(object):
 
         # append default value
         answers[TARGET_METHOD_RETURN_VALUE] = language.get_default_value(answers['targetMethodReturn'])
+        answers[TARGET_METHOD_ARGS_HAS_COMMON_TYPE] = self.has_not_common_type(self.parse_target_method_args(answers['targetMethodArgs']), language)
+        answers[TARGET_METHOD_RETURN_HAS_COMMON_TYPE] = self.has_not_common_type(self.parse_target_method_args(answers['targetMethodReturn']), language)
 
         javaGen = LanguageGenerator(language, answers)
         javaGen.create()
@@ -104,6 +112,11 @@ class Generator(object):
             if not language.is_common_type(arg_type):
                 language.add_type(arg_type)
 
+    def has_not_common_type(self, arg_types, language):
+        for arg_type in arg_types:
+            if not language.is_common_type(arg_type):
+                return arg_type
+
     def parse_target_method_args(self, args):
         return list(map(lambda s: s.strip().split(' ')[0], args.split(',')))
 
@@ -113,11 +126,21 @@ class Generator(object):
         answers = ask_usual()
         answers.update(askCQuestions())
 
+        language = C()
+        self.add_type_if_necessary(self.parse_target_method_args(answers['targetMethodArgs']), language)
+        self.add_type_if_necessary(self.parse_target_method_args(answers['targetMethodReturn']), language)
+
+        # append default value
+        answers[TARGET_METHOD_RETURN_VALUE] = language.get_default_value(answers['targetMethodReturn'])
+        answers[TARGET_METHOD_ARGS_HAS_COMMON_TYPE] = self.has_not_common_type(self.parse_target_method_args(answers['targetMethodArgs']), language)
+        answers[TARGET_METHOD_RETURN_HAS_COMMON_TYPE] = self.has_not_common_type(self.parse_target_method_args(answers['targetMethodReturn']), language)
+
         cGen = LanguageGenerator(C(), answers)
         cGen.create()
 
         common_end_message(answers)
         pass
+    
 
     def python(self):
         """ Generates a basic Python challenge """

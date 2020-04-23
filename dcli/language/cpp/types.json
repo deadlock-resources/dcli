@@ -1,0 +1,81 @@
+{
+  "short": {
+    "requireImport": false,
+    "className": "short",
+    "defaultValue": 0,
+    "primitive": true
+  },
+  "unsigned short": {
+    "requireImport": false,
+    "className": "unsigned short",
+    "defaultValue": 0,
+    "primitive": true
+  },
+  "int": {
+    "requireImport": false,
+    "className": "int",
+    "defaultValue": 0,
+    "primitive": true
+  },
+  "unsigned int": {
+    "requireImport": false,
+    "className": "unsigned int",
+    "defaultValue": 0,
+    "primitive": true
+  },
+  "long": {
+    "requireImport": false,
+    "className": "long",
+    "defaultValue": 0,
+    "primitive": true
+  },
+  "unsigned long": {
+    "requireImport": false,
+    "className": "unsigned long",
+    "defaultValue": 0,
+    "primitive": true
+  },
+  "long long": {
+    "requireImport": false,
+    "className": "long long",
+    "defaultValue": 0,
+    "primitive": true
+  },
+  "unsigned long long": {
+    "requireImport": false,
+    "className": "unsigned long long",
+    "defaultValue": 0,
+    "primitive": true
+  },
+  "float":
+  {
+    "requireImport": false,
+    "className": "float",
+    "defaultValue": 0.0,
+    "primitive": true
+  },
+  "double": {
+    "requireImport": false,
+    "className": "double",
+    "defaultValue": 0.0,
+    "primitive": true
+  },
+  "char": {
+    "requireImport": false,
+    "className": "char",
+    "defaultValue": "\\0",
+    "primitive": true
+  },
+  "unsigned char": {
+    "requireImport": false,
+    "className": "unsigned char",
+    "defaultValue": "\\0",
+    "primitive": true
+  },
+  "string": {
+    "requireImport": false,
+    "className": "string",
+    "defaultValue": "\"0\"",
+    "primitive": true
+  }
+}
