@@ -6,6 +6,8 @@ from ..generator.file import open_file_from_root, get_path_from_root
 DEFAULT_VALUE = 'defaultValue'
 TYPE_NAME = 'name'
 
+COMMON_TYPES_PATH = 'language/{}/types.json'
+
 class LanguageType:
     def __init__(self, name='', default_value=None):
         self.default_value = default_value
@@ -81,12 +83,16 @@ class Language():
         return self._common_types
 
     def load_common_types(self):
-        path = f'language/{self._type}/types.json'
+        path = str.format(COMMON_TYPES_PATH, self._type)
         if os.path.exists(get_path_from_root(path)) == True:
             json_content = open_file_from_root(path)
             return json.loads(json_content)
         else:
             return {}
+
+    def contains_common_types(self):
+        path = str.format(COMMON_TYPES_PATH, self._type)
+        return os.path.exists(get_path_from_root(path))
 
     def is_common_type(self, current_type):
         return (not current_type or current_type in self._common_types)
