@@ -98,7 +98,10 @@ class Language():
         return (not current_type or current_type in self._common_types)
 
     def get_default_value(self, current_type):
-        if self.is_common_type(current_type):
+        # test empty String
+        if not current_type:
+            return ''
+        elif self.is_common_type(current_type):
             return self._common_types[current_type][DEFAULT_VALUE]
         else:
             return 'null'
