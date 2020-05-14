@@ -118,3 +118,17 @@ class Language():
 
     def add_new_asset(self, assetPath, assetFileName, assetContent):
         self._newAssets.append(Asset(assetPath, assetFileName, assetContent))
+
+    def add_type_if_necessary(self, arg_types):
+        for arg_type in arg_types:
+            if not self.is_common_type(arg_type):
+                self.add_type(arg_type)
+
+    def parse_target_method_args(self, args, arg_type):
+        return list(map(lambda s: s.strip().split(' ')[0], args.split(',')))
+
+    def ask_questions(self): 
+        raise NotImplementedError
+
+    def need_to_generate_new_type(self):
+        return True
