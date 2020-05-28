@@ -12,8 +12,11 @@ if __name__ == "__main__":
 
     # Complete code with more test
     # Only one is not enough
-    userValue = template.{{ targetMethod }}
-    expectedValue = success.{{ targetMethod }}
+    userValue = template.{{ targetMethod }}{% if targetMethodArgs != "" %} #TODO define your own args 
+    {% endif %}
+    expectedValue = success.{{ targetMethod }}{% if targetMethodArgs != "" %} #TODO define your own args
+    {% endif %}
+
     if userValue != expectedValue:
         print("Wrong value")
         print("> expected: " + str(expectedValue))
