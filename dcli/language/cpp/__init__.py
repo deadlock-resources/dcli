@@ -53,6 +53,3 @@ class Cpp(Language):
             error('Cancelled.')
             sys.exit()
         return answers
-
-    def need_to_generate_new_type(self):
-        return False

@@ -14,7 +14,7 @@ from .language.c import C
 from .language.cpp import Cpp 
 from .language.kotlin import Kotlin
 
-from .const import TARGET_METHOD_RETURN_VALUE, TARGET_METHOD_RETURN_FIELD, TARGET_METHOD_ARGS_FIELD 
+from .const import TARGET_METHOD_RETURN_VALUE, TARGET_METHOD_RETURN_FIELD, TARGET_METHOD_ARGS_FIELD, TARGET_METHOD_ARGS_HAS_COMMON_TYPE, TARGET_METHOD_RETURN_HAS_COMMON_TYPE
 
 NOT_BE_EMPTY = 'Must not be empty.'
 
@@ -95,6 +95,9 @@ def generate_for_language(langId):
         language.add_type_if_necessary(language.parse_target_method_args(answers[TARGET_METHOD_RETURN_FIELD], TARGET_METHOD_RETURN_FIELD))
         # append default value
         answers[TARGET_METHOD_RETURN_VALUE] = language.get_default_value(answers[TARGET_METHOD_RETURN_FIELD])
+        answers[TARGET_METHOD_ARGS_HAS_COMMON_TYPE] = language.get_not_commun_type(language.parse_target_method_args(answers[TARGET_METHOD_ARGS_FIELD], TARGET_METHOD_ARGS_FIELD))
+        answers[TARGET_METHOD_RETURN_HAS_COMMON_TYPE] = language.get_not_commun_type(language.parse_target_method_args(answers[TARGET_METHOD_RETURN_FIELD], TARGET_METHOD_RETURN_FIELD))
+
     langGen = LanguageGenerator(language, answers)
     langGen.create()
 

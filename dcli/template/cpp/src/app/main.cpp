@@ -6,10 +6,11 @@
 using namespace std;
 
 
+
 {% if targetMethodReturn == "" %}void{% else %}{{ targetMethodReturn }}{% endif %} success_{{ targetMethod }}({{ targetMethodArgs }}) {
         //TODO write your own solution
         // You also have to implement it into success folder.
-        {% if targetMethodReturn != "" %}return 1;{% endif %}
+        {% if targetMethodReturn != "" %}return {{ targetMethodReturnValue }};{% endif %}
 }
 
 int main(int argc, char *argv[]) {

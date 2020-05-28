@@ -124,6 +124,11 @@ class Language():
             if not self.is_common_type(arg_type):
                 self.add_type(arg_type)
 
+    def get_not_commun_type(self, arg_types):
+        for arg_type in arg_types:
+            if not self.is_common_type(arg_type):
+                return arg_type
+
     def parse_target_method_args(self, args, arg_type):
         return list(map(lambda s: s.strip().split(' ')[0], args.split(',')))
 
