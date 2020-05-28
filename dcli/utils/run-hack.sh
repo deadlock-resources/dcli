@@ -13,6 +13,9 @@ eval $(parse_yaml "$(pwd)/challenge.yaml" "challenge_")
 if [[ ! -e $DEADLOCK_TOKEN_TMP ]]; then
     echo "> create tmp dir.."
     mkdir -p $DEADLOCK_TOKEN_TMP
+else
+    echo "> remove old token.."
+    rm $DEADLOCK_TOKEN_TMP/*
 fi
 echo "> create tmp token.."
 echo $(uuidgen) > $DEADLOCK_TOKEN_TMP/$CANDIDATE_ID.token
