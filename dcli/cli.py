@@ -1,14 +1,9 @@
 #! python3
-import os
 import fire
-import subprocess
 import pkg_resources  # part of setuptools
 
 from .generatorCli import Generator, generate_for_language
-from .logger import info
 from .runner import run, solve
-from .spinCursor import SpinCursor
-import time
 
 def version():
   return pkg_resources.require("deadlock-cli")[0].version
