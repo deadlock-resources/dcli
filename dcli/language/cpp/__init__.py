@@ -36,6 +36,7 @@ class Cpp(Language):
                 'type': 'input',
                 'name': TARGET_METHOD_FIELD,
                 'message': 'Method for the user, entry point of the program (e.g. methodName):',
+                'validate': lambda text: (len(text) > 0 and text != 'main' or 'main is a reserved method.') or 'Must not be empty.'
             },
             {
                 'type': 'input',

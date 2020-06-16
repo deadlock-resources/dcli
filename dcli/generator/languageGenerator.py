@@ -1,7 +1,7 @@
 import os
 from .common import template
 from .file import open_file_from_template_dir, write_file, get_path_from_template_dir
-from ..const import TARGET_FILE_FIELD, TARGET_METHOD_FIELD
+from ..const import TARGET_FILE_FIELD, TARGET_METHOD_FIELD, TARGET_ASSET_LIST
 from ..logger import info, error, jump
 from colored import fg, attr
 from shutil import copyfile
@@ -18,33 +18,42 @@ class LanguageGenerator():
         info('Creating ' + self._language.type + ' challenge in ' + fg(208) + './' + self._root + '.')
         jump()
         self.create_folders()
-        self.generateChallengeYaml()
+        self.append_assets_to_answers()
+        self.generate_challenge_yaml()
         self.generate_template_file()
         self.generate_success_file()
         self.generate_solve_file()
         self.generate_run_file()
         self.generate_docs()
-        self.copyCommonFiles()
-        self.copyAssets()
+        self.copy_common_files()
+        self.copy_assets()
 
         info('Challenge ' + self._root + ' created with success!')
-    
-    def copyAssets(self):
-        for path in self._language.assetPaths:
-            self.templateAndCopyFile(path)
+
+    def append_assets_to_answers(self):
+        self._answers[TARGET_ASSET_LIST] = []
         for asset in self._language.newAssets:
-            write_file(f'{self._root}/{asset.path}/{asset.fileName}.{self._language.extension}', asset.content)
+            self._answers[TARGET_ASSET_LIST].append(asset)
+    
+    def copy_assets(self):
+        for path in self._language.assetPaths:
+            self.template_and_copy_file(path)
+        for asset in self._language.newAssets:
+            write_file(f'{self._root}/{asset.path}/{asset.fileName}.{asset.extension}', asset.content)
 
-    def generateChallengeYaml(self):
-        self.templateAndCopyFile('/challenge.yaml')
+    def generate_challenge_yaml(self):
+        self.template_and_copy_file('/challenge.yaml')
 
-    def copyCommonFiles(self):
+    def copy_common_files(self):
         self.copy_file('Dockerfile')
         self.copy_file('run.sh')
         self.copy_file('thumbnail.png')
 
-    def templateAndCopyFile(self, file):
-        write_file(self._root + '/' + file, template(self._answers, open_file_from_template_dir(self._language.type, file)))
+    def template_and_copy_file(self, file):
+        write_file(
+            self._root + '/' + file,
+            template(self._answers, open_file_from_template_dir(self._language.type, file))
+        )
 
     def copy_file(self, file):
         copyfile(get_path_from_template_dir(self._language.type, file), self._root + '/' + file)
@@ -76,8 +85,8 @@ class LanguageGenerator():
         write_file(fileName, template(self._answers, open_file_from_template_dir(self._language.type, self._language.runPath)))
 
     def generate_docs(self):
-        self.templateAndCopyFile('/docs/briefing.md')
-        self.templateAndCopyFile('/docs/fr/briefing.md')
+        self.template_and_copy_file('/docs/briefing.md')
+        self.template_and_copy_file('/docs/fr/briefing.md')
 
     def get_target_file_path(self, path, file):
         return self._root + path + '/' + file + '.' + self._language.extension

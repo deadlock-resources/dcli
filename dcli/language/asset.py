@@ -1,9 +1,10 @@
 class Asset():
 
-    def __init__(self, path, fileName, content):
+    def __init__(self, path, fileName, content, extension):
         self._path = path
         self._fileName = fileName
         self._content = content
+        self._extension = extension
 
     @property
     def path(self):
@@ -16,3 +17,7 @@ class Asset():
     @property
     def content(self):
         return self._content
+
+    @property
+    def extension(self):
+        return self._extension

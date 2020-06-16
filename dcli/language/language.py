@@ -104,7 +104,10 @@ class Language():
         elif self.is_common_type(current_type):
             return self._common_types[current_type][DEFAULT_VALUE]
         else:
-            return 'null'
+            return self.get_default_value_uncommon_type(current_type)
+
+    def get_default_value_uncommon_type(self, current_type):
+        return 'null'
 
     def add_type(self, name):
         self.add_new_asset(self.templateDirPath, name, f'class {name} {{}}')
@@ -116,8 +119,9 @@ class Language():
     def get_path_to_success_target_file(self):
         return self.successDirPath + '/' + self.targetFile + '.' + self.extension
 
-    def add_new_asset(self, assetPath, assetFileName, assetContent):
-        self._newAssets.append(Asset(assetPath, assetFileName, assetContent))
+    def add_new_asset(self, assetPath, assetFileName, assetContent, assetExtension=None):
+        extension = assetExtension or self.extension
+        self._newAssets.append(Asset(assetPath, assetFileName, assetContent, extension))
 
     def add_type_if_necessary(self, arg_types):
         for arg_type in arg_types:

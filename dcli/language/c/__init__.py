@@ -31,12 +31,25 @@ class C(Language):
             ASSET_PATHS
         )
 
+    def add_type(self, name):
+        self.add_new_asset(
+            self.templateDirPath,
+            name,
+            f'typedef struct {name}{{}} {name};',
+            'h'
+        )
+    
+    def get_default_value_uncommon_type(self, current_type):
+        return current_type
+
+
     def ask_questions(self):
         cQuestions = [
             {
                 'type': 'input',
                 'name': TARGET_METHOD_FIELD,
                 'message': 'Method for the user, entry point of the program (e.g. methodName):',
+                'validate': lambda text: (len(text) > 0 and text != 'main' or 'main is a reserved method.') or 'Must not be empty.'
             },
             {
                 'type': 'input',

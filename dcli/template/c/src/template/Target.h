@@ -1,20 +1,11 @@
 #ifndef TARGET_H_
 #define TARGET_H_
+{% for asset in targetAssetList %}
+#include "{{ asset.fileName }}.{{ asset.extension }}"
+{% endfor %}
 #include <stdbool.h>
 
-{% if targetMethodArgsHasCommonType %}
-typedef struct {{ targetMethodArgsHasCommonType }} {{ targetMethodArgsHasCommonType }};
-struct {{ targetMethodArgsHasCommonType }} {};
-{% endif %}
-
-{% if targetMethodReturnHasCommonType %}
-{% if targetMethodReturnHasCommonType != targetMethodArgsHasCommonType %}
-typedef struct {{ targetMethodReturnHasCommonType }} {{ targetMethodReturnHasCommonType }};
-struct {{ targetMethodReturnHasCommonType }} {};
-{% endif %}
-{% endif %}
-
-{{ targetMethodReturn }} {{ targetMethod }}({{ targetMethodArgs }});
+{{ targetMethodReturn }} {{ targetMethod }}({{ argetMethodArgs }});
 
 void run();
 
