@@ -2,7 +2,7 @@
 ## UNRELEASED
 * C/CPP default type generation
 
-## 1.2.0 (16/04/2020)
+## 1.2.0 (16/06/2020)
 * feat: download runner on build option
 * feat: remove old hack token at each start
 * chore: refacto language generation for dcli
