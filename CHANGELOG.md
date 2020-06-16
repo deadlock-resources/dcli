@@ -1,5 +1,14 @@
 
 ## UNRELEASED
+* C/CPP default type generation
+
+## 1.2.0 (16/04/2020)
+* feat: download runner on build option
+* feat: remove old hack token at each start
+* chore: refacto language generation for dcli
+* feat: add kotlin scripts and default type value
+* fix: crash when output is empty
+* fix: fix typo for Integer type
 
 ## 1.1.5 (23/04/2020)
 * fix load common types when non present
