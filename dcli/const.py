@@ -6,6 +6,7 @@ TARGET_METHOD_RETURN_FIELD='targetMethodReturn'
 TARGET_METHOD_RETURN_VALUE='targetMethodReturnValue'
 TARGET_ASSET_LIST='targetAssetList'
 TARGET_VARIABLE_INITIALIZATIONS='targetVariableInitializations'
+TARGET_ASSETS_TO_IMPORT="targetAssetsToImport"
 CHALLENGE_YAML='challenge.yaml'
 API_ADRESS='127.0.0.1'
 API_PORT=6070

@@ -1,7 +1,14 @@
 import os
 from .common import template
 from .file import open_file_from_template_dir, write_file, get_path_from_template_dir
-from ..const import TARGET_FILE_FIELD, TARGET_METHOD_FIELD, TARGET_METHOD_RETURN_FIELD, TARGET_ASSET_LIST, TARGET_VARIABLE_INITIALIZATIONS
+from ..const import (
+    TARGET_FILE_FIELD,
+    TARGET_METHOD_FIELD,
+    TARGET_METHOD_RETURN_FIELD,
+    TARGET_ASSET_LIST,
+    TARGET_VARIABLE_INITIALIZATIONS,
+    TARGET_ASSETS_TO_IMPORT
+)
 from ..logger import info, error, jump
 from colored import fg, attr
 from shutil import copyfile
@@ -20,6 +27,7 @@ class LanguageGenerator():
         self.create_folders()
         self.append_assets_to_answers()
         self.append_variable_initalizations_to_answers()
+        self.append_assets_to_import_to_answers()
         self.generate_challenge_yaml()
         self.generate_template_file()
         self.generate_success_file()
@@ -30,6 +38,11 @@ class LanguageGenerator():
         self.copy_assets()
 
         info('Challenge ' + self._root + ' created with success!')
+
+    def append_assets_to_import_to_answers(self):
+        self._answers[TARGET_ASSETS_TO_IMPORT] = []
+        for asset in self._language.get_assets_to_import():
+            self._answers[TARGET_ASSETS_TO_IMPORT].append(asset)
 
     def append_variable_initalizations_to_answers(self):
         self._answers[TARGET_VARIABLE_INITIALIZATIONS] = []

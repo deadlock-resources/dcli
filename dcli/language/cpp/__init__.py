@@ -54,3 +54,23 @@ class Cpp(Language):
             error('Cancelled.')
             sys.exit()
         return answers
+
+    def get_default_uncommon_type_value(self, current_type):
+        return f'{current_type}()'
+
+    def add_type(self, name):
+        template = ("#include <ostream>\n"
+                    "include \"" + name + ".h\"\n"
+                    "// " + name + " class implementation\n"
+                    "std::ostream &operator<<(std::ostream &os, " + name + " const &m) {\n"
+                    "    return os << \"" + name + "\";\n"
+                    "}\n")
+        self.add_new_asset(self.templateDirPath, name, f'class {name} {{}};', 'h')
+        self.add_new_asset(self.templateDirPath, name, template, self.extension)
+
+    def get_assets_to_import(self):
+        assets_to_import = []
+        for asset in self.newAssets:
+            if asset.extension == 'h':
+                assets_to_import.append(asset)
+        return assets_to_import

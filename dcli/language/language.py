@@ -86,6 +86,9 @@ class Language():
     @property
     def variable_initializations(self):
         return self._variableInitializations
+        
+    def get_assets_to_import(self):
+        return []
 
     def add_variable_initializations(self, content):
         self._variableInitializations.append(content)

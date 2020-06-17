@@ -1,7 +1,3 @@
-//
-// Created by Guillaume Danguy on 22/06/17.
-//
-
 /**
  * This class provides log wrappers for the classic system signals.
  */

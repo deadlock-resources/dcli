@@ -1,10 +1,8 @@
-//
-// Created by Guillaume Danguy on 22/06/17.
-//
-
 #ifndef LOGGER_H
 #define LOGGER_H
-
+{% for asset in targetAssetsToImport %}
+#include "{{ asset.fileName }}.{{ asset.extension }}"
+{% endfor %}
 #include <string>
 using std::string;
 using std::exception;
