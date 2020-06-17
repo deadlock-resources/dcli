@@ -1,6 +1,7 @@
 import os
 import sys
 from ..language import Language
+from ..variable import Variable
 from PyInquirer import prompt
 from ...logger import error
 from ...const import TARGET_FILE_FIELD, TARGET_METHOD_FIELD, TARGET_METHOD_ARGS_FIELD, TARGET_METHOD_RETURN_FIELD
@@ -38,9 +39,10 @@ class C(Language):
             f'typedef struct {name}{{}} {name};',
             'h'
         )
+        self.add_variable_initializations(Variable(name, name.lower()))
     
-    def get_default_value_uncommon_type(self, current_type):
-        return current_type
+    def get_default_uncommon_type_value(self, current_type):
+        return current_type.lower()
 
 
     def ask_questions(self):

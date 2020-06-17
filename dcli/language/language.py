@@ -36,6 +36,7 @@ class Language():
         self._extension = extension
         self._assetPaths = assetsPaths
         self._newAssets = []
+        self._variableInitializations = []
         self._common_types = self.load_common_types()
 
     @property
@@ -82,6 +83,13 @@ class Language():
     def common_types(self):
         return self._common_types
 
+    @property
+    def variable_initializations(self):
+        return self._variableInitializations
+
+    def add_variable_initializations(self, content):
+        self._variableInitializations.append(content)
+
     def load_common_types(self):
         path = str.format(COMMON_TYPES_PATH, self._type)
         if os.path.exists(get_path_from_root(path)) == True:
@@ -104,9 +112,9 @@ class Language():
         elif self.is_common_type(current_type):
             return self._common_types[current_type][DEFAULT_VALUE]
         else:
-            return self.get_default_value_uncommon_type(current_type)
+            return self.get_default_uncommon_type_value(current_type)
 
-    def get_default_value_uncommon_type(self, current_type):
+    def get_default_uncommon_type_value(self, current_type):
         return 'null'
 
     def add_type(self, name):
