@@ -26,6 +26,8 @@ if (($COUNT > 0)); then
     docker rm $CONTAINER_NAME -f
 fi
 
+challenge_hacking_token_path=$(echo $challenge_hacking_token_path | tr '\r' ' ')
+
 echo "> building challenge.."
 docker build $(pwd) -q -t hack
 echo "> starting challenge.."
