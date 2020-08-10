@@ -27,7 +27,6 @@ setuptools.setup(
         'Jinja2',
         'colored',
         'Flask',
-        'request',
         'jsonify',
         'requests',
         'pyyaml'
