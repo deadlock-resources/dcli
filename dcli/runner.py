@@ -20,6 +20,7 @@ from distutils.dir_util import copy_tree
 
 DOCKER_NETWORK = 'deadlock-challenge'
 PREFIX_SERVICE_NAME='deadlock-service'
+PERSIST_DOCKER_NAME="deadlock-persist-mission"
 
 def build(tag, path):
     spin = SpinCursor('', speed=5, maxspin=100000)
@@ -68,26 +69,6 @@ def clean():
     execute(f'docker ps --filter network={DOCKER_NETWORK} -aq | xargs -r docker stop >/dev/null | xargs -r docker rm', {"quiet": True})
     execute(f'docker network rm {DOCKER_NETWORK}', {"quiet": True})
     info('Done')
-
-def run(path=os.getcwd(), language='empty'):
-    '''
-    Run the mission under given path.
-    As if user clicked on Run button.
-
-    :param path: path of your mission. Default: .
-    '''
-    exit_if_no_challenge_file(path)
-    yaml = load_yaml(path + '/' + CHALLENGE_YAML)
-    if 'coding' in yaml:
-        if os.path.exists(f'{path}/entry.rs') == True:
-            run_metamorph_code(path, language)
-        else:
-            run_code(path)
-    elif 'hacking' in yaml:
-        run_hack(path)
-    else:
-        error('Challenge type not supported, verify your challenge.yaml')
-    clean()
 
 def prepare_metamorph_code(path, tmpDir):
     info('🔨 Building mission..')
@@ -189,6 +170,25 @@ def run_code(path=os.getcwd()):
 def run_hack(path=os.getcwd()):
     os.system(get_path_from_root('utils/run-hack.sh'))
 
+def run_persist(path=os.getcwd()):
+    info('Remove previous mission..')
+    execute(f'docker rm {PERSIST_DOCKER_NAME} -f', {'quiet': True})
+
+    tag = uuid.uuid4()
+    build(tag, path) 
+    info('🚀 Running mission..')
+    execute(f'docker run -d -p 3000:3000 --name {PERSIST_DOCKER_NAME} {tag}', {'quiet': True})
+    info('🌐 You can view the mission in the browser:')
+    info('🌐 http://localhost:3000')
+
+    while True:
+        try:
+           sys.stdin.readline()
+        except KeyboardInterrupt:
+            info('Cleaning mission..')
+            execute(f'docker rm {PERSIST_DOCKER_NAME} -f', {'quiet': True})
+            sys.exit()
+
 
 def solve_score(tag, path=os.getcwd()):
     '''
@@ -230,7 +230,10 @@ def solve(path=os.getcwd(), language='empty'):
     exit_if_no_challenge_file(path)
     yaml = load_yaml(path + '/' + CHALLENGE_YAML)
     if 'coding' in yaml:
-        if os.path.exists(path + '/entry.rs') == True:
+        if yaml['type'] == 'PERSISTENT':
+            error('Cannot solve PERSISTENT mission, try run instead.')
+            sys.exit(1)
+        elif os.path.exists(path + '/entry.rs') == True:
             solve_metamorph_code(path, language)
         elif 'score' in yaml['coding']:
             tag = uuid.uuid4()
@@ -242,6 +245,29 @@ def solve(path=os.getcwd(), language='empty'):
             solve_code(tag, path)
     else:
         error('Challenge type not supported for solve method.')
+    clean()
+
+
+def run(path=os.getcwd(), language='empty'):
+    '''
+    Run the mission under given path.
+    As if user clicked on Run button.
+
+    :param path: path of your mission. Default: .
+    '''
+    exit_if_no_challenge_file(path)
+    yaml = load_yaml(path + '/' + CHALLENGE_YAML)
+    if yaml['type'] == 'PERSISTENT':
+        run_persist(path)
+    elif 'coding' in yaml:
+        if os.path.exists(f'{path}/entry.rs') == True:
+            run_metamorph_code(path, language)
+        else:
+            run_code(path)
+    elif 'hacking' in yaml:
+        run_hack(path)
+    else:
+        error('Challenge type not supported, verify your challenge.yaml')
     clean()
 
 def exit_if_no_challenge_file(path):
