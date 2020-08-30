@@ -2,8 +2,11 @@
 ## UNRELEASED
 * C/CPP default type generation
 
+## 1.2.1 (30/08/2020)
+* feat: support run for persist challenge
+
 ## 1.2.0 (10/08/2020)
-fix: wrong require blocking the installation
+* fix: wrong require blocking the installation
 
 ## 1.1.7 (09/07/2020)
 * feat: show when new release available
