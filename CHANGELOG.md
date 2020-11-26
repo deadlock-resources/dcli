@@ -2,6 +2,9 @@
 ## UNRELEASED
 * C/CPP default type generation
 
+## 1.2.2 (26/11/2020)
+* fix: missing user config for persist challenge
+
 ## 1.2.1 (30/08/2020)
 * feat: support run for persist challenge
 
