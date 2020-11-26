@@ -15,6 +15,7 @@ from .logger import info, error, jump
 from .const import CHALLENGE_YAML, API_PORT, MISSION_USER_SCORE_ENDPOINT, MISSION_USER_SCORE_FILENAME, API_ADRESS
 from .scoreController import startScoreResource
 from .cmd import execute
+from .generator.file import get_path_from_root
 
 from distutils.dir_util import copy_tree
 
@@ -177,7 +178,9 @@ def run_persist(path=os.getcwd()):
     tag = uuid.uuid4()
     build(tag, path) 
     info('🚀 Running mission..')
-    execute(f'docker run -d -p 3000:3000 --name {PERSIST_DOCKER_NAME} {tag}', {'quiet': True})
+    # copy user config
+    userConfig = get_path_from_root('utils/user-challenge.json');
+    execute(f'docker run -v {userConfig}:/home/config/user-challenge.json -d -p 3000:3000 --name {PERSIST_DOCKER_NAME} {tag}', {'quiet': True})
     info('🌐 You can view the mission in the browser:')
     info('🌐 http://localhost:3000')
 

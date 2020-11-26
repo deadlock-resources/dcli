@@ -1,0 +1,32 @@
+{
+  "paths": {
+    "3000": "H2CNRR2PiutPgnXaDfRq-web"
+  },
+  "host": "persist.deadlock.io",
+  "token": "eace4402-c3c4-4535-a08b-5bfd012e3c71",
+  "giteaHost": "giteaHost",
+  "giteaSshPort": 21,
+  "username": "8e71598a90ac4e89828a0a7708c07c8b",
+  "email": "8e71598a90ac4e89828a0a7708c07c8b@deadlock.io",
+  "missionId": "missionId",
+  "remoteGitUsername": "8e71598a90ac4e89828a0a7708c07c8b",
+  "currentUserDetails": {
+    "firstName": "Deadlock",
+    "lastName": "CLI",
+    "organization": "Deadlock",
+    "email": "deadlock@takima.fr",
+    "login": "DCLI",
+    "roles": [],
+    "avatarUrl": "https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png"
+  },
+  "remoteUserDetails": {
+    "firstName": "Deadlock",
+    "lastName": "CLI",
+    "organization": "Deadlock",
+    "email": "deadlock@takima.fr",
+    "login": "DCLI",
+    "roles": [],
+    "avatarUrl": "https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png"
+  },
+  "professor": false
+}
