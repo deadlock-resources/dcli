@@ -175,12 +175,35 @@ def run_persist(path=os.getcwd()):
     info('Remove previous mission..')
     execute(f'docker rm {PERSIST_DOCKER_NAME} -f', {'quiet': True})
 
+    yaml = load_yaml(path + '/' + CHALLENGE_YAML)
+
+    ports = yaml['persistent']['ports']
+    portsCmd = ''
+    webPortFound = False
+    userConfigPath = get_path_from_root('utils/user-challenge.json');
+
+    with open(userConfigPath, 'r+') as f:
+        jsonContent = json.load(f)
+        for key in ports:
+            portsCmd += f' -p {ports[key]}:{ports[key]}'
+            if ports[key] == 3000:
+                webPortFound = True
+            else:
+                jsonContent['paths'][key] = str(ports[key])
+        f.seek(0)
+        json.dump(jsonContent, f, indent=2)
+        f.truncate()
+
+    if webPortFound == False:
+        error('Your must include web port in the challenge.yaml file: web: 3000')
+        sys.exit(1)
+
+    # start docker container
     tag = uuid.uuid4()
     build(tag, path) 
     info('🚀 Running mission..')
-    # copy user config
-    userConfig = get_path_from_root('utils/user-challenge.json');
-    execute(f'docker run -v {userConfig}:/home/config/user-challenge.json -d -p 3000:3000 --name {PERSIST_DOCKER_NAME} {tag}', {'quiet': True})
+    
+    execute(f'docker run -v {userConfigPath}:/home/config/user-challenge.json -d {portsCmd} --name {PERSIST_DOCKER_NAME} {tag}', {'quiet': True, 'exitOnError': True})
     info('🌐 You can view the mission in the browser:')
     info('🌐 http://localhost:3000')
 
