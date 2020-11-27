@@ -2,6 +2,9 @@
 ## UNRELEASED
 * C/CPP default type generation
 
+## 1.2.3 (27/11/2020)
+* feat: persistent missions load well port from challenge descriptor
+
 ## 1.2.2 (26/11/2020)
 * fix: missing user config for persist challenge
 
