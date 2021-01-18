@@ -2,6 +2,9 @@
 ## UNRELEASED
 * C/CPP default type generation
 
+## 1.2.4 (18/01/2021)
+* fix: port with paths not updated between two challenges
+
 ## 1.2.3 (27/11/2020)
 * feat: persistent missions load well port from challenge descriptor
 
