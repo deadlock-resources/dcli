@@ -184,6 +184,7 @@ def run_persist(path=os.getcwd()):
 
     with open(userConfigPath, 'r+') as f:
         jsonContent = json.load(f)
+        jsonContent['paths'] = {}
         for key in ports:
             portsCmd += f' -p {ports[key]}:{ports[key]}'
             if ports[key] == 3000:
