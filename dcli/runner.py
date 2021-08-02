@@ -94,17 +94,20 @@ def prepare_metamorph_code(path, tmpDir):
 def run_metamorph_code(path, language):
    exec_metamorph_code(path, language, 'run') 
 
-def solve_metamorph_code(path, language):
-   exec_metamorph_code(path, language, 'solve') 
-    
+def solve_metamorph_code(path, language, is_scored):
+    if is_scored:
+        solve_scored_metamorph_code(path, language)
+    else:
+        exec_metamorph_code(path, language, 'solve') 
 
+     
 def exec_metamorph_code(path, language, way):
     if path == '.':
         path = os.getcwd()
     elif path[0] != '/':
         error('Path given must be absolute')
         exit(1)
-        
+       
     download_if_necessary(path)
 
     # copy everything to tmp to avoid any conflict with user directory files
@@ -115,6 +118,37 @@ def exec_metamorph_code(path, language, way):
     # volume to the tmp dir
     os.system(f"docker run -v {tmpDir}:/tmp/runner meta {way} {language}")
     shutil.rmtree(tmpDir, ignore_errors=True)
+
+def solve_scored_metamorph_code(path, language):
+    if path == '.':
+        path = os.getcwd()
+    elif path[0] != '/':
+        error('Path given must be absolute')
+        exit(1)
+
+    download_if_necessary(path)
+    
+    info('Setting up environment..')
+
+    info('Starting http server..')
+    httpServerProcess = Process(target=startScoreResource)
+    httpServerProcess.start()
+
+    info('Writing files..')
+    tmpPathFile = create_tmp_folder() + '/' + MISSION_USER_SCORE_FILENAME
+    missionUserScore = MissionUserScore(str(uuid.uuid4()), f'http://{API_ADRESS}:{str(API_PORT)}{MISSION_USER_SCORE_ENDPOINT}').__dict__
+    missionUserScoreJson = json.dumps(missionUserScore)
+    write_file(tmpPathFile, missionUserScoreJson)
+
+    tmpDir = f'{path}/build'
+    prepare_metamorph_code(path, tmpDir)
+
+    info('Starting metamorph mission score..')
+    os.system(f'docker run --network="host" -v {tmpPathFile}:/tmp/{MISSION_USER_SCORE_FILENAME} -v {tmpDir}:/tmp/runner meta solve {language}')
+    
+    shutil.rmtree(tmpDir, ignore_errors=True)
+    httpServerProcess.terminate()
+
 
 
 def download_if_necessary(path):
@@ -261,7 +295,8 @@ def solve(path=os.getcwd(), language='empty'):
             error('Cannot solve PERSISTENT mission, try run instead.')
             sys.exit(1)
         elif os.path.exists(path + '/entry.rs') == True:
-            solve_metamorph_code(path, language)
+            is_scored = 'score' in yaml['coding']
+            solve_metamorph_code(path, language, is_scored)
         elif 'score' in yaml['coding']:
             tag = uuid.uuid4()
             build(tag, path)
