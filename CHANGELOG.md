@@ -1,5 +1,6 @@
 
-## UNRELEASED
+## 1.2.5 (18/02/2021)
+* support services for persist mission
 * C/CPP default type generation
 
 ## 1.2.4 (18/01/2021)

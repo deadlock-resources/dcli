@@ -204,7 +204,7 @@ def run_persist(path=os.getcwd()):
     build(tag, path) 
     info('🚀 Running mission..')
     
-    execute(f'docker run -v {userConfigPath}:/home/config/user-challenge.json -d {portsCmd} --name {PERSIST_DOCKER_NAME} {tag}', {'quiet': True, 'exitOnError': True})
+    execute(f'docker run --net={DOCKER_NETWORK} -v {userConfigPath}:/home/config/user-challenge.json -d {portsCmd} --name {PERSIST_DOCKER_NAME} {tag}', {'quiet': True, 'exitOnError': True})
     info('🌐 You can view the mission in the browser:')
     info('🌐 http://localhost:3000')
 
@@ -214,6 +214,7 @@ def run_persist(path=os.getcwd()):
         except KeyboardInterrupt:
             info('Cleaning mission..')
             execute(f'docker rm {PERSIST_DOCKER_NAME} -f', {'quiet': True})
+            clean()
             sys.exit()
 
 
