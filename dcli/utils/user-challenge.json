@@ -1,5 +1,8 @@
 {
   "paths": {
+    "front": "3001",
+    "elasticsearch": "9200",
+    "backend": "8080"
   },
   "host": "localhost",
   "token": "eace4402-c3c4-4535-a08b-5bfd012e3c71",
