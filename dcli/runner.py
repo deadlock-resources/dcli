@@ -58,10 +58,10 @@ def build_and_run_service(path, service):
     info(f'📂 {service} service found')
     info(f'>  🐳 Building {service}')
     execute(f'docker build -q -f {path}/{service}/Dockerfile -t {get_docker_service_name(service)} {path}/{service}',
-            {"quiet": False})
+            {"quiet": False, "exitOnError": True, "messageOnError": f'Building {service} failed'})
     info(f'>  🚀 Running {service}')
     execute(f'docker run -d --rm --net={DOCKER_NETWORK} --name {service} {get_docker_service_name(service)}',
-            {"quiet": False})
+            {"quiet": False, "exitOnError": True, "messageOnError": f'Running {service} failed'})
 
 
 def get_docker_service_name(serviceName):

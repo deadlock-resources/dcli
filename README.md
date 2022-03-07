@@ -47,6 +47,16 @@ dcli solve . python
 dcli run . python
 ```
 
+## Use verbose mode
+If you want more information when you launch the containers you can use the verbose mode with the flag `--verbose`. It also allows you to have more detail on some errors.
+
+```bash
+# running code with verbose mode
+
+dcli run . --verbose
+dcli solve . --verbose
+```
+
 ## Todo
 * Add Haskell generator language
 
