@@ -1,4 +1,8 @@
 
+## 1.2.6 (09/03/2021)
+* feat: add verbose mode on dcli run and solve
+* fix: stopping dcli when one of the services does not build or run
+ 
 ## 1.2.5 (18/02/2021)
 * support services for persist mission
 * C/CPP default type generation
