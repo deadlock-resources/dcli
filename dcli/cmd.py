@@ -1,15 +1,17 @@
 import os
 import sys
 import subprocess
+
 try:
     from subprocess import DEVNULL
 except ImportError:
     import os
+
     DEVNULL = open(os.devnull, 'wb')
 from .logger import info, error, jump
 
 
-def execute(cmd, args = {}):
+def execute(cmd, args={}):
     '''
     :param cmd: Command to execute
     :param args: a dico, may contains:
@@ -24,7 +26,6 @@ def execute(cmd, args = {}):
     spin = args.get("spin", None)
 
     FNULL = open(os.devnull, 'w')
-
 
     try:
         exitCode = 0
@@ -47,5 +48,3 @@ def execute(cmd, args = {}):
     if spin != None:
         spin.stop()
         jump()
-
-

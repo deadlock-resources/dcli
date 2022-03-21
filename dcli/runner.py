@@ -38,7 +38,7 @@ def build(tag, path, verbose=False):
             'messageOnError': 'Cannot execute build.sh file',
             'spin': spin})
     info('🐳 Building Docker image')
-    execute(f'docker build {path} -q -t {tag}', {
+    execute(f'docker build {path} {quiet_docker_build(verbose)} -t {tag}', {
         'quiet': not verbose,
         'exitOnError': True,
         'spin': spin})
@@ -49,15 +49,19 @@ def build(tag, path, verbose=False):
     if os.path.exists(f'{path}/services') == True:
         dirs = os.listdir(f'{path}/services')
         for service in dirs:
-            build_and_run_service(f'{path}/services', service)
+            build_and_run_service(f'{path}/services', service,verbose)
 
     spin.stop()
 
 
-def build_and_run_service(path, service):
+def quiet_docker_build(verbose):
+    return "-q" if not verbose else ""
+
+
+def build_and_run_service(path, service,verbose):
     info(f'📂 {service} service found')
     info(f'>  🐳 Building {service}')
-    execute(f'docker build -q -f {path}/{service}/Dockerfile -t {get_docker_service_name(service)} {path}/{service}',
+    execute(f'docker build {quiet_docker_build(verbose)} -f {path}/{service}/Dockerfile -t {get_docker_service_name(service)} {path}/{service}',
             {"quiet": False, "exitOnError": True, "messageOnError": f'Building {service} failed'})
     info(f'>  🚀 Running {service}')
     execute(f'docker run -d --rm --net={DOCKER_NETWORK} --name {service} {get_docker_service_name(service)}',
@@ -78,7 +82,7 @@ def clean(verbose=False):
     info('Done')
 
 
-def prepare_metamorph_code(path, tmpDir):
+def prepare_metamorph_code(path, tmpDir,verbose):
     info('🔨 Building mission..')
     spin = SpinCursor('', speed=5, maxspin=100000)
     spin.start()
@@ -93,20 +97,20 @@ def prepare_metamorph_code(path, tmpDir):
             for file in files:
                 shutil.copy(os.path.join(subdir, file), tmpDir)
 
-        os.system('docker build ' + tmpDir + ' -q -t meta')
+        os.system('docker build ' + tmpDir + f' {quiet_docker_build(verbose)} -t meta')
     finally:
         spin.stop()
 
 
-def run_metamorph_code(path, language):
-    exec_metamorph_code(path, language, 'run')
+def run_metamorph_code(path, language,verbose):
+    exec_metamorph_code(path, language, 'run',verbose)
 
 
-def solve_metamorph_code(path, language):
-    exec_metamorph_code(path, language, 'solve')
+def solve_metamorph_code(path, language,verbose):
+    exec_metamorph_code(path, language, 'solve',verbose)
 
 
-def exec_metamorph_code(path, language, way):
+def exec_metamorph_code(path, language, way,verbose):
     if path == '.':
         path = os.getcwd()
     elif path[0] != '/':
@@ -118,7 +122,7 @@ def exec_metamorph_code(path, language, way):
     # copy everything to tmp to avoid any conflict with user directory files
     # cannot use the default /tmp dir, because it generate problem with Docker volume
     tmpDir = f'{path}/build'
-    prepare_metamorph_code(path, tmpDir)
+    prepare_metamorph_code(path, tmpDir,verbose)
 
     # volume to the tmp dir
     os.system(f"docker run -v {tmpDir}:/tmp/runner meta {way} {language}")
@@ -277,7 +281,7 @@ def solve(path=os.getcwd(), language='empty', verbose=False):
             error('Cannot solve PERSISTENT mission, try run instead.')
             sys.exit(1)
         elif os.path.exists(path + '/entry.rs') == True:
-            solve_metamorph_code(path, language)
+            solve_metamorph_code(path, language,verbose)
         elif 'score' in yaml['coding']:
             tag = uuid.uuid4()
             build(tag, path, verbose)
@@ -304,7 +308,7 @@ def run(path=os.getcwd(), language='empty', verbose=False):
         run_persist(path, verbose)
     elif 'coding' in yaml:
         if os.path.exists(f'{path}/entry.rs') == True:
-            run_metamorph_code(path, language)
+            run_metamorph_code(path, language,verbose)
         else:
             run_code(path, verbose)
     elif 'hacking' in yaml:
