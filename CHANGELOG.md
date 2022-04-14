@@ -1,4 +1,7 @@
 
+## 1.2.7 (14/04/2021)
+* fix(verbose): display docker build step on verbose mode
+
 ## 1.2.6 (09/03/2021)
 * feat: add verbose mode on dcli run and solve
 * fix: stopping dcli when one of the services does not build or run
