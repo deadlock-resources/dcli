@@ -7,12 +7,15 @@ import requests
 import hashlib
 import shutil
 import tempfile
+import platform
+import webbrowser
+import urllib.parse
 from multiprocessing import Process
 from .model.missionUserScore import MissionUserScore
 from .generator.file import get_path_from_root, load_yaml, create_tmp_folder, write_file
 from .spinCursor import SpinCursor
 from .logger import info, error, jump
-from .const import CHALLENGE_YAML, API_PORT, MISSION_USER_SCORE_ENDPOINT, MISSION_USER_SCORE_FILENAME, API_ADRESS
+from .const import CHALLENGE_YAML, API_PORT, MISSION_USER_SCORE_ENDPOINT, MISSION_USER_SCORE_FILENAME, API_ADRESS, CONTAINER_REGISTRY
 from .scoreController import startScoreResource
 from .cmd import execute
 from .generator.file import get_path_from_root
@@ -234,6 +237,30 @@ def run_persist(path=os.getcwd(), verbose=False):
             clean(verbose)
             sys.exit()
 
+def run_desktop(path=os.getcwd(), verbose=False, yaml=load_yaml(os.getcwd() + '/' + CHALLENGE_YAML)):
+
+    tag = f'{CONTAINER_REGISTRY}/{yaml["name"]}:{yaml["version"]}-dev'
+
+    info('🐳 Building Docker image')
+    execute(f'docker build {path} {quiet_docker_build(verbose)} -t {tag}', {
+        'quiet': not verbose,
+        'exitOnError': True})
+
+    info('🚀 Running mission..')
+    uri = 'vscode://deadlock.deadlock-coding?'
+    params = {'action': 'open-challenge', 'missionId': yaml["name"], 'missionVersion': yaml["version"]+'-dev'}
+    uri = uri + urllib.parse.urlencode(params)
+    info(uri)
+    os_type = platform.system()
+
+    if os_type == 'Linux':
+        os.system(f"xdg-open '{uri}'")
+    elif os_type == 'Windows':
+        os.system(f"start '{uri}'")
+    elif os_type == 'Darwin':
+        os.system(f"open '{uri}'")
+    else:
+        webbrowser.open(uri)
 
 def solve_score(tag, path=os.getcwd()):
     '''
@@ -290,6 +317,9 @@ def solve(path=os.getcwd(), language='empty', verbose=False):
             tag = uuid.uuid4()
             build(tag, path, verbose)
             solve_code(tag, path)
+    elif 'desktop' in yaml:
+        error('Cannot solve DESKTOP mission, try run instead.')
+        sys.exit(1)
     else:
         error('Challenge type not supported for solve method.')
     clean(verbose)
@@ -313,6 +343,8 @@ def run(path=os.getcwd(), language='empty', verbose=False):
             run_code(path, verbose)
     elif 'hacking' in yaml:
         run_hack(path)
+    elif 'desktop' in yaml:
+        run_desktop(path, verbose, yaml)
     else:
         error('Challenge type not supported, verify your challenge.yaml')
     clean(verbose)
