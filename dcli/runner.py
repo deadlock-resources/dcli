@@ -248,9 +248,8 @@ def run_desktop(path=os.getcwd(), verbose=False, yaml=load_yaml(os.getcwd() + '/
 
     info('🚀 Running mission..')
     uri = 'vscode://deadlock.deadlock-coding?'
-    params = {'action': 'open-challenge', 'missionId': yaml["name"], 'missionVersion': yaml["version"]+'-dev'}
+    params = {'action': 'open-mission', 'missionId': yaml["name"], 'missionVersion': f'{yaml["version"]}-dev'}
     uri = uri + urllib.parse.urlencode(params)
-    info(uri)
     os_type = platform.system()
 
     if os_type == 'Linux':
