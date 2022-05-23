@@ -46,6 +46,19 @@ dcli run . java
 dcli solve . python
 dcli run . python
 ```
+## Execute desktop mission
+To execute your desktop mission, you need to have the `deadlock-coding` and the `Remote - Containers`  VSCode extensions.  
+Build the docker image with the following tag:
+```bash
+docker build -t registry.takima.io/deadlock/deadlock-challenges/[challenge_name]:[challenge_version] .
+```
+`[challenge_name]` et `[challenge_version]` sont définis dans le `challenge.yaml`.
+
+Then run the mission from the challenge folder:
+```bash
+# launch the mission in VSCode
+dcli run .
+```
 
 ## Use verbose mode
 If you want more information when you launch the containers you can use the verbose mode with the flag `--verbose`. It also allows you to have more detail on some errors.
